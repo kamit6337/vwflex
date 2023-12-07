@@ -3,10 +3,11 @@
  *
  * @param {String} path - should start with /.
  * @param {Object} params - Optional parameters for the fetch Request.
+ * @param {Number} revalidateIn - in SECONDS. Default is 60 Seconds
  * @returns {Response} json data will be returned.
  */
 
-const fetchReq = async (path, params) => {
+const fetchReq = async (path, params, { revalidateIn = 60 } = {}) => {
   const envUrl = process.env.THIRD_PARTY_URL;
   const accessToken = process.env.THIRD_PARTY_URL_ACCESS_TOKEN;
 
@@ -20,6 +21,7 @@ const fetchReq = async (path, params) => {
 
   try {
     const res = await fetch(url, {
+      next: { revalidate: revalidateIn },
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`, // Include your access token here

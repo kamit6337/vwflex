@@ -38,7 +38,7 @@ const Req = (request) => {
 
   // NOTE: IF SEARCHPARAMS IS PRESENT THEN GET ALL SEARCH-PARAMS IN KEY VALUE PAIR
   if (searchParams) {
-    res.params = Object.fromEntries(searchParams.entries());
+    res.query = Object.fromEntries(searchParams.entries());
   }
 
   return { ...res };

@@ -1,15 +1,9 @@
 import Res from "@utils/server/Res";
 import fetchReq from "@utils/server/fetchReq";
 
-export async function GET(req) {
-  console.log("request", req);
-
-  const body = await req.json();
-  console.log("request-body", body);
+export async function GET() {
   try {
-    const response = {
-      request: req,
-    };
+    const response = {};
 
     const [images, movieGenres, tvGenres, countries] = await Promise.all([
       fetchReq("/configuration"),
@@ -28,9 +22,7 @@ export async function GET(req) {
 
     response.genres = [...newGenres];
 
-    response.country = countries;
-
-    const newRes = { images, movieGenres, tvGenres, countries };
+    response.countries = countries;
 
     return Res(response);
   } catch (error) {
