@@ -2,16 +2,19 @@ import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
 import fetchReq from "@utils/server/fetchReq";
 
+const TRUE = "true";
+const FALSE = "false";
+
 export const GET = async (request) => {
   const { query } = Req(request);
 
   const {
     id,
-    images = false,
-    recommendations = false,
-    reviews = false,
-    similar = false,
-    videos = false,
+    images,
+    recommendations,
+    reviews,
+    similar,
+    videos,
     page = 1,
   } = query;
 
@@ -26,7 +29,7 @@ export const GET = async (request) => {
 
     response.details = movie;
 
-    if (images) {
+    if (images === TRUE) {
       const fetchMovieImages = await fetchReq(`/movie/${id}/images`);
 
       const modifyMovieImages = fetchMovieImages?.backdrops?.map((obj) => {
@@ -38,7 +41,7 @@ export const GET = async (request) => {
       response.images = modifyMovieImages;
     }
 
-    if (recommendations) {
+    if (recommendations === TRUE) {
       const movieRecommendations = await fetchReq(
         `/movie/${id}/recommendations`,
         { page }
@@ -50,7 +53,7 @@ export const GET = async (request) => {
       };
     }
 
-    if (reviews) {
+    if (reviews === TRUE) {
       const movieReviews = await fetchReq(`/movie/${id}/reviews`, { page });
 
       response.reviews = {
@@ -59,7 +62,7 @@ export const GET = async (request) => {
       };
     }
 
-    if (similar) {
+    if (similar === TRUE) {
       const similarMovie = await fetchReq(`/movie/${id}/similar`, { page });
       response.similar = {
         page: similarMovie.page,
@@ -67,7 +70,7 @@ export const GET = async (request) => {
       };
     }
 
-    if (videos) {
+    if (videos === TRUE) {
       const movieVideos = await fetchReq(`/movie/${id}/videos`);
 
       response.videos = movieVideos.results;

@@ -1,6 +1,8 @@
 import Res from "@utils/server/Res";
 import fetchReq from "@utils/server/fetchReq";
 
+
+
 export async function GET() {
   try {
     const response = {};
