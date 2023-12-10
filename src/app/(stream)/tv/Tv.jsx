@@ -1,10 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { Suspense } from "react";
 
 const Tv = () => {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["tvList"],
     queryFn: () => GetReq("/tv", { popular: true }),
     staleTime: 240000,
@@ -13,7 +13,7 @@ const Tv = () => {
   return (
     <div>
       <p>Tv List Data</p>
-      <Suspense fallback={<div className="loading" />}>
+      <Suspense fallback={<div className="suspense loading" />}>
         {JSON.stringify(data)}
       </Suspense>
     </div>

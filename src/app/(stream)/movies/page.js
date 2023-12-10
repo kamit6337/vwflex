@@ -1,29 +1,29 @@
 "use client";
 
 import StreamCard from "@components/StreamCard";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import GetReq from "@utils/client/GetReq";
 import { Suspense, useState } from "react";
 
 const Movies = () => {
-  const { data } = useQuery({
+  const { data } = useSuspenseQuery({
     queryKey: ["moviesList"],
-    queryFn: () => GetReq("/movies", { popular: true }),
-    staleTime: 180000,
+    queryFn: () => GetReq("/movies", { all: true }),
+    staleTime: 10 * 60 * 1000,
   });
 
   const [index, setindex] = useState(false);
 
-  // const {
-  //   message,
-  //   upcoming: { page, data: upcomingData },
-  //   popular,
-  // } = data;
+  const {
+    message,
+    upcoming: { page, data: upcomingData },
+    popular,
+  } = data;
 
   return (
     <div>
-      <Suspense fallback={<div className="loading" />}>
-        {JSON.stringify(data)}
+      <Suspense fallback={<div className="suspense loading" />}>
+        {JSON.stringify(upcomingData)}
       </Suspense>
     </div>
   );

@@ -1,16 +1,16 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Navbar = () => {
   const [toggleHome, setToggleHome] = useState(false);
   const [toggleMyStuff, setToggleMyStuff] = useState(false);
+  const router = useRouter();
 
   return (
     <nav className="w-full h-full flex justify-between items-center px-36">
-      <p>
-        <Link href={`/`}>VwFlex</Link>
-      </p>
+      <p onClick={() => router.push("/")}>VwFlex</p>
       <div className="w-1/3  flex justify-between h-full">
         <div
           className="h-full w-full relative"
@@ -28,21 +28,22 @@ const Navbar = () => {
               <p className="w-full p-3 cursor-pointer border-b border-black">
                 All
               </p>
-              <p className="w-full p-3 cursor-pointer border-b border-black">
-                <Link
-                  href={`/movies`}
-                  prefetch={false}
+              <Link href={`/movies`} onClick={() => setToggleHome(false)}>
+                <p
+                  className="w-full p-3 cursor-pointer border-b border-black"
                   onClick={() => setToggleHome(false)}
                 >
                   Movies
-                </Link>
-              </p>
-              <p className="w-full p-3 cursor-pointer border-b border-black">
-                <Link href={`/tv`} onClick={() => setToggleHome(false)}>
+                </p>
+              </Link>
+              <Link href={`/tv`} onClick={() => setToggleHome(false)}>
+                <p className="w-full p-3 cursor-pointer border-b border-black">
                   TV Shows
-                </Link>
-              </p>
-              <p className="w-full p-3 cursor-pointer">Peoples</p>
+                </p>
+              </Link>
+              <Link href={`/peoples`} onClick={() => setToggleHome(false)}>
+                <p className="w-full p-3 cursor-pointer">Peoples</p>
+              </Link>
             </div>
           )}
         </div>

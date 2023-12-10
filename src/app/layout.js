@@ -1,7 +1,8 @@
 import "./globals.css";
-import ReactQueryProvider from "@components/useClient/ReactQueryProvider";
+import ReactQueryProvider from "@components/providers/ReactQueryProvider";
 import Navbar from "@components/Navbar";
 import Footer from "@components/Footer";
+import GlobalHydrationBoundary from "@components/providers/GlobalHydrationBoundary";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <ReactQueryProvider>
-          <section className="w-full  text-white  bg-slate-700 flex justify-center font-semibold text-xl sticky top-0 z-50">
-            <Navbar />
-          </section>
-          <section className="w-full h-full">{children}</section>
-          <Footer />
+          <GlobalHydrationBoundary>
+            <section className="w-full  text-white  bg-slate-700 flex justify-center font-semibold text-xl sticky top-0 z-50">
+              <Navbar />
+            </section>
+            <section className="w-full h-full">{children}</section>
+            <Footer />
+          </GlobalHydrationBoundary>
         </ReactQueryProvider>
       </body>
     </html>

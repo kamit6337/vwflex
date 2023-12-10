@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
+import { ReactQueryStreamedHydration } from "@tanstack/react-query-next-experimental";
 
 const ReactQueryProvider = ({ children }) => {
   const [queryClient] = useState(
@@ -21,8 +22,8 @@ const ReactQueryProvider = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryStreamedHydration>{children}</ReactQueryStreamedHydration>
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
     </QueryClientProvider>
   );
 };

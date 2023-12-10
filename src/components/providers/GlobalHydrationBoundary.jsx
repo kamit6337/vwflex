@@ -3,27 +3,29 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import Tv from "./Tv";
+
 import GetReq from "@utils/client/GetReq";
 
-export const metadata = {
-  title: "TV Shows",
-};
-
-export default async function TvPage() {
+export default async function GlobalHydrationBoundary({ children }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ["tvList"],
-    queryFn: () => GetReq("/tv", { popular: true }),
-    staleTime: 180000,
+    queryFn: () => GetReq("/tv", { all: true }),
+    staleTime: 240000,
+  });
+
+  await queryClient.prefetchQuery({
+    queryKey: ["moviesList"],
+    queryFn: () => GetReq("/movies", { all: true }),
+    staleTime: 240000,
   });
 
   return (
     // Neat! Serialization is now as easy as passing props.
     // HydrationBoundary is a Client Component, so hydration will happen there.
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Tv />
+      {children}
     </HydrationBoundary>
   );
 }
