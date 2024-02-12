@@ -18,18 +18,22 @@ const StreamCard = async ({ obj }) => {
   const imageSrc = `${imageUrl}${backdrop_path}`;
 
   return (
-    <main className="grow-0 shrink-0 basis-1/4 text-xl font-semibold text-white px-2">
-      <div className="bg-slate-700 rounded-3xl">
-        <div className="w-full rounded-3xl">
-          <img
-            src={imageSrc}
-            alt="profile"
-            className="w-full object-cover rounded-3xl"
-            loading="lazy"
-          />
-        </div>
-      </div>
-    </main>
+    <>
+      {backdrop_path && (
+        <main className="grow-0 shrink-0 basis-1/4 text-xl font-semibold text-white px-2">
+          <div className="bg-slate-700 rounded-3xl">
+            <div className="w-full rounded-3xl">
+              <img
+                src={imageSrc}
+                alt="profile"
+                className="w-full object-cover rounded-3xl"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </main>
+      )}
+    </>
   );
 };
 

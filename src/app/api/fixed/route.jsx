@@ -1,17 +1,15 @@
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
-
-
+import serverAxios from "@utils/server/serverAxios";
 
 export async function GET() {
   try {
     const response = {};
 
     const [images, movieGenres, tvGenres, countries] = await Promise.all([
-      fetchReq("/configuration"),
-      fetchReq("/genre/movie/list"),
-      fetchReq("/genre/tv/list"),
-      fetchReq("/configuration/countries"),
+      serverAxios.get("/configuration"),
+      serverAxios.get("/genre/movie/list"),
+      serverAxios.get("/genre/tv/list"),
+      serverAxios.get("/configuration/countries"),
     ]);
 
     const {

@@ -1,9 +1,8 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 const TRUE = "true";
-const FALSE = "false";
 
 export const GET = async (request) => {
   const { query } = Req(request);
@@ -25,12 +24,12 @@ export const GET = async (request) => {
   try {
     const response = {};
 
-    const movie = await fetchReq(`/movie/${id}`);
+    const movie = await serverAxios.get(`/movie/${id}`);
 
     response.details = movie;
 
     if (images === TRUE) {
-      const fetchMovieImages = await fetchReq(`/movie/${id}/images`);
+      const fetchMovieImages = await serverAxios.get(`/movie/${id}/images`);
 
       const modifyMovieImages = fetchMovieImages?.backdrops?.map((obj) => {
         const { aspect_ratio: ratio, file_path: path } = obj;
@@ -42,9 +41,9 @@ export const GET = async (request) => {
     }
 
     if (recommendations === TRUE) {
-      const movieRecommendations = await fetchReq(
+      const movieRecommendations = await serverAxios.get(
         `/movie/${id}/recommendations`,
-        { page }
+        { params: { page } }
       );
 
       response.recommendations = {
@@ -54,7 +53,9 @@ export const GET = async (request) => {
     }
 
     if (reviews === TRUE) {
-      const movieReviews = await fetchReq(`/movie/${id}/reviews`, { page });
+      const movieReviews = await serverAxios.get(`/movie/${id}/reviews`, {
+        params: { page },
+      });
 
       response.reviews = {
         page: movieReviews.page,
@@ -63,7 +64,9 @@ export const GET = async (request) => {
     }
 
     if (similar === TRUE) {
-      const similarMovie = await fetchReq(`/movie/${id}/similar`, { page });
+      const similarMovie = await serverAxios.get(`/movie/${id}/similar`, {
+        params: { page },
+      });
       response.similar = {
         page: similarMovie.page,
         data: similarMovie.results,
@@ -71,7 +74,7 @@ export const GET = async (request) => {
     }
 
     if (videos === TRUE) {
-      const movieVideos = await fetchReq(`/movie/${id}/videos`);
+      const movieVideos = await serverAxios.get(`/movie/${id}/videos`);
 
       response.videos = movieVideos.results;
     }

@@ -19,6 +19,10 @@ const Req = (request) => {
     pathname,
   };
 
+  const body = async () => {
+    return await request.json();
+  };
+
   // NOTE: GETTING ALL COOKIES
   let cookieList = request.cookies.getAll();
   cookieList = cookieList.map((cookie) => {
@@ -41,7 +45,7 @@ const Req = (request) => {
     res.query = Object.fromEntries(searchParams.entries());
   }
 
-  return { ...res };
+  return { ...res, body };
 };
 
 export default Req;

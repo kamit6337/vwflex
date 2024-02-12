@@ -1,6 +1,6 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 export const GET = async (request) => {
   const { query } = Req(request);
@@ -12,7 +12,9 @@ export const GET = async (request) => {
   }
 
   try {
-    const search = await fetchReq("/search/multi", { query: q, page });
+    const search = await serverAxios.get("/search/multi", {
+      params: { query: q, page },
+    });
 
     const movieSearch = search?.results?.filter((obj) => {
       return obj.media_type === "movie";

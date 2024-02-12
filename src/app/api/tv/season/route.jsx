@@ -1,6 +1,6 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 const TRUE = "true";
 
@@ -14,64 +14,29 @@ export const GET = async (request) => {
   }
 
   try {
-    const tv = await fetchReq(`/tv/${id}`);
+    const tv = await serverAxios.get(`/tv/${id}`);
 
-    const {
-      backdrop_path: backdropPath,
-      poster_path: posterPath,
-      created_by: createdBy,
-      overview,
-      tagline,
-      genres,
-      languages,
-      networks,
-      number_of_episodes: numberOfEpisodes,
-      number_of_seasons: numberOfSeasons,
-      origin_country: originCountry,
-      original_language: originalLanguage,
-      production_companies: productionCompanies,
-      production_countries: productionCountries,
-      spoken_languages: spokenLanguages,
-      vote_average: voteAverage,
-    } = tv;
+    const { number_of_seasons } = tv;
 
     if (
       !season ||
-      !(Number(season) >= 1 && Number(season) <= numberOfSeasons)
+      !(Number(season) >= 1 && Number(season) <= number_of_seasons)
     ) {
-      season = numberOfSeasons;
+      season = number_of_seasons;
     }
 
-    const tvSeason = await fetchReq(`/tv/${id}/season/${season}`);
-
-    const { episodes, name, poster_path: path, air_date: airDate } = tvSeason;
+    const tvSeason = await serverAxios.get(`/tv/${id}/season/${season}`);
 
     const response = {
-      airDate,
-      seasonNum: season,
-      backdropPath,
-      posterPath,
-      overview,
-      tagline,
-      createdBy,
-      genres,
-      languages,
-      networks,
-      numberOfEpisodes,
-      numberOfSeasons,
-      originCountry,
-      originalLanguage,
-      productionCompanies,
-      productionCountries,
-      spokenLanguages,
-      voteAverage,
-      name,
-      episodes,
-      path,
+      details: {
+        season_number: season,
+        ...tv,
+        ...tvSeason,
+      },
     };
 
     if (images === TRUE) {
-      const tvShowImages = await fetchReq(`/tv/${id}/images`);
+      const tvShowImages = await serverAxios.get(`/tv/${id}/images`);
 
       const imageList = [
         ...tvShowImages?.backdrops,
@@ -86,9 +51,12 @@ export const GET = async (request) => {
     }
 
     if (recommendations === TRUE) {
-      const recommendationTvShow = await fetchReq(`/tv/${id}/recommendations`, {
-        page,
-      });
+      const recommendationTvShow = await serverAxios.get(
+        `/tv/${id}/recommendations`,
+        {
+          params: {  page },
+        }
+      );
 
       response.recommendations = {
         page: recommendationTvShow?.page,
@@ -98,8 +66,8 @@ export const GET = async (request) => {
     }
 
     if (similar === TRUE) {
-      const similarTvShow = await fetchReq(`/tv/${id}/similar`, {
-        page,
+      const similarTvShow = await serverAxios.get(`/tv/${id}/similar`, {
+        params: {  page },
       });
 
       response.similar = {

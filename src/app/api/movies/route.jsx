@@ -1,9 +1,8 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 const TRUE = "true";
-const FALSE = "false";
 
 export const GET = async (request) => {
   const { query } = Req(request);
@@ -13,9 +12,12 @@ export const GET = async (request) => {
   try {
     // WORK: IF UPCOMING IS TRUE THEN ONLY UPCOMING MOVIES WILL SEND
     if (upcoming === TRUE) {
-      const upcomingMovies = await fetchReq("/movie/upcoming", { page });
+      const upcomingMovies = await serverAxios.get("/movie/upcoming", {
+        params: { page },
+      });
 
       const res = {
+        totalPages: upcomingMovies.total_pages,
         page: upcomingMovies.page,
         data: upcomingMovies.results,
         message: "Upcoming Movies list",
@@ -27,9 +29,13 @@ export const GET = async (request) => {
     // WORK: IF POPULAR IS TRUE THEN ONLY POPULAR MOVIES WILL SEND
 
     if (popular === TRUE) {
-      const popularMovies = await fetchReq("/movie/popular", { page });
+      const popularMovies = await serverAxios.get("/movie/popular", {
+        params: { page },
+      });
 
       const res = {
+        totalPages: popularMovies.total_pages,
+
         page: popularMovies.page,
         data: popularMovies.results,
         message: "Popular Movies list",
@@ -41,9 +47,13 @@ export const GET = async (request) => {
     // WORK: IF TOP-RATED IS TRUE THEN ONLY TOP-RATED MOVIES WILL SEND
 
     if (topRated === TRUE) {
-      const topRatedMovies = await fetchReq("/movie/top_rated", { page });
+      const topRatedMovies = await serverAxios.get("/movie/top_rated", {
+        params: { page },
+      });
 
       const res = {
+        totalPages: topRatedMovies.total_pages,
+
         page: topRatedMovies.page,
         data: topRatedMovies.results,
         message: "Top-Rated Movies list",
@@ -55,11 +65,13 @@ export const GET = async (request) => {
     // WORK: IF NOW-PLAYING IS TRUE THEN ONLY NOW-PLAYING MOVIES WILL SEND
 
     if (nowPlaying === TRUE) {
-      const nowPlayingMovies = await fetchReq("/movie/now_playing", {
-        page,
+      const nowPlayingMovies = await serverAxios.get("/movie/now_playing", {
+        params: { page },
       });
 
       const res = {
+        totalPages: nowPlayingMovies.total_pages,
+
         page: nowPlayingMovies.page,
         data: nowPlayingMovies.results,
         message: "Now-Playing Movies list",
@@ -72,10 +84,10 @@ export const GET = async (request) => {
     if (all === TRUE) {
       const [fetchUpcoming, fetchPopular, fetchTopRated, fetchNowPlaying] =
         await Promise.all([
-          fetchReq("/movie/upcoming", { page }),
-          fetchReq("/movie/popular", { page }),
-          fetchReq("/movie/top_rated", { page }),
-          fetchReq("/movie/now_playing", { page }),
+          serverAxios.get("/movie/upcoming", { params: { page } }),
+          serverAxios.get("/movie/popular", { params: { page } }),
+          serverAxios.get("/movie/top_rated", { params: { page } }),
+          serverAxios.get("/movie/now_playing", { params: { page } }),
         ]);
 
       const res = {

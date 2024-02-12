@@ -4,15 +4,15 @@
  * @param {String} path - should start with /.
  * @param {Object} params - Optional parameters for the fetch Request.
  * @param {Number} revalidateIn - in SECONDS. Default is 60 Seconds
- * @param {String} tagName - which later used to on-demand revalidation
+ * @param {[String]} tagName - Array of String or Value, which later used to on-demand revalidation
  * @param {Boolean} cache - Default is TRUE. If don't want to cache make it FALSE
  * @returns {Response} json data will be returned.
  */
 
 const GetReq = async (
   path,
-  params
-  // { revalidateIn, tagName, cache = true } = {}
+  params,
+  { revalidateIn, tagName, cache = true } = {}
 ) => {
   const url = new URL(`http://localhost:3000/api${path}`);
 
@@ -29,17 +29,18 @@ const GetReq = async (
         "Content-Type": "application/json", // Include other headers as needed
       },
       credentials: "include",
-      // cache: cache ? "force-cache" : "no-cache",
+      cache: cache ? "default" : "no-cache",
     };
 
     // Conditionally add revalidateIn and tagName to fetchOptions
-    // if (revalidateIn) {
-    //   fetchOptions.next = { revalidate: revalidateIn };
-    // }
+    if (revalidateIn) {
+      fetchOptions.next = { revalidate: revalidateIn };
+      delete fetchOptions.cache;
+    }
 
-    // if (tagName) {
-    //   fetchOptions.next = { ...(fetchOptions.next || {}), tags: [tagName] };
-    // }
+    if (tagName) {
+      fetchOptions.next = { ...(fetchOptions.next || {}), tags: [...tagName] };
+    }
 
     const res = await fetch(url, fetchOptions);
 

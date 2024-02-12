@@ -1,6 +1,6 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 export const GET = async (request) => {
   const { query } = Req(request);
@@ -8,7 +8,9 @@ export const GET = async (request) => {
   const { page = 1 } = query;
 
   try {
-    const peoples = await fetchReq("/person/popular", { page });
+    const peoples = await serverAxios.get("/person/popular", {
+      params: { page },
+    });
 
     const response = {
       message: "Popular Peoples List",

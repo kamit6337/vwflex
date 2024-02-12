@@ -1,7 +1,7 @@
 import findSmallestNumber from "@utils/javascript/findSmallestNumber";
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 const TRUE = "true";
 
@@ -16,7 +16,9 @@ export const GET = async (request) => {
 
   try {
     if (airingToday === TRUE) {
-      const tv = await fetchReq("/tv/airing_today", { page });
+      const tv = await serverAxios.get("/tv/airing_today", {
+        params: { page },
+      });
 
       const response = {
         message: "Airing Today TV Shows",
@@ -29,7 +31,7 @@ export const GET = async (request) => {
     }
 
     if (onTheAir === TRUE) {
-      const tv = await fetchReq("/tv/on_the_air", { page });
+      const tv = await serverAxios.get("/tv/on_the_air", { params: { page } });
 
       const response = {
         message: "On The Air TV Shows",
@@ -42,7 +44,7 @@ export const GET = async (request) => {
     }
 
     if (popular === TRUE) {
-      const tv = await fetchReq("/tv/popular", { page });
+      const tv = await serverAxios.get("/tv/popular", { params: { page } });
 
       const response = {
         message: "Popular TV Shows",
@@ -54,7 +56,7 @@ export const GET = async (request) => {
       return Res(response);
     }
     if (topRated === TRUE) {
-      const tv = await fetchReq("/tv/top_rated", { page });
+      const tv = await serverAxios.get("/tv/top_rated", { params: { page } });
 
       const response = {
         message: "Top Rated TV Shows",
@@ -68,10 +70,10 @@ export const GET = async (request) => {
 
     if (all === TRUE) {
       const tv = await Promise.all([
-        fetchReq("/tv/airing_today", { page }),
-        fetchReq("/tv/on_the_air", { page }),
-        fetchReq("/tv/popular", { page }),
-        fetchReq("/tv/top_rated", { page }),
+        serverAxios.get("/tv/airing_today", { params: { page } }),
+        serverAxios.get("/tv/on_the_air", { params: { page } }),
+        serverAxios.get("/tv/popular", { params: { page } }),
+        serverAxios.get("/tv/top_rated", { params: { page } }),
       ]);
 
       const totalPageArray = tv?.map((obj) => {

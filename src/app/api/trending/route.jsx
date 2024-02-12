@@ -1,6 +1,6 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 const DAY = "day";
 const WEEK = "week";
@@ -17,7 +17,7 @@ export const GET = async (request) => {
 
   try {
     if (movies === TRUE) {
-      const trendingMovies = await fetchReq(`/trending/movie/${time}`);
+      const trendingMovies = await serverAxios.get(`/trending/movie/${time}`);
 
       const response = {
         message: "Trending Movie",
@@ -27,7 +27,7 @@ export const GET = async (request) => {
     }
 
     if (tv === TRUE) {
-      const trendingtv = await fetchReq(`/trending/tv/${time}`);
+      const trendingtv = await serverAxios.get(`/trending/tv/${time}`);
 
       const response = {
         message: "Trending TV Shows",
@@ -37,7 +37,7 @@ export const GET = async (request) => {
     }
 
     if (peoples === TRUE) {
-      const trendingPeoples = await fetchReq(`/trending/person/${time}`);
+      const trendingPeoples = await serverAxios.get(`/trending/person/${time}`);
 
       const response = {
         message: "Trending Peopless",
@@ -48,9 +48,9 @@ export const GET = async (request) => {
 
     if (all === TRUE) {
       const [trendMovies, trendTv, trendPeoples] = await Promise.all([
-        fetchReq(`/trending/movie/${time}`),
-        fetchReq(`/trending/tv/${time}`),
-        fetchReq(`/trending/person/${time}`),
+        serverAxios.get(`/trending/movie/${time}`),
+        serverAxios.get(`/trending/tv/${time}`),
+        serverAxios.get(`/trending/person/${time}`),
       ]);
 
       const response = {

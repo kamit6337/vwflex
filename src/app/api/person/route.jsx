@@ -1,6 +1,6 @@
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
-import fetchReq from "@utils/server/fetchReq";
+import serverAxios from "@utils/server/serverAxios";
 
 const TRUE = "true";
 
@@ -16,12 +16,12 @@ export const GET = async (request) => {
   try {
     const response = {};
 
-    const person = await fetchReq(`/person/${id}`);
+    const person = await serverAxios.get(`/person/${id}`);
 
     response.details = person;
 
     if (images === TRUE) {
-      const personImages = await fetchReq(`/person/${id}/images`);
+      const personImages = await serverAxios.get(`/person/${id}/images`);
 
       const modifyPersonImages = personImages?.profiles?.map((obj) => {
         const { aspect_ratio: ratio, file_path: path } = obj;
@@ -32,7 +32,9 @@ export const GET = async (request) => {
     }
 
     if (credits === TRUE) {
-      const personCredits = await fetchReq(`/person/${id}/combined_credits`);
+      const personCredits = await serverAxios.get(
+        `/person/${id}/combined_credits`
+      );
 
       const personTvCredits = personCredits?.cast?.filter((obj) => {
         return obj.media_type === "tv";
