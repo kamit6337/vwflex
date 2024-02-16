@@ -1,7 +1,12 @@
 "use client";
 
-const error = () => {
-  return <div>error in acheiving movie details </div>;
+const error = ({ error }) => {
+  return (
+    <div>
+      <p>error in acheiving movie details</p>
+      <p>{error}</p>
+    </div>
+  );
 };
 
 export default error;

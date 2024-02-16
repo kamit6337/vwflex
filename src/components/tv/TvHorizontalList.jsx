@@ -1,20 +1,19 @@
 "use client";
-
-import fetchMovieDetail from "@api/query/movie/fetchMovieDetail";
 /* eslint-disable @next/next/no-img-element */
+
 import { Icons } from "@assets/icons";
 import debounce from "@utils/javascript/debounce";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-const MoviesHorizontalList = ({
+const TvHorizontalList = ({
   id,
   title,
   data,
   fixed,
   promise,
-  zIndex,
+  zIndex = 10,
   instant,
 }) => {
   const [totalPages, setTotalpages] = useState(data?.totalPages);
@@ -38,6 +37,8 @@ const MoviesHorizontalList = ({
 
   useEffect(() => {
     if (movieData && movieData.length > 0) return;
+
+    if (!promise) return;
 
     if (inView) {
       setIsLoadingInitialQuery(true);
@@ -105,44 +106,16 @@ const MoviesHorizontalList = ({
     }
   }, [index, maxIndex]);
 
-  const scrollingNumber = (num) => {
-    if (num % numImagePerScrren === 0) {
-      return num / numImagePerScrren;
-    } else {
-      return Math.floor(num / numImagePerScrren) + 1;
-    }
-  };
-
-  const checkScrollable = (number) => {
-    // IF LIST VIEW IS 2 PAGE BEFORE COMPLETION THEN START FETCHING
-    if (number === -(scrollingNumber(movieData.length) - 2)) {
-      console.log(number);
-      setStartFetching(true);
-    }
-
-    // RIGHT ARRAOW
-    if (number < -(scrollingNumber(movieData.length) - 1)) {
-      return 0;
-    }
-
-    // LEFT ARROW
-    if (number > 0) {
-      return -Math.floor(scrollingNumber(movieData.length) - 1);
-    }
-    return number;
-  };
-
   const scrollLeft = () => {
     setIndex((prev) => prev + 1);
   };
 
   const scrollRight = () => {
     // if you want  to fetch 2 page before, use maxIndexGoesTo + 2
-
-    console.log(index, maxIndex);
-
     if (index - 1 === maxIndex + 1) {
-      setStartFetching(true);
+      if (promise) {
+        setStartFetching(true);
+      }
     }
 
     setIndex((prev) => prev - 1);
@@ -163,23 +136,31 @@ const MoviesHorizontalList = ({
     setMovieIndex(i);
   };
 
+  const handleImageLoad = (event) => {
+    // console.log("image, event", event.target);
+  };
+
   return (
     <section
       className="flex flex-col gap-4 relative pt-5 pb-16"
       style={{ zIndex }}
       ref={instant ? null : ref}
     >
-      <div className="flex justify-between items-center">
-        <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
-        <p className=" mr-8 -mb-2">
-          <Link href={`/movies/${id}`}>See All</Link>
-        </p>
-      </div>
+      {title && (
+        <div className="flex justify-between items-center">
+          <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
+          {id && (
+            <p className=" mr-8 -mb-2">
+              <Link href={`/tv_shows/${id}`}>See All</Link>
+            </p>
+          )}
+        </div>
+      )}
 
       <div className="relative">
         <div className="ml-10 mr-5">
           <div
-            className="flex transition-all duration-500"
+            className={`flex transition-all duration-500`}
             style={{ translate: `${100 * index}%` }}
           >
             {movieData?.length > 0 &&
@@ -188,16 +169,20 @@ const MoviesHorizontalList = ({
                   backdrop_path,
                   genre_ids,
                   id,
-                  original_title,
+                  original_name,
                   poster_path,
-                  release_date,
-                  title,
+                  first_air_date,
+                  name,
                   vote_average,
                 } = movie;
 
                 if (!backdrop_path) return;
 
-                const createPhoto = `${fixed.imageUrl}${backdrop_path}`;
+                const size = fixed.imageDetail.backdrop_sizes[0];
+
+                const createBaseUrl = `${fixed.imageDetail.secure_base_url}${size}`;
+
+                const createPhoto = `${createBaseUrl}${backdrop_path}`;
 
                 return (
                   <div
@@ -212,7 +197,7 @@ const MoviesHorizontalList = ({
                       className="relative rounded-xl"
                       onMouseLeave={() => setMovieIndex(null)}
                     >
-                      <Link href={`/movie/${id}`}>
+                      <Link href={`/tv/${id}`}>
                         <div
                           onMouseEnter={() => handleMouseEnter(i, id)}
                           className="cursor-pointer"
@@ -220,6 +205,7 @@ const MoviesHorizontalList = ({
                           <img
                             src={createPhoto}
                             alt={title}
+                            onLoad={handleImageLoad}
                             className={`${
                               movieIndex === i ? "rounded-t-xl" : "rounded-xl"
                             } w-full object-cover `}
@@ -229,10 +215,10 @@ const MoviesHorizontalList = ({
 
                       {movieIndex === i && (
                         <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl">
-                          <p>{title}</p>
+                          <p>{name}</p>
                           <p>{vote_average}</p>
-                          <p>{release_date}</p>
-                          <p>{original_title}</p>
+                          <p>{first_air_date}</p>
+                          <p>{original_name}</p>
                         </div>
                       )}
                     </div>
@@ -292,4 +278,4 @@ const MoviesHorizontalList = ({
   );
 };
 
-export default MoviesHorizontalList;
+export default TvHorizontalList;

@@ -7,7 +7,7 @@ const MyStuff = () => {
 
   return (
     <div
-      className="h-full relative w-full"
+      className="h-full relative w-24"
       onMouseLeave={() => setToggleMyStuff(false)}
     >
       <p
@@ -17,7 +17,7 @@ const MyStuff = () => {
         My Stuff
       </p>
       {toggleMyStuff && (
-        <div className="absolute text-lg top-full w-full z-50 bg-slate-600 rounded-b-xl transition-all delay-1000 ">
+        <div className="absolute  top-full w-full z-50 bg-slate-600 rounded-b-xl transition-all delay-1000 text-base">
           <p className="w-full p-3 cursor-pointer">Watchlist</p>
         </div>
       )}

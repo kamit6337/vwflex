@@ -22,13 +22,13 @@ export default function RootLayout({ children }) {
     <html lang="en" className={poppins.className}>
       <body className="w-full">
         <section
-          className="w-full text-white  bg-slate-700 flex justify-center font-semibold text-xl sticky top-0"
+          className="w-full h-14 bg-my_bg flex justify-center font-semibold text-xl sticky top-0"
           style={{ zIndex: 999 }}
         >
           <Navbar />
         </section>
         <section className="w-full">{children}</section>
-        <section className="w-full h-48 bg-slate-600 text-white">
+        <section className="w-full h-96 bg-slate-600 text-white">
           <Footer />
         </section>
         <ScrollToTop />

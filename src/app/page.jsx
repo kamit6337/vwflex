@@ -1,12 +1,6 @@
 import initialFetch from "@api/query/initialFetch";
 import queryList from "@api/query/queryList";
-import PopularMovie from "@components/PopularMovie";
-import TopRatedMovies from "@components/MoviesSection";
-import UpcomingMovie from "@components/UpcomingMovie";
-import MoviesHorizontalList from "@components/moviesHorizontalList/MoviesHorizontalList";
-import Link from "next/link";
-import MoviesSection from "@components/MoviesSection";
-import ScrollToTop from "@components/ScrollToTop";
+import HorizontalSection from "@components/HorizontalSection";
 
 const zIndex = 499;
 
@@ -19,10 +13,11 @@ export default async function Home() {
         const { id, promise, type, instant, title } = query;
 
         return (
-          <MoviesSection
+          <HorizontalSection
             key={id}
             id={id}
             title={title}
+            type={type}
             promise={promise}
             instant={instant}
             zIndex={zIndex - i * 2}

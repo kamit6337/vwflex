@@ -37,12 +37,7 @@ class Fetch {
   }
 
   async get(path, { params, revalidate, tags, cache = true } = {}) {
-    console.log("path", path);
-    console.log("this.envUrl", this.envUrl);
-
     const url = new URL(`${this.envUrl}${path}`);
-
-    console.log("url", url);
 
     if (params) {
       Object.keys(params).forEach((key) =>

@@ -1,35 +1,65 @@
+import generateRandomId from "@utils/javascript/generateRandomId";
 import nowPlayingMoviesList from "./movies/nowPlayingMoviesList";
 import popularMoviesList from "./movies/popularMoviesList";
 import topRatedMoviesList from "./movies/topRatedMoviesList";
 import upcomingMoviesList from "./movies/upcomingMoviesList";
+import airingTodayList from "./tvShows/airingTodayList";
+import onTheAirList from "./tvShows/onTheAirList";
+import popularTvShowsList from "./tvShows/popularTvShowsList";
+import topRatedTvShows from "./tvShows/topRatedTvShows";
 
 const queryList = [
   {
-    id: 101,
+    id: generateRandomId(),
     title: "Now Playing Movies",
     promise: nowPlayingMoviesList,
     type: "movie",
     instant: true,
   },
   {
-    id: 102,
+    id: generateRandomId(),
     title: "Popular Movies",
     promise: popularMoviesList,
     type: "movie",
     instant: true,
   },
   {
-    id: 103,
+    id: generateRandomId(),
+    title: "Airing Today Tv Shows",
+    promise: airingTodayList,
+    type: "tv",
+    instant: true,
+  },
+  {
+    id: generateRandomId(),
+    title: "On The Air Tv Shows",
+    promise: onTheAirList,
+    type: "tv",
+    instant: true,
+  },
+  {
+    id: generateRandomId(),
     title: "Upcoming Movies",
     promise: upcomingMoviesList,
     type: "movie",
-    
   },
   {
-    id: 104,
+    id: generateRandomId(),
     title: "Top Rated Movies",
     promise: topRatedMoviesList,
     type: "movie",
+  },
+  {
+    id: generateRandomId(),
+    title: "Popular TV Shows",
+    promise: popularTvShowsList,
+    type: "tv",
+  },
+  {
+    id: generateRandomId(),
+    title: "Top Rated TV Shows",
+    promise: topRatedTvShows,
+    type: "tv",
   },
 ];
 

@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --my_bg: #10100f;
 }
 
 @layer base {
@@ -16,6 +17,29 @@
   body {
     @apply bg-my_bg text-my_white overflow-x-hidden;
   }
+}
+
+/* NOTE: DETAIL IMAGE SHADOW */
+
+.image_shadow {
+  position: relative;
+}
+
+.image_shadow::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -moz-box-shadow: inset 100px 0px 100px 5px var(--my_bg);
+  -webkit-box-shadow: inset 100px 0px 100px 5px var(--my_bg);
+  box-shadow: inset 400px -120px 500px 100px var(--my_bg),
+    0px 0px 100px 100px var(--my_bg);
+}
+
+.detail_image_shadow {
+  box-shadow: 52px -4px 49px 25px rgba(0, 0, 0, 0.75) inset;
+  -webkit-box-shadow: 52px -4px 49px 25px rgba(0, 0, 0, 0.75) inset;
+  -moz-box-shadow: 52px -4px 49px 25px rgba(0, 0, 0, 0.75) inset;
 }
 
 /* NOTE: BLUE THE BACKGROUND WHEN FORM APPEAR */

@@ -8,7 +8,7 @@ const Home = () => {
 
   return (
     <div
-      className="h-full w-full relative"
+      className="h-full w-24 relative"
       onMouseLeave={() => setToggleHome(false)}
     >
       <p
@@ -20,25 +20,29 @@ const Home = () => {
 
       {toggleHome && (
         <div
-          className="absolute text-lg top-full w-full z-50 bg-slate-600 rounded-b-xl transition-all delay-1000 "
+          className="w-full absolute top-full z-50 bg-my_bg rounded-b-xl transition-all duration-1000 text-base"
           // onMouseLeave={() => setToggleHome(false)}
         >
-          <p className="w-full p-3 cursor-pointer border-b border-black">All</p>
+          <p className="w-full p-3 cursor-pointer  hover:bg-white hover:text-my_bg">
+            All
+          </p>
           <Link href={`/movies`} onClick={() => setToggleHome(false)}>
             <p
-              className="w-full p-3 cursor-pointer border-b border-black"
+              className="w-full p-3 cursor-pointer  hover:bg-white hover:text-my_bg"
               onClick={() => setToggleHome(false)}
             >
               Movies
             </p>
           </Link>
           <Link href={`/tv`} onClick={() => setToggleHome(false)}>
-            <p className="w-full p-3 cursor-pointer border-b border-black">
+            <p className="w-full p-3 cursor-pointer  hover:bg-white hover:text-my_bg">
               TV Shows
             </p>
           </Link>
           <Link href={`/peoples`} onClick={() => setToggleHome(false)}>
-            <p className="w-full p-3 cursor-pointer">Peoples</p>
+            <p className="w-full p-3 cursor-pointer hover:bg-white hover:text-my_bg hover:rounded-b-xl ">
+              Peoples
+            </p>
           </Link>
         </div>
       )}

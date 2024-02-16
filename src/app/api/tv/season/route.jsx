@@ -3,11 +3,13 @@ import Res from "@utils/server/Res";
 import serverAxios from "@utils/server/serverAxios";
 
 const TRUE = "true";
+const NULL = "null";
+const UNDEFINDED = "undefined";
 
 export const GET = async (request) => {
   const { query } = Req(request);
 
-  let { id, season = null, images, recommendations, similar, page = 1 } = query;
+  let { id, season, images, recommendations, similar, page = 1 } = query;
 
   if (!id) {
     return Res({ error: "Id is not provided" }, { status: 404 });
@@ -18,19 +20,38 @@ export const GET = async (request) => {
 
     const { number_of_seasons } = tv;
 
-    if (
-      !season ||
-      !(Number(season) >= 1 && Number(season) <= number_of_seasons)
-    ) {
-      season = number_of_seasons;
+    if (season === NULL || season === UNDEFINDED) {
+      const response = {
+        id,
+        seasons: number_of_seasons,
+      };
+
+      return Res(response);
     }
 
     const tvSeason = await serverAxios.get(`/tv/${id}/season/${season}`);
 
+    const modifyTv = { ...tv };
+
+    const listToDelete = [
+      "episode_run_time",
+      "in_production",
+      "last_episode_to_air",
+      "overview",
+      "poster_path",
+      "seasons",
+      "tagline",
+      "vote_average",
+    ];
+
+    listToDelete.forEach((item) => {
+      delete modifyTv[item];
+    });
+
     const response = {
       details: {
         season_number: season,
-        ...tv,
+        ...modifyTv,
         ...tvSeason,
       },
     };
@@ -54,7 +75,7 @@ export const GET = async (request) => {
       const recommendationTvShow = await serverAxios.get(
         `/tv/${id}/recommendations`,
         {
-          params: {  page },
+          params: { page },
         }
       );
 
@@ -67,7 +88,7 @@ export const GET = async (request) => {
 
     if (similar === TRUE) {
       const similarTvShow = await serverAxios.get(`/tv/${id}/similar`, {
-        params: {  page },
+        params: { page },
       });
 
       response.similar = {

@@ -1,5 +1,7 @@
+import Loading from "@containers/Loading";
+
 const loading = () => {
-  return <div>loading movie detail ..............</div>;
+  return <Loading hScreen={true} />;
 };
 
 export default loading;

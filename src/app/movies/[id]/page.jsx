@@ -1,6 +1,6 @@
 import { fixed } from "@api/query/initialFetch";
 import queryList from "@api/query/queryList";
-import MoviesGridList from "@components/MoviesGridList";
+import MoviesGridList from "@app/movies/[id]/MoviesGridList";
 
 const MoviesGrid = async ({ params: { id } }) => {
   const fixedQuery = await fixed();

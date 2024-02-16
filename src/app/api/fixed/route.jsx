@@ -12,11 +12,7 @@ export async function GET() {
       serverAxios.get("/configuration/countries"),
     ]);
 
-    const {
-      images: { secure_base_url },
-    } = images;
-
-    response.imageUrl = `${secure_base_url}original`;
+    response.imageDetail = images.images;
 
     const newGenres = new Set([...movieGenres.genres, ...tvGenres.genres]);
 
