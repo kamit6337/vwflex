@@ -1,16 +1,18 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import MoviesHorizontalList from "@components/movies/MoviesHorizontalList";
 import TvHorizontalList from "@components/tv/TvHorizontalList";
 import priceInMillions from "@utils/javascript/priceInMillions";
 import { useEffect, useState } from "react";
+import Episodes from "./Episodes";
 
 const detailSection = "detail";
 const recommendationSection = "recommendation";
 const similarSection = "similar";
+const episodesSection = "episodes";
 
 const Additional = ({ recommendations, similar, details, images, fixed }) => {
-  const [optionSelected, setOptionSelected] = useState(recommendationSection);
+  const [optionSelected, setOptionSelected] = useState(episodesSection);
 
   const {
     production_companies,
@@ -19,6 +21,8 @@ const Additional = ({ recommendations, similar, details, images, fixed }) => {
     revenue,
     budget,
     overview,
+    episodes,
+    created_by,
   } = details;
 
   useEffect(() => {
@@ -41,7 +45,15 @@ const Additional = ({ recommendations, similar, details, images, fixed }) => {
   return (
     <>
       <div className="sticky top-14 bottom-0 z-20 w-full text-lg sm:text-base font-medium tracking-wider  flex justify-center pb-2 h-[60px] ">
-        <div className="w-max flex items-center gap-6 rounded-2xl sm:rounded-xl px-10 sm:px-4 h-full  border-2 border-slate-600">
+        <div className="w-max flex items-center gap-6 rounded-2xl sm:rounded-xl px-10 sm:px-4 h-full  border-2 border-slate-600 bg-black">
+          <p
+            className={`${
+              optionSelected === episodesSection && "border-b-2 border-white"
+            } hover:border-b-2 hover:border-white cursor-pointer `}
+            onClick={() => scrollOptionsToTop(episodesSection)}
+          >
+            Episodes
+          </p>
           {recommendations && recommendations.data.length > 0 && (
             <p
               className={`${
@@ -72,7 +84,7 @@ const Additional = ({ recommendations, similar, details, images, fixed }) => {
         </div>
       </div>
 
-      {/* optionSelected */}
+      {/* MARK: OPTIONS SELECTED */}
 
       {optionSelected === detailSection && (
         <div className="p-16 sm:px-5 pr-0 flex flex-col items-start justify-between gap-12 relative z-10 w-4/5 sm:w-full">
@@ -85,21 +97,35 @@ const Additional = ({ recommendations, similar, details, images, fixed }) => {
             </div>
           )}
 
-          {budget && (
+          {created_by && created_by.length > 0 && (
             <div>
-              <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
-                BUDGET
+              <p className="uppercase border-b-2 border-white/70 w-max font-semibold tracking-wider mb-4 ">
+                Created By
               </p>
-              <p className="sm:text-sm">{priceInMillions(budget)}</p>
-            </div>
-          )}
+              <div className="flex justify-start gap-4 flex-wrap">
+                {created_by.map((by, i) => {
+                  const { name, profile_path } = by;
 
-          {revenue && (
-            <div>
-              <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
-                REVENUE
-              </p>
-              <p className="sm:text-sm">{priceInMillions(revenue)}</p>
+                  const size = fixed.imageDetail.backdrop_sizes[0];
+                  const createBaseUrl = `${fixed.imageDetail.secure_base_url}${size}`;
+                  const createPhoto = `${createBaseUrl}${profile_path}`;
+
+                  return (
+                    <div key={i} className="flex flex-col items-center gap-2">
+                      <div className="w-20">
+                        <img
+                          src={createPhoto}
+                          alt={name}
+                          className="w-full object-cover rounded-lg"
+                        />
+                      </div>
+                      <p key={i} className="sm:text-sm">
+                        {by.name}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
 
@@ -109,9 +135,11 @@ const Additional = ({ recommendations, similar, details, images, fixed }) => {
             </p>
             <div className="flex justify-start gap-8 sm:gap-4 sm:flex-wrap">
               {production_companies.map((company, i) => {
+                const { logo_path, name } = company;
+
                 return (
                   <p key={i} className="sm:text-sm">
-                    {company.name}
+                    {name}
                   </p>
                 );
               })}
@@ -147,6 +175,12 @@ const Additional = ({ recommendations, similar, details, images, fixed }) => {
               })}
             </div>
           </div>
+        </div>
+      )}
+
+      {optionSelected === episodesSection && (
+        <div className="w-full flex flex-col gap-8 py-20 px-10">
+          <Episodes data={episodes} fixed={fixed} />
         </div>
       )}
 

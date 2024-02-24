@@ -1,11 +1,12 @@
 import initialFetch from "@api/query/initialFetch";
 import queryList from "@api/query/queryList";
 import HorizontalSection from "@components/HorizontalSection";
+import connectToDB from "@utils/mongoose/connectToDB";
 
 const zIndex = 499;
 
 export default async function Home() {
-  await initialFetch();
+  await Promise.all([connectToDB, initialFetch]);
 
   return (
     <>

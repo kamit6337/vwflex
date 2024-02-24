@@ -1,6 +1,7 @@
 import { fixed } from "@api/query/initialFetch";
 import MoviesHorizontalList from "./movies/MoviesHorizontalList";
 import TvHorizontalList from "./tv/TvHorizontalList";
+import PeoplesHorizontalList from "./peoples/PeoplesHorizontalList";
 
 const HorizontalSection = async ({
   id,
@@ -15,6 +16,20 @@ const HorizontalSection = async ({
   let query;
   if (instant) {
     query = await promise();
+  }
+
+  if (type === "person") {
+    return (
+      <PeoplesHorizontalList
+        id={id}
+        title={title}
+        data={query}
+        instant={instant}
+        fixed={fixedQuery}
+        promise={promise}
+        zIndex={zIndex}
+      />
+    );
   }
 
   if (type === "movie") {

@@ -7,6 +7,7 @@ import airingTodayList from "./tvShows/airingTodayList";
 import onTheAirList from "./tvShows/onTheAirList";
 import popularTvShowsList from "./tvShows/popularTvShowsList";
 import topRatedTvShows from "./tvShows/topRatedTvShows";
+import popularPeoples from "./peoples/popularPeoples";
 
 const queryList = [
   {
@@ -21,6 +22,13 @@ const queryList = [
     title: "Popular Movies",
     promise: popularMoviesList,
     type: "movie",
+    instant: true,
+  },
+  {
+    id: generateRandomId(),
+    title: "Popular Peoples",
+    promise: popularPeoples,
+    type: "person",
     instant: true,
   },
   {

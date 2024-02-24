@@ -25,6 +25,9 @@ const Req = (request) => {
 
   // NOTE: GETTING ALL COOKIES
   let cookieList = request.cookies.getAll();
+
+  console.log("cookieList", cookieList);
+
   cookieList = cookieList.map((cookie) => {
     let { name, value } = cookie;
     name = name.toLowerCase();

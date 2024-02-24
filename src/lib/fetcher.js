@@ -14,7 +14,8 @@ class Fetch {
       const res = await fetch(url, options);
 
       if (!res.ok) {
-        const error = new Error(`Request failed with status ${res.status}`);
+        const data = await res.json();
+        const error = new Error(data.message);
         error.status = res.status;
         throw error;
       }
@@ -48,6 +49,7 @@ class Fetch {
     const options = {
       next: {},
       method: "GET",
+      credentials: "include",
 
       ...this.getHeaders(),
     };

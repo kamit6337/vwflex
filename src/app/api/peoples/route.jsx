@@ -7,6 +7,8 @@ export const GET = async (request) => {
 
   const { page = 1 } = query;
 
+  console.log("query", query);
+
   try {
     const peoples = await serverAxios.get("/person/popular", {
       params: { page },

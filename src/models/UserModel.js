@@ -24,10 +24,6 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
-    photo: {
-      type: String,
-      required: [true, "Please provide pic"],
-    },
     OAuthId: {
       type: String,
       default: null,
