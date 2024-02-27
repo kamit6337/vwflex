@@ -1,5 +1,4 @@
 import Fetch from "@lib/fetcher";
-import environment from "@utils/environment";
 
 const url = "http://localhost:3000/api";
 
