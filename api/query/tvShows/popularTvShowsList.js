@@ -1,11 +1,18 @@
-import clientAxios from "@utils/client/clientAxios";
+"use server";
+import catchAsyncError from "@lib/catchAsyncError";
+import serverAxios from "@utils/server/serverAxios";
 
-const popularTvShowsList = async (page = 1) => {
-  "use server";
+const popularTvShowsList = catchAsyncError(async (page = 1) => {
+  const tv = await serverAxios.get("/tv/popular", { params: { page } });
 
-  return clientAxios.get("/tv", {
-    params: { popular: true, page },
-  });
-};
+  const response = {
+    message: "Popular TV Shows",
+    page: tv?.page,
+    totalPages: tv?.total_pages,
+    data: tv?.results,
+  };
+
+  return response;
+});
 
 export default popularTvShowsList;

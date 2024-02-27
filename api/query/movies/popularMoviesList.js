@@ -1,11 +1,22 @@
-import clientAxios from "@utils/client/clientAxios";
+"use server";
 
-const popularMoviesList = async (page = 1) => {
-  "use server";
+import catchAsyncError from "@lib/catchAsyncError";
+import serverAxios from "@utils/server/serverAxios";
 
-  return clientAxios.get("/movies", {
-    params: { popular: true, page },
+const popularMoviesList = catchAsyncError(async (page = 1) => {
+  const popularMovies = await serverAxios.get("/movie/popular", {
+    params: { page },
   });
-};
+
+  const response = {
+    totalPages: popularMovies.total_pages,
+
+    page: popularMovies.page,
+    data: popularMovies.results,
+    message: "Popular Movies list",
+  };
+
+  return response;
+});
 
 export default popularMoviesList;

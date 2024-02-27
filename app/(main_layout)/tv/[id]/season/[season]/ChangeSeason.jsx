@@ -1,11 +1,15 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect } from "react";
 
 const ChangeSeason = ({ season, showId, totalSeasons }) => {
-  const [selectSeasonNum, setSelectSeasonNum] = useState(season);
   const router = useRouter();
+
+  useEffect(() => {
+    const createRoute = `/tv/${showId}/season/${season}`;
+    router.push(createRoute);
+  }, []);
 
   const handleSeasonSelect = (e) => {
     const selectedSeason = e.target.value;

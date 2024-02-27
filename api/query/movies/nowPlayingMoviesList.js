@@ -1,11 +1,21 @@
-import clientAxios from "@utils/client/clientAxios";
+"use server";
 
-const nowPlayingMoviesList = async (page = 1) => {
-  "use server";
+import catchAsyncError from "@lib/catchAsyncError";
+import serverAxios from "@utils/server/serverAxios";
 
-  return clientAxios.get("/movies", {
-    params: { nowPlaying: true, page },
+const nowPlayingMoviesList = catchAsyncError(async (page = 1) => {
+  const nowPlayingMovies = await serverAxios.get("/movie/now_playing", {
+    params: { page },
   });
-};
+
+  const response = {
+    totalPages: nowPlayingMovies.total_pages,
+    page: nowPlayingMovies.page,
+    data: nowPlayingMovies.results,
+    message: "Now-Playing Movies list",
+  };
+
+  return response;
+});
 
 export default nowPlayingMoviesList;

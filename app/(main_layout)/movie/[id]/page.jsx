@@ -9,6 +9,7 @@ import Additional from "./Additional";
 const MovieDetailPage = async ({ params: { id } }) => {
   const fixedQuery = await fixed();
   const query = await fetchMovieDetail(Number(id));
+  
   if (!query) return;
 
   const { details, images, recommendations, reviews, similar } = query;
