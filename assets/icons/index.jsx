@@ -38,8 +38,10 @@ import {
   MdOutlineSubscriptions,
   MdOutlineHistory,
 } from "react-icons/md";
+import { TiArrowSortedUp } from "react-icons/ti";
 
 export const Icons = {
+  upArrowSolid: TiArrowSortedUp,
   downArrow: IoIosArrowDown,
   setting: AiOutlineSetting,
   search: AiOutlineSearch,

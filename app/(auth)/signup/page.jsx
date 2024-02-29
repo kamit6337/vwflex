@@ -1,10 +1,10 @@
 "use client";
 
+import userSignUp from "@api/query/auth/userSignUp";
 import Loading from "@containers/Loading";
-import clientAxios from "@utils/client/clientAxios";
 import environment from "@utils/environment";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
@@ -46,8 +46,7 @@ const SignUp = () => {
     delete formData.confirmPassword;
 
     try {
-      const res = await clientAxios.post("/signup", formData);
-      console.log("res", res);
+      await userSignUp(formData);
 
       router.push("/");
     } catch (error) {
@@ -92,13 +91,6 @@ const SignUp = () => {
               type="text"
               {...register("name", {
                 required: "Name is Required",
-                // pattern: /^[A-Za-z]+$/i,
-                // validate: (value) => {
-                //   return (
-                //     validator.isAlpha(value) ||
-                //     "Check you name again. Only Alphabet is allowed."
-                //   );
-                // },
               })}
               placeholder="Name"
               className="border  p-3 rounded-lg"

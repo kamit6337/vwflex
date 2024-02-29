@@ -8,66 +8,107 @@ import onTheAirList from "./tvShows/onTheAirList";
 import popularTvShowsList from "./tvShows/popularTvShowsList";
 import topRatedTvShows from "./tvShows/topRatedTvShows";
 import popularPeoples from "./peoples/popularPeoples";
+import trendingMovies from "./trending/trendingMovies";
+import trendingTvShows from "./trending/trendingTvShows";
+import trendingPeoples from "./trending/trendingPeoples";
+
+const MOVIE = "movie";
+const TV = "tv";
+const PERSON = "person";
 
 const queryList = [
   {
     id: generateRandomId(),
+    title: "Trending Movies",
+    promise: trendingMovies,
+    type: MOVIE,
+    trending: true,
+    instant: true,
+  },
+  {
+    id: generateRandomId(),
+    title: "Trending TV Shows",
+    promise: trendingTvShows,
+    type: TV,
+    trending: true,
+    instant: true,
+  },
+
+  {
+    id: generateRandomId(),
+    title: "Trending Peoples",
+    promise: trendingPeoples,
+    type: PERSON,
+    trending: true,
+    instant: true,
+  },
+  {
+    id: generateRandomId(),
     title: "Now Playing Movies",
     promise: nowPlayingMoviesList,
-    type: "movie",
+    type: MOVIE,
+    trending: false,
     instant: true,
   },
   {
     id: generateRandomId(),
     title: "Popular Movies",
     promise: popularMoviesList,
-    type: "movie",
+    trending: false,
+    type: MOVIE,
     instant: true,
   },
   {
     id: generateRandomId(),
     title: "Popular Peoples",
     promise: popularPeoples,
-    type: "person",
+    trending: false,
+    type: PERSON,
     instant: true,
   },
   {
     id: generateRandomId(),
     title: "Airing Today Tv Shows",
     promise: airingTodayList,
-    type: "tv",
+    trending: false,
+    type: TV,
     instant: true,
   },
   {
     id: generateRandomId(),
     title: "On The Air Tv Shows",
     promise: onTheAirList,
-    type: "tv",
+    trending: false,
+    type: TV,
     instant: true,
   },
   {
     id: generateRandomId(),
     title: "Upcoming Movies",
     promise: upcomingMoviesList,
-    type: "movie",
+    trending: false,
+    type: MOVIE,
   },
   {
     id: generateRandomId(),
     title: "Top Rated Movies",
     promise: topRatedMoviesList,
-    type: "movie",
+    trending: false,
+    type: MOVIE,
   },
   {
     id: generateRandomId(),
     title: "Popular TV Shows",
     promise: popularTvShowsList,
-    type: "tv",
+    trending: false,
+    type: TV,
   },
   {
     id: generateRandomId(),
     title: "Top Rated TV Shows",
     promise: topRatedTvShows,
-    type: "tv",
+    trending: false,
+    type: TV,
   },
 ];
 

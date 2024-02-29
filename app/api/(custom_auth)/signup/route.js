@@ -5,6 +5,7 @@ import connectToDB from "@utils/mongoose/connectToDB";
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
 import { cookies } from "next/headers";
+import bcrypt from "bcryptjs";
 
 export const POST = async (req) => {
   const { body } = Req(req);
@@ -18,11 +19,14 @@ export const POST = async (req) => {
   try {
     await connectToDB();
 
+    const hashPassword = bcrypt.hashSync(password, environment.SALT_ROUND);
     const createUser = await User.create({
       name,
       email,
-      password,
+      password: hashPassword,
     });
+
+    console.log("createuser", createUser);
 
     if (!createUser) {
       return Res({ message: "Issue in signup" }, { status: 404 });
@@ -38,7 +42,6 @@ export const POST = async (req) => {
     cookies().set("token", token, {
       httpOnly: true,
       expires: Date.now() + oneDay,
-      domain: "localhost:3000",
     });
 
     return Res({ message: "SignUp Successfully", user: createUser });

@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
-import clientAxios from "@utils/client/clientAxios";
 import { useRouter } from "next/navigation";
 import Loading from "@containers/Loading";
 import Link from "next/link";
 import environment from "@utils/environment";
+import userLogin from "@api/query/auth/userLogin";
 
 const SERVER_URL = environment.SERVER_URL;
 
@@ -37,7 +37,8 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      await clientAxios.post("/login", data);
+    await userLogin(data);
+
       router.push("/");
     } catch (error) {
       setError("root", { message: error.message });

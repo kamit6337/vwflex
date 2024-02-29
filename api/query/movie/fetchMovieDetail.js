@@ -1,3 +1,5 @@
+"use server";
+
 import catchAsyncError from "@lib/catchAsyncError";
 import serverAxios from "@utils/server/serverAxios";
 

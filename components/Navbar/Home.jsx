@@ -8,11 +8,13 @@ const Home = () => {
 
   return (
     <div
-      className="h-full w-24 relative"
+      className="h-full w-28 relative hover:bg-slate-800 "
       onMouseLeave={() => setToggleHome(false)}
     >
       <p
-        className="p-3 cursor-pointer"
+        className={`${
+          toggleHome && "border-b border-white"
+        }  p-3 cursor-pointer `}
         onMouseEnter={() => setToggleHome(true)}
       >
         Home
@@ -20,7 +22,7 @@ const Home = () => {
 
       {toggleHome && (
         <div
-          className="w-full absolute top-full z-50 bg-my_bg rounded-b-xl transition-all duration-1000 text-base"
+          className="w-full absolute top-full z-50 bg-slate-800 rounded-b-xl transition-all duration-1000 text-base"
           // onMouseLeave={() => setToggleHome(false)}
         >
           <p className="w-full p-3 cursor-pointer  hover:bg-white hover:text-my_bg">

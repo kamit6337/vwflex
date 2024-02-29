@@ -12,6 +12,7 @@ import jwt from "jsonwebtoken";
 const verifyWebToken = (token, secret = environment.JWT_SECRET_KEY) => {
   try {
     const decoded = jwt.verify(token, secret);
+
     return decoded;
   } catch (error) {
     throw error;

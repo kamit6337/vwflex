@@ -9,19 +9,16 @@ const fetchTvShowDetails = catchAsyncError(
     { images = true, recommendations = true, similar = true, page = 1 } = {}
   ) => {
     const tv = await serverAxios.get(`/tv/${id}`);
-
     const { number_of_seasons } = tv;
 
+    let currentSeason;
     if (!season) {
-      const response = {
-        id,
-        seasons: number_of_seasons,
-      };
-
-      return response;
+      currentSeason = number_of_seasons;
+    } else {
+      currentSeason = season;
     }
 
-    const tvSeason = await serverAxios.get(`/tv/${id}/season/${season}`);
+    const tvSeason = await serverAxios.get(`/tv/${id}/season/${currentSeason}`);
 
     const modifyTv = { ...tv };
 
@@ -42,6 +39,7 @@ const fetchTvShowDetails = catchAsyncError(
 
     const response = {
       details: {
+        tvId: id,
         season_number: season,
         ...modifyTv,
         ...tvSeason,

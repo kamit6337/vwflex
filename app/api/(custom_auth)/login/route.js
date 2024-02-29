@@ -4,6 +4,7 @@ import connectToDB from "@utils/mongoose/connectToDB";
 import Req from "@utils/server/Req";
 import Res from "@utils/server/Res";
 import { cookies } from "next/headers";
+import bcrypt from "bcryptjs";
 
 export const POST = async (req) => {
   const { body } = Req(req);
@@ -26,7 +27,10 @@ export const POST = async (req) => {
       );
     }
 
-    const isPasswordCorrect = findUser.checkPassword(password);
+    const isPasswordCorrect = bcrypt.compareSync(
+      String(password),
+      findUser.password
+    ); // Boolean
 
     if (!isPasswordCorrect) {
       return Res(

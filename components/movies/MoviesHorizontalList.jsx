@@ -62,14 +62,12 @@ const MoviesHorizontalList = ({
       if (currentPage <= totalPages) {
         setIsLoading(true);
 
-        console.log("page", currentPage);
         const query = await promise(currentPage);
 
         const filter = query.data.filter((movie) => movie.backdrop_path);
 
         setMovieData((prev) => [...prev, ...filter]);
         setPage((prev) => prev + 1);
-        console.log("query", query);
       }
 
       setStartFetching(false);
@@ -193,7 +191,7 @@ const MoviesHorizontalList = ({
                       className="relative rounded-xl"
                       onMouseLeave={() => setMovieIndex(null)}
                     >
-                      <Link href={`/movie/${id}`}>
+                      <Link href={`/movie?id=${id}`}>
                         <div
                           onMouseEnter={() => handleMouseEnter(i, id)}
                           className="cursor-pointer"

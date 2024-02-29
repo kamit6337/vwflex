@@ -1,5 +1,7 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import ReactReduxProvider from "@providers/ReactReduxProvider";
+import ScrollToTop from "@lib/ScrollToTop";
 
 // If loading a variable font, you don't need to specify the font weight
 const poppins = Poppins({
@@ -16,7 +18,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
-      <body className="w-full">{children}</body>
+      <body className="w-full h-screen">
+        <ReactReduxProvider>
+          <main>{children}</main>
+          <ScrollToTop />
+        </ReactReduxProvider>
+      </body>
     </html>
   );
 }
