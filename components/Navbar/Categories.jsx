@@ -4,7 +4,7 @@ const Categories = () => {
   return (
     <div>
       {" "}
-      <p className="h-full p-3 w-full">Categories</p>
+      <p className="h-full p-3 w-full text_navbar">Categories</p>
     </div>
   );
 };

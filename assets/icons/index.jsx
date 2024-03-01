@@ -39,8 +39,10 @@ import {
   MdOutlineHistory,
 } from "react-icons/md";
 import { TiArrowSortedUp } from "react-icons/ti";
+import { CgProfile } from "react-icons/cg";
 
 export const Icons = {
+  profile: CgProfile,
   upArrowSolid: TiArrowSortedUp,
   downArrow: IoIosArrowDown,
   setting: AiOutlineSetting,

@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
-import getFixed from "@api/query/fixed/getFixed";
 import { Icons } from "@assets/icons";
 import { fixedState } from "@redux/slice/fixedSlice";
 import debounce from "@utils/javascript/debounce";

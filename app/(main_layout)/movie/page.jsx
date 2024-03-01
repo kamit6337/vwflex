@@ -60,6 +60,7 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
       </div>
 
       <Additional
+      id={id}
         details={details}
         recommendations={recommendations}
         similar={similar}

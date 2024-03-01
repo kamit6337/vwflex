@@ -19,6 +19,20 @@
   }
 }
 
+
+
+@layer utilities {
+  .text_navbar {
+    @apply font-semibold text-xl
+  }
+}
+
+
+
+
+
+
+
 /* NOTE: DETAIL IMAGE SHADOW */
 
 .image_shadow {

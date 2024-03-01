@@ -10,7 +10,14 @@ const recommendationSection = "recommendation";
 const similarSection = "similar";
 const MOVIE = "movie";
 
-const Additional = ({ recommendations, similar, reviews, details, images }) => {
+const Additional = ({
+  recommendations,
+  similar,
+  reviews,
+  details,
+  images,
+  id,
+}) => {
   const [optionSelected, setOptionSelected] = useState(recommendationSection);
 
   const {
@@ -21,6 +28,12 @@ const Additional = ({ recommendations, similar, reviews, details, images }) => {
     budget,
     description,
   } = details;
+
+  useEffect(() => {
+    if (id) {
+      setOptionSelected(recommendationSection);
+    }
+  }, [id]);
 
   useEffect(() => {
     if (!recommendations || recommendations.data.length === 0) {

@@ -14,7 +14,7 @@ const MyStuff = () => {
       <p
         className={`${
           toggleMyStuff && "border-b border-white"
-        }   p-3 cursor-pointer`}
+        }   p-3 cursor-pointer text_navbar`}
         onMouseEnter={() => setToggleMyStuff(true)}
       >
         My Stuff

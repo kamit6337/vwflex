@@ -14,7 +14,7 @@ const Home = () => {
       <p
         className={`${
           toggleHome && "border-b border-white"
-        }  p-3 cursor-pointer `}
+        }  p-3 cursor-pointer text_navbar`}
         onMouseEnter={() => setToggleHome(true)}
       >
         Home
@@ -36,7 +36,7 @@ const Home = () => {
               Movies
             </p>
           </Link>
-          <Link href={`/tv`} onClick={() => setToggleHome(false)}>
+          <Link href={`/tvShows`} onClick={() => setToggleHome(false)}>
             <p className="w-full p-3 cursor-pointer  hover:bg-white hover:text-my_bg">
               TV Shows
             </p>

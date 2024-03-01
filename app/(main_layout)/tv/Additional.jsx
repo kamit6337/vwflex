@@ -14,7 +14,14 @@ const recommendationSection = "recommendation";
 const similarSection = "similar";
 const episodesSection = "episodes";
 
-const Additional = ({ recommendations, similar, details, images }) => {
+const Additional = ({
+  recommendations,
+  similar,
+  details,
+  images,
+  id,
+  season,
+}) => {
   const [optionSelected, setOptionSelected] = useState(episodesSection);
   const { imageDetail } = useSelector(fixedState);
   const {
@@ -27,6 +34,10 @@ const Additional = ({ recommendations, similar, details, images }) => {
     episodes,
     created_by,
   } = details;
+
+  useEffect(() => {
+    setOptionSelected(episodesSection);
+  }, [id, season]);
 
   useEffect(() => {
     if (!recommendations || recommendations.data.length === 0) {

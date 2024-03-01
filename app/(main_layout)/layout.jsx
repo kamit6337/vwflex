@@ -6,7 +6,7 @@ const MainLayout = async ({ children }) => {
   return (
     <UserLoginProvider>
       <section
-        className="w-full h-14 bg-my_bg flex justify-center font-semibold text-xl sticky top-0"
+        className="w-full h-14 bg-my_bg flex justify-center sticky top-0"
         style={{ zIndex: 999 }}
       >
         <Navbar />

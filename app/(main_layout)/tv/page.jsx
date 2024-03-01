@@ -90,6 +90,8 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
       </div>
 
       <Additional
+      id={id}
+      season={season}
         details={details}
         recommendations={recommendations}
         similar={similar}

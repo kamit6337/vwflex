@@ -159,11 +159,6 @@ const HorizontalList = ({
         <div className="flex justify-between items-center">
           <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
 
-          {!trending && id && (
-            <p className=" mr-8 -mb-2">
-              <Link href={`/movies/${id}`}>See All</Link>
-            </p>
-          )}
           {trending && (
             <select
               value={selectTime}
