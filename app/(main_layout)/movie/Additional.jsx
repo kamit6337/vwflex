@@ -1,23 +1,20 @@
 "use client";
 
 import HorizontalList from "@components/HorizontalList";
-import MoviesHorizontalList from "@components/movies/MoviesHorizontalList";
 import priceInMillions from "@utils/javascript/priceInMillions";
 import { useEffect, useState } from "react";
+import MovieImages from "./MovieImages";
+import SimilarMovies from "./SimilarMovies";
+import Reviews from "./Reviews";
 
 const detailSection = "detail";
 const recommendationSection = "recommendation";
 const similarSection = "similar";
 const MOVIE = "movie";
+const imageSection = "images";
+const reviews = "reviews";
 
-const Additional = ({
-  recommendations,
-  similar,
-  reviews,
-  details,
-  images,
-  id,
-}) => {
+const Additional = ({ recommendations, details, id }) => {
   const [optionSelected, setOptionSelected] = useState(recommendationSection);
 
   const {
@@ -49,7 +46,7 @@ const Additional = ({
         top: window.innerHeight - 56,
         behavior: "smooth",
       });
-    }, 100);
+    }, 200);
   };
 
   return (
@@ -82,6 +79,22 @@ const Additional = ({
             onClick={() => scrollOptionsToTop(detailSection)}
           >
             Details
+          </p>
+          <p
+            className={`${
+              optionSelected === imageSection && "border-b-2 border-white"
+            } hover:border-b-2 hover:border-white cursor-pointer`}
+            onClick={() => scrollOptionsToTop(imageSection)}
+          >
+            Images
+          </p>
+          <p
+            className={`${
+              optionSelected === reviews && "border-b-2 border-white"
+            } hover:border-b-2 hover:border-white cursor-pointer`}
+            onClick={() => scrollOptionsToTop(reviews)}
+          >
+            Reviews
           </p>
         </div>
       </div>
@@ -170,9 +183,11 @@ const Additional = ({
         <HorizontalList data={recommendations} type={MOVIE} />
       )}
 
-      {optionSelected === similarSection && (
-        <HorizontalList data={similar} type={MOVIE} />
-      )}
+      {optionSelected === imageSection && <MovieImages id={id} />}
+
+      {optionSelected === similarSection && <SimilarMovies id={id} />}
+
+      {optionSelected === reviews && <Reviews id={id} />}
     </>
   );
 };

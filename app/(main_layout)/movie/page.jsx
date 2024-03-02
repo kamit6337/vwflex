@@ -9,7 +9,7 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
   const query = await fetchMovieDetail(Number(id));
   if (!query) return;
 
-  const { details, images, recommendations, reviews, similar } = query;
+  const { details, recommendations } = query;
 
   const {
     adult,
@@ -59,14 +59,7 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
         </div>
       </div>
 
-      <Additional
-      id={id}
-        details={details}
-        recommendations={recommendations}
-        similar={similar}
-        reviews={reviews}
-        images={images}
-      />
+      <Additional id={id} details={details} recommendations={recommendations} />
     </section>
   );
 };

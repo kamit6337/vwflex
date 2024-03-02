@@ -6,8 +6,6 @@ const MOVIE = "movie";
 const TV = "tv";
 
 const SearchPage = async ({ searchParams: { q } }) => {
-  console.log("q", q);
-
   const searchResults = await searchQuery(q);
 
   if (!searchResults) return;
@@ -27,6 +25,15 @@ const SearchPage = async ({ searchParams: { q } }) => {
 
   return (
     <>
+      <p className="text-2xl font-semibold tracking-wide">
+        Search results of {`"${q}"`}
+      </p>
+      {movies?.length === 0 && tv?.length === 0 && peoples?.length === 0 && (
+        <div className="w-full h-96 flex justify-center items-center">
+          <p>No search results found</p>
+        </div>
+      )}
+
       {moviesData.data?.length > 0 && (
         <HorizontalList
           data={moviesData}

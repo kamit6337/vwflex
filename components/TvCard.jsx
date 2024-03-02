@@ -47,7 +47,7 @@ const TvCard = ({ i, tv, mediaIndex, resetMediaIndex, handleMouseEnter }) => {
         </Link>
 
         {mediaIndex === i && (
-          <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl">
+          <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_hover rounded-b-xl ">
             <p>{name}</p>
             <p>{vote_average}</p>
             <p>{first_air_date}</p>

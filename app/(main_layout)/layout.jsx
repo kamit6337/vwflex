@@ -1,6 +1,7 @@
 import Footer from "@components/Footer/Footer";
 import Navbar from "@components/Navbar/Navbar";
 import UserLoginProvider from "@providers/UserLoginProvider";
+import GlobalShow from "./GlobalShow";
 
 const MainLayout = async ({ children }) => {
   return (
@@ -12,9 +13,10 @@ const MainLayout = async ({ children }) => {
         <Navbar />
       </section>
       <section className="w-full">{children}</section>
-      <section className="w-full h-96 bg-slate-600 text-white">
+      <section className="w-full h-[500px] bg-slate-600 text-white">
         <Footer />
       </section>
+      <GlobalShow />
     </UserLoginProvider>
   );
 };

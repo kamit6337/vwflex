@@ -1,7 +1,7 @@
 "use client";
 
 import fetchMovieDetail from "@api/query/movie/fetchMovieDetail";
-import fetchTv from "@api/query/tv/fetchTv";
+import fetchTv from "@api/query/tv/fetchTvShowAdditional";
 import fetchTvShowDetails from "@api/query/tv/fetchTvShowDetails";
 import HorizontalList from "@components/HorizontalList";
 import TvHorizontalList from "@components/TvHorizontalList";

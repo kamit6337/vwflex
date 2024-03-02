@@ -33,7 +33,7 @@ const MovieCard = ({
     <div
       key={i}
       className={`${
-        mediaIndex === i && "scale-125  transition-all duration-300"
+        mediaIndex === i && "scale-125  transition-all duration-300 "
       } relative grow-0 shrink-0 basis-1/4  px-2`}
       style={{ zIndex: mediaIndex === i ? 999 : -1 }}
     >
@@ -54,7 +54,11 @@ const MovieCard = ({
         </Link>
 
         {mediaIndex === i && (
-          <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl">
+          <div
+            className="absolute top-full  w-full p-4 transition-all duration-300 rounded-b-xl 
+            bg-my_hover
+            "
+          >
             <p>{title}</p>
             <p>{vote_average}</p>
             <p>{release_date}</p>

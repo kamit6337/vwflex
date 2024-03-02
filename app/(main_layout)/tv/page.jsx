@@ -10,7 +10,7 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
   const query = await fetchTvShowDetails(id, season);
   if (!query) return;
 
-  const { details, images, recommendations, similar } = query;
+  const { details } = query;
 
   const {
     season_number,
@@ -89,14 +89,7 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
         </div>
       </div>
 
-      <Additional
-      id={id}
-      season={season}
-        details={details}
-        recommendations={recommendations}
-        similar={similar}
-        images={images}
-      />
+      <Additional id={id} season={season} details={details} />
     </section>
   );
 };

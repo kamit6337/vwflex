@@ -125,7 +125,7 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
                       </Link>
 
                       {movieIndex === i && (
-                        <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl">
+                        <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_hover rounded-b-xl">
                           <p>{original_name}</p>
                           <p>{name}</p>
                           <p>{season_number}</p>

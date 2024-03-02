@@ -3,16 +3,19 @@
 
 import { useEffect, useState } from "react";
 import Episodes from "./Episodes";
-import HorizontalList from "@components/HorizontalList";
 import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
-
-const TV = "tv";
+import Recommendations from "./Recommendation";
+import Similar from "./Similar";
+import TvShowsImages from "./TvShowsImages";
+import Reviews from "./Reviews";
 
 const detailSection = "detail";
 const recommendationSection = "recommendation";
 const similarSection = "similar";
 const episodesSection = "episodes";
+const imageSection = "images";
+const reviews = "reviews";
 
 const Additional = ({
   recommendations,
@@ -94,6 +97,22 @@ const Additional = ({
             onClick={() => scrollOptionsToTop(detailSection)}
           >
             Details
+          </p>
+          <p
+            className={`${
+              optionSelected === imageSection && "border-b-2 border-white"
+            } hover:border-b-2 hover:border-white cursor-pointer`}
+            onClick={() => scrollOptionsToTop(imageSection)}
+          >
+            Images
+          </p>
+          <p
+            className={`${
+              optionSelected === reviews && "border-b-2 border-white"
+            } hover:border-b-2 hover:border-white cursor-pointer`}
+            onClick={() => scrollOptionsToTop(reviews)}
+          >
+            Reviews
           </p>
         </div>
       </div>
@@ -198,13 +217,13 @@ const Additional = ({
         </div>
       )}
 
-      {optionSelected === recommendationSection && (
-        <HorizontalList data={recommendations} type={TV} />
-      )}
+      {optionSelected === recommendationSection && <Recommendations id={id} />}
 
-      {optionSelected === similarSection && (
-        <HorizontalList data={similar} type={TV} />
-      )}
+      {optionSelected === similarSection && <Similar id={id} />}
+
+      {optionSelected === imageSection && <TvShowsImages id={id} />}
+
+      {optionSelected === reviews && <Reviews id={id} />}
     </>
   );
 };
