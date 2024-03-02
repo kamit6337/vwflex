@@ -4,6 +4,13 @@ import HorizontalSection from "../HorizontalSection";
 const zIndex = 499;
 const TV = "tv";
 
+export const metadata = () => {
+  return {
+    title: "TV Shows",
+    description: "Show all tv shows related category",
+  };
+};
+
 const TvShowsPage = () => {
   return (
     <>

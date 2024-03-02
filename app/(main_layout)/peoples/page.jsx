@@ -4,6 +4,13 @@ import HorizontalSection from "../HorizontalSection";
 const zIndex = 499;
 const PERSON = "person";
 
+export const metadata = () => {
+  return {
+    title: "Peoples",
+    description: "Show all peoples related category",
+  };
+};
+
 const PeoplesPage = () => {
   return (
     <>
