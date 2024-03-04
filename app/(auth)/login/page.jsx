@@ -37,7 +37,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-    await userLogin(data);
+      await userLogin(data);
 
       router.push("/");
     } catch (error) {
@@ -137,9 +137,7 @@ const Login = () => {
                   <Link href={`/signup`}>Sign Up</Link>
                 </span>
               </p>
-              <p>
-                <Link href={`/forgotPassword`}>Forgot Password</Link>
-              </p>
+              <p>Forgot Password</p>
             </div>
           </div>
         </form>
