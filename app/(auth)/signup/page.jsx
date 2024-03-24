@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
-const SERVER_URL = environment.SERVER_URL;
 
 const SignUp = () => {
   const router = useRouter();
@@ -53,23 +52,6 @@ const SignUp = () => {
       setError("root", {
         message: error.message,
       });
-    }
-  };
-
-  const googleOAuth = () => {
-    const url = `${SERVER_URL}/auth/google`;
-
-    const openWindow = window.open(url, "_self");
-
-    if (!openWindow) {
-      console.error("Failed to open the Google OAuth window");
-    } else {
-      openWindow.onerror = (event) => {
-        console.error(
-          "Error occurred while opening the Google OAuth window:",
-          event
-        );
-      };
     }
   };
 
@@ -218,14 +200,6 @@ const SignUp = () => {
             </p>
           </div>
         </form>
-
-        {/* MARK: GO TO LOGIN PAGE*/}
-        <div
-          className=" rounded-lg p-3 w-full cursor-pointer bg-red-500 font-semibold  tracking-wide text-center"
-          onClick={googleOAuth}
-        >
-          Login in Google
-        </div>
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ const connectToDB = async () => {
   } catch (error) {
     console.log("Disconnected from MongoDB", error);
     isDatabaseConnected = false;
+    throw new Error(error.message || "Something went wrong");
   }
 };
 

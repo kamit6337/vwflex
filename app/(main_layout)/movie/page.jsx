@@ -7,7 +7,11 @@ import ImageOfDetail from "@components/ImageOfDetail";
 
 const MovieDetailPage = async ({ searchParams: { id } }) => {
   const query = await fetchMovieDetail(Number(id));
-  if (!query) return;
+  console.log("query", query);
+
+  if (!query) {
+    throw new Error("Issue in getting movie detail");
+  }
 
   const { details, recommendations } = query;
 

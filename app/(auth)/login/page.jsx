@@ -8,18 +8,17 @@ import Loading from "@containers/Loading";
 import Link from "next/link";
 import environment from "@utils/environment";
 import userLogin from "@api/query/auth/userLogin";
-
-const SERVER_URL = environment.SERVER_URL;
+import Toastify from "@lib/Toastify";
 
 const Login = () => {
   const router = useRouter();
   const [togglePassword, setTogglePassword] = useState(false);
 
+  const { ToastContainer, showErrorMessage } = Toastify();
+
   const {
     register,
     handleSubmit,
-    setError,
-    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -28,36 +27,15 @@ const Login = () => {
     },
   });
 
-  useEffect(() => {
-    if (errors.root) {
-      console.log("error root", errors.root);
-      clearErrors("root");
-    }
-  }, [errors.root, , clearErrors]);
-
   const onSubmit = async (data) => {
     try {
       await userLogin(data);
 
       router.push("/");
     } catch (error) {
-      setError("root", { message: error.message });
-    }
-  };
-
-  const googleOAuth = () => {
-    const url = `${SERVER_URL}/auth/google`;
-    const openWindow = window.open(url, "_self");
-
-    if (!openWindow) {
-      console.error("Failed to open the Google OAuth window");
-    } else {
-      openWindow.onerror = (event) => {
-        console.error(
-          "Error occurred while opening the Google OAuth window:",
-          event
-        );
-      };
+      showErrorMessage({
+        message: error.message || "Something went wrong. Try later..",
+      });
     }
   };
 
@@ -141,15 +119,8 @@ const Login = () => {
             </div>
           </div>
         </form>
-
-        {/* MARK: GO TO LOGIN PAGE*/}
-        <div
-          className="border rounded-lg p-3 w-full cursor-pointer bg-red-500 font-semibold  tracking-wide text-center"
-          onClick={googleOAuth}
-        >
-          Login in Google
-        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

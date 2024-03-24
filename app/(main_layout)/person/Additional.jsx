@@ -22,10 +22,8 @@ const Additional = ({ credits, images, fixed }) => {
         top: window.innerHeight - 56,
         behavior: "smooth",
       });
-    }, 100);
+    }, 200);
   };
-
-  console.log("credits", credits);
 
   const moviesKnown_for = {
     data: credits.movies,

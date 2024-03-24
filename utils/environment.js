@@ -5,6 +5,8 @@ const environment = {
   JWT_EXPIRES_IN: Number(process.env.JWT_EXPIRES_IN),
   THIRD_PARTY_URL: process.env.THIRD_PARTY_URL,
   THIRD_PARTY_URL_ACCESS_TOKEN: process.env.THIRD_PARTY_URL_ACCESS_TOKEN,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   SALT_ROUND: Number(process.env.SALT_ROUND),
 };
 

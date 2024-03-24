@@ -1,7 +1,6 @@
 "use client";
 
 import fetchMovieDetail from "@api/query/movie/fetchMovieDetail";
-import fetchTv from "@api/query/tv/fetchTvShowAdditional";
 import fetchTvShowDetails from "@api/query/tv/fetchTvShowDetails";
 import HorizontalList from "@components/HorizontalList";
 import TvHorizontalList from "@components/TvHorizontalList";
@@ -20,6 +19,7 @@ const WatchlistPage = () => {
   console.log("watchlist Tv", watchlistTv);
   console.log("watchlistMovies", watchlistMovies);
   console.log("movies", movies);
+  console.log("tv", tv);
 
   // MARK: WATCHLIST MOVIES QUERY
   useEffect(() => {
@@ -60,11 +60,7 @@ const WatchlistPage = () => {
       const promises = tv.map((obj) => {
         const { id, season } = obj;
 
-        return fetchTvShowDetails(id, season, {
-          images: false,
-          recommendations: false,
-          similar: false,
-        });
+        return fetchTvShowDetails(id, season);
       });
 
       const fetchAllTv = await Promise.all(promises);
