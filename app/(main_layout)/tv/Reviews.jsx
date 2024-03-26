@@ -65,17 +65,14 @@ const Reviews = ({ id }) => {
         const originalPhoto = `${imageDetail.secure_base_url}${orginalSize}${avatar_path}`;
 
         return (
-          <div
-            key={i}
-            className="flex gap-4 bg-slate-800 rounded-xl py-10 px-5"
-          >
+          <div key={i} className="flex gap-4 bg-slate-800 rounded-xl py-5 px-3">
             <div className="w-32 flex flex-col items-center">
               {avatar_path && (
-                <div className="w-20">
+                <div className="w-16 h-16">
                   <img
                     src={originalPhoto}
                     alt={author}
-                    className="w-full rounded-full object-cover"
+                    className="w-full h-full rounded-full"
                   />
                 </div>
               )}

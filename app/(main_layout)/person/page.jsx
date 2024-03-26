@@ -38,9 +38,12 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
           />
         </div>
         <div className="flex-1 flex flex-col gap-2">
-          <p>{name}</p>
+          <p className="text-3xl tracking-wide font-semibold">{name}</p>
           <p>{place_of_birth}</p>
-          <p>{IndianTypeDate(birthday)}</p>
+          <div className="flex items-center gap-4">
+            <p>Birth : {IndianTypeDate(birthday)}</p>
+            {deathday && <p>Death : {IndianTypeDate(deathday)}</p>}
+          </div>
           <p className="tracking-wide ">{biography}</p>
         </div>
       </div>

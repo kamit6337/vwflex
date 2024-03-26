@@ -35,10 +35,9 @@ function ScrollToTop() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="border border-white rounded-full p-3"
+          className="border border-white rounded-full p-2"
         >
-          Scroll to Top
-          {/* <Icons.upArrowSolid className="text-white text-xl" /> */}
+          <Icons.upArrowSolid className="text-white text-4xl" />
         </button>
       )}
     </div>

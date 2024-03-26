@@ -2,6 +2,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { Icons } from "@assets/icons";
 import { fixedState } from "@redux/slice/fixedSlice";
+import IndianTypeDate from "@utils/javascript/IndianTypeDate";
+import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import debounce from "@utils/javascript/debounce";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -85,6 +87,8 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
                   first_air_date,
                   name,
                   vote_average,
+                  overview,
+                  air_date,
                 } = tv;
 
                 if (!poster_path) return;
@@ -126,11 +130,20 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
 
                       {movieIndex === i && (
                         <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_hover rounded-b-xl">
-                          <p>{original_name}</p>
-                          <p>{name}</p>
-                          <p>{season_number}</p>
-                          <p>{vote_average}</p>
-                          <p>{first_air_date}</p>
+                          <div className="flex justify-between items-center gap-2">
+                            <div>
+                              <p className="">{original_name}</p>
+                              <p className="text-xs">{name}</p>
+                            </div>
+                            {vote_average && (
+                              <p className="border text-sm rounded-full p-2">
+                                {OneNumberAfterDecimal(vote_average)}
+                              </p>
+                            )}
+                          </div>
+                          <p className="text-sm mt-2">
+                            First Air : {IndianTypeDate(air_date)}
+                          </p>
                         </div>
                       )}
                     </div>

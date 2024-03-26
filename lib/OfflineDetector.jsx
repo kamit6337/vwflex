@@ -9,12 +9,6 @@ const OfflineDetector = () => {
 
   const [showNetworkPage, setShowNetworkPage] = useState(false);
 
-  console.log("isonline", isOnline);
-  console.log(
-    "window.navigator.onLine",
-    typeof window !== "undefined" && window.navigator.onLine
-  );
-
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
@@ -22,7 +16,6 @@ const OfflineDetector = () => {
 
     const handleOffline = () => {
       setIsOnline(false);
-      console.log("Browser is offline");
     };
 
     window.addEventListener("online", handleOnline);
@@ -42,14 +35,26 @@ const OfflineDetector = () => {
     }
   }, [isOnline]);
 
+  const refreshPage = () => {
+    window.location.reload();
+  };
+
   if (showNetworkPage) {
     return (
       <section
         className="w-full h-full fixed top-0 left-0 flex justify-center items-center backdrop-blur-md"
         style={{ zIndex: 9999 }}
       >
-        <main className="w-96 h-96 border bg-white text-black">
-          <p>Network problem. Check your internet connection</p>
+        <main className="w-96 border bg-white text-black p-4 rounded-md">
+          <p className="text-lg ">
+            Network problem. Check your internet connection
+          </p>
+          <p
+            className="w-full border rounded-md py-2 cursor-pointer mt-5 text-center text-lg font-semibold hover:bg-gray-100"
+            onClick={refreshPage}
+          >
+            Refresh
+          </p>
         </main>
       </section>
     );

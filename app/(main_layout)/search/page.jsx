@@ -25,9 +25,11 @@ const SearchPage = async ({ searchParams: { q } }) => {
 
   return (
     <>
-      <p className="text-2xl font-semibold tracking-wide">
-        Search results of {`"${q}"`}
-      </p>
+      <div className="p-10">
+        <p className="text-2xl font-semibold tracking-wide border-b w-max">
+          Search results of {`"${q}"`}
+        </p>
+      </div>
       {movies?.length === 0 && tv?.length === 0 && peoples?.length === 0 && (
         <div className="w-full h-96 flex justify-center items-center">
           <p>No search results found</p>

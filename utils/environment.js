@@ -7,6 +7,8 @@ const environment = {
   THIRD_PARTY_URL_ACCESS_TOKEN: process.env.THIRD_PARTY_URL_ACCESS_TOKEN,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  MY_GMAIL_PASSWORD: process.env.MY_GMAIL_PASSWORD,
+  MY_GMAIL_ID: process.env.MY_GMAIL_ID,
   SALT_ROUND: Number(process.env.SALT_ROUND),
 };
 

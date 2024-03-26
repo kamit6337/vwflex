@@ -41,7 +41,11 @@ const Reviews = ({ id }) => {
   }
 
   if (!list || list.length === 0) {
-    return <div>Sorry, we do not have movie reviews</div>;
+    return (
+      <div className="w-full h-96 flex justify-center items-center">
+        <p>Sorry, we do not have tv show reviews</p>
+      </div>
+    );
   }
 
   return (
@@ -54,21 +58,22 @@ const Reviews = ({ id }) => {
           updated_at,
         } = obj;
 
-        const size = imageDetail.backdrop_sizes[0];
         const orginalSize = imageDetail.backdrop_sizes.at(-1);
         const originalPhoto = `${imageDetail.secure_base_url}${orginalSize}${avatar_path}`;
 
         return (
-          <div key={i} className="flex gap-4">
-            <div className="w-32">
-              <div className="w-10">
-                <img
-                  src={avatar_path}
-                  alt={author}
-                  className="w-full rounded-full object-cover"
-                />
-              </div>
-              <p>{author}</p>
+          <div key={i} className="flex gap-4 bg-slate-800 rounded-xl py-5 px-3">
+            <div className="w-32 flex flex-col items-center">
+              {avatar_path && (
+                <div className="w-16 h-16">
+                  <img
+                    src={originalPhoto}
+                    alt={author}
+                    className="w-full h-full rounded-full"
+                  />
+                </div>
+              )}
+              <p className="break-all">{author}</p>
             </div>
             <div className="flex-1 flex flex-col gap-4">
               {rating && <p>{rating}/10</p>}

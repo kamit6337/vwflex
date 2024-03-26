@@ -63,7 +63,7 @@ const Additional = ({ credits, images, fixed }) => {
             <HorizontalList
               data={moviesKnown_for}
               title={"Movies"}
-              zIndex={4}
+              zIndex={14}
               type={MOVIE}
             />
           )}
@@ -72,7 +72,7 @@ const Additional = ({ credits, images, fixed }) => {
             <HorizontalList
               data={tvKnown_for}
               title={"TV Shows"}
-              zIndex={3}
+              zIndex={13}
               type={TV}
             />
           )}

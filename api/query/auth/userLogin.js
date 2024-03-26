@@ -16,7 +16,7 @@ const userLogin = catchAsyncError(async (obj) => {
 
   await connectToDB();
 
-  const findUser = await User.findOne({ email });
+  const findUser = await User.findOne({ email }).select("+password");
 
   if (!findUser) {
     throw new Error("Email  is incorrect");
@@ -28,7 +28,7 @@ const userLogin = catchAsyncError(async (obj) => {
   ); // Boolean
 
   if (!isPasswordCorrect) {
-    throw new Error(" Password is incorrect");
+    throw new Error("Password is incorrect");
   }
 
   const token = generateWebToken({

@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { fixedState } from "@redux/slice/fixedSlice";
+import IndianTypeDate from "@utils/javascript/IndianTypeDate";
+import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
@@ -19,6 +21,7 @@ const MovieCard = ({
     original_title,
     poster_path,
     release_date,
+    overview,
     title,
     vote_average,
   } = movie;
@@ -55,13 +58,17 @@ const MovieCard = ({
 
         {mediaIndex === i && (
           <div
-            className="absolute top-full  w-full p-4 transition-all duration-300 rounded-b-xl 
-            bg-my_hover
+            className="absolute top-full  w-full p-4 transition-all duration-300 rounded-b-xl bg-my_hover flex flex-col gap-2
             "
           >
-            <p>{title}</p>
-            <p>{vote_average}</p>
-            <p>{release_date}</p>
+            <div className="flex justify-between items-center gap-2">
+              <p className="">{title}</p>
+              <p className="border text-sm rounded-full p-2">
+                {OneNumberAfterDecimal(vote_average)}
+              </p>
+            </div>
+            <p className="text-[11px] tracking-wide line-clamp-6">{overview}</p>
+            <p className="text-sm">{IndianTypeDate(release_date)}</p>
           </div>
         )}
       </div>

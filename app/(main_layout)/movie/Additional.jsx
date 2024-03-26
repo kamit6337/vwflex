@@ -24,7 +24,10 @@ const Additional = ({ recommendations, details, id }) => {
     revenue,
     budget,
     description,
+    overview,
   } = details;
+
+  console.log("detail", details);
 
   useEffect(() => {
     if (id) {
@@ -103,6 +106,14 @@ const Additional = ({ recommendations, details, id }) => {
 
       {optionSelected === detailSection && (
         <div className="p-16 sm:px-5 pr-0 flex flex-col items-start justify-between gap-12 relative z-10 w-4/5 sm:w-full">
+          {overview && (
+            <div>
+              <p className="text-xl sm:text-base sm:font-semibold border-b-2 border-white/70 w-max font-semibold tracking-wider mb-2 uppercase">
+                overview
+              </p>
+              <p className="tracking-wider leading-6 sm:text-sm">{overview}</p>
+            </div>
+          )}
           {description && (
             <div>
               <p className="text-xl sm:text-base sm:font-semibold border-b-2 border-white/70 w-max font-semibold tracking-wider mb-2 ">
@@ -114,7 +125,7 @@ const Additional = ({ recommendations, details, id }) => {
             </div>
           )}
 
-          {budget && (
+          {budget > 0 && (
             <div>
               <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
                 BUDGET
@@ -123,7 +134,7 @@ const Additional = ({ recommendations, details, id }) => {
             </div>
           )}
 
-          {revenue && (
+          {revenue > 0 && (
             <div>
               <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
                 REVENUE

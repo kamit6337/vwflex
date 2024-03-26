@@ -4,6 +4,7 @@ import inHourAndMin from "@utils/javascript/inHourAndMin";
 import Additional from "./Additional";
 import WatchlistPart from "./WatchlistPart";
 import ImageOfDetail from "@components/ImageOfDetail";
+import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 
 const MovieDetailPage = async ({ searchParams: { id } }) => {
   const query = await fetchMovieDetail(Number(id));
@@ -40,14 +41,14 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
 
         {/* MOVIE BRIEF DETAIL */}
         <div className="absolute left-0 ml-16 mt-10 flex flex-col items-start justify-end gap-0">
-          <div className="flex flex-col items-start gap-0 sm:gap-0 w-[550px] sm:w-80 ">
-            <p className="text-5xl font-extrabold tracking-wide leading-snug sm:text-3xl sm:font-semibold">
+          <div className="flex flex-col items-start gap-0  w-[450px]  ">
+            <p className="text-5xl font-extrabold tracking-wide leading-snug ">
               {title}
             </p>
             <div className="w-full h-[2px] mt-1 bg-white/70" />
           </div>
           <div className="flex justify-start items-center gap-4 mt-8 mb-1 sm:gap-2">
-            <p>IMDb {parseFloat(vote_average.toFixed(1))}</p>
+            <p>IMDb {OneNumberAfterDecimal(vote_average)}</p>
             <p>{IndianTypeDate(release_date)}</p>
             <p>{inHourAndMin(runtime)}</p>
             <p>{adult ? "Adult" : "Universal"}</p>

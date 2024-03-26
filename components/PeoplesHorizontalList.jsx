@@ -11,6 +11,8 @@ import { useSelector } from "react-redux";
 
 const DAY = "day";
 const WEEK = "week";
+const MOVIE = "movie";
+const TV = "tv";
 
 const PeoplesHorizontalList = ({
   id,
@@ -157,12 +159,6 @@ const PeoplesHorizontalList = ({
       {title && (
         <div className="flex justify-between items-center">
           <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
-
-          {!trending && id && (
-            <p className=" mr-8 -mb-2">
-              <Link href={`/movies/${id}`}>See All</Link>
-            </p>
-          )}
           {trending && (
             <select
               value={selectTime}
@@ -234,9 +230,29 @@ const PeoplesHorizontalList = ({
                       </Link>
 
                       {personIndex === i && (
-                        <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl">
+                        <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl flex flex-col gap-2">
                           <p>{name}</p>
-                          <p>{known_for_department}</p>
+                          <p className="text-sm">
+                            Profession : {known_for_department}
+                          </p>
+                          <div className="text-xs">
+                            <p>Known for :</p>
+                            <p>
+                              {known_for?.reduce((acc, curr, i, arr) => {
+                                let title = "";
+
+                                if (curr.media_type === MOVIE) {
+                                  title = curr.title;
+                                } else if (curr.media_type === TV) {
+                                  title = curr.name;
+                                }
+
+                                return arr.length - 1 === i
+                                  ? acc + title
+                                  : acc + title + ", ";
+                              }, "")}
+                            </p>
+                          </div>
                         </div>
                       )}
                     </div>

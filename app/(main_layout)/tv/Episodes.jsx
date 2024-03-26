@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { fixedState } from "@redux/slice/fixedSlice";
+import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -61,7 +62,7 @@ const Episodes = ({ data }) => {
                 <p>{name}</p>
               </div>
               <div className="flex gap-6 text-gray-400">
-                <p>{air_date}</p>
+                <p>{IndianTypeDate(air_date)}</p>
                 <p>{runtime} min</p>
               </div>
 

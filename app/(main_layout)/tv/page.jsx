@@ -5,6 +5,7 @@ import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import Additional from "./Additional";
 import ImageOfDetail from "@components/ImageOfDetail";
 import WatchlistPart from "./WatchlistPart";
+import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 
 const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
   const query = await fetchTvShowDetails(id, season);
@@ -30,6 +31,8 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     vote_average,
     backdrop_path,
     poster_path,
+    episodes,
+    air_date,
   } = details;
 
   return (
@@ -62,25 +65,20 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
           </div>
 
           <div className="flex justify-start items-center gap-4">
+            <p>IMDb {OneNumberAfterDecimal(vote_average)}</p>
+            <p>{adult ? "Adult" : "Universal"}</p>
+            <p>{episodes.length} episodes</p>
+          </div>
+          <div className="flex items-center gap-2 my-1">
             {genres.map((genre, i) => (
               <p key={i}>{genre.name}</p>
             ))}
-            <p>IMDb {parseFloat(vote_average.toFixed(1))}</p>
-            <p>{adult ? "Adult" : "Universal"}</p>
           </div>
           <div className="flex flex-col justify-between items-start ">
-            <div className="flex items-center gap-2">
-              <p className="text-lg font-medium ">First Air :</p>
-              <p>{IndianTypeDate(first_air_date)}</p>
+            <div className="flex items-center gap-2 text-sm">
+              <p className="font-medium ">Air Date :</p>
+              <p>{IndianTypeDate(air_date)}</p>
             </div>
-            <div className="flex items-center gap-2">
-              <p className="text-lg font-medium ">Last Air :</p>
-              <p>{IndianTypeDate(last_air_date)}</p>
-            </div>
-          </div>
-          <div className="flex justify-start items-center gap-4">
-            {number_of_seasons && <p>Total Seasons : {number_of_seasons}</p>}
-            {number_of_episodes && <p>Total Episodes : {number_of_episodes}</p>}
           </div>
 
           <div className="mt-2">
