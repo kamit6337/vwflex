@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@containers/Loading";
 import Link from "next/link";
 import environment from "@utils/environment";
@@ -14,7 +14,7 @@ import { Helmet } from "react-helmet";
 const Login = () => {
   const router = useRouter();
   const [togglePassword, setTogglePassword] = useState(false);
-
+  const msg = useSearchParams().get("msg");
   const { ToastContainer, showErrorMessage } = Toastify();
 
   const {
@@ -27,6 +27,10 @@ const Login = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    showErrorMessage({ message: msg });
+  }, []);
 
   const onSubmit = async (data) => {
     try {

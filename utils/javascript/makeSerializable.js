@@ -1,6 +1,4 @@
 const makeSerializable = (obj) => {
-  console.log("obj", obj);
-
   const serializable = {
     ...obj,
     _id: obj._id.toString(),
@@ -12,7 +10,6 @@ const makeSerializable = (obj) => {
     serializable.lastLogin = obj.lastLogin.getTime();
   }
 
-  console.log("serializable", serializable);
   return serializable;
 };
 

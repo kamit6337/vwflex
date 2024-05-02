@@ -2,7 +2,7 @@
 
 import HorizontalList from "@components/HorizontalList";
 import priceInMillions from "@utils/javascript/priceInMillions";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MovieImages from "./MovieImages";
 import SimilarMovies from "./SimilarMovies";
 import Reviews from "./Reviews";
@@ -16,6 +16,12 @@ const reviews = "reviews";
 
 const Additional = ({ recommendations, details, id }) => {
   const [optionSelected, setOptionSelected] = useState(recommendationSection);
+  const [refreshRecommendations, setRefreshRecommendations] =
+    useState(recommendations);
+
+  useEffect(() => {
+    setRefreshRecommendations(recommendations);
+  }, [id, recommendations]);
 
   const {
     production_companies,
@@ -26,8 +32,6 @@ const Additional = ({ recommendations, details, id }) => {
     description,
     overview,
   } = details;
-
-  console.log("detail", details);
 
   useEffect(() => {
     if (id) {
@@ -91,14 +95,14 @@ const Additional = ({ recommendations, details, id }) => {
           >
             Images
           </p>
-          <p
+          {/* <p
             className={`${
               optionSelected === reviews && "border-b-2 border-white"
             } hover:border-b-2 hover:border-white cursor-pointer`}
             onClick={() => scrollOptionsToTop(reviews)}
           >
             Reviews
-          </p>
+          </p> */}
         </div>
       </div>
 
@@ -191,14 +195,14 @@ const Additional = ({ recommendations, details, id }) => {
       )}
 
       {optionSelected === recommendationSection && (
-        <HorizontalList data={recommendations} type={MOVIE} />
+        <HorizontalList data={refreshRecommendations} type={MOVIE} />
       )}
 
       {optionSelected === imageSection && <MovieImages id={id} />}
 
       {optionSelected === similarSection && <SimilarMovies id={id} />}
 
-      {optionSelected === reviews && <Reviews id={id} />}
+      {/* {optionSelected === reviews && <Reviews id={id} />} */}
     </>
   );
 };

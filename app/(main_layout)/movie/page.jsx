@@ -8,7 +8,6 @@ import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 
 const MovieDetailPage = async ({ searchParams: { id } }) => {
   const query = await fetchMovieDetail(Number(id));
-  console.log("query", query);
 
   if (!query) {
     throw new Error("Issue in getting movie detail");
@@ -20,7 +19,6 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
     adult,
     title,
     backdrop_path,
-    overview,
     release_date,
     vote_average,
     runtime,

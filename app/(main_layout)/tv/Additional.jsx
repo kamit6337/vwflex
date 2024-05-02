@@ -106,14 +106,14 @@ const Additional = ({
           >
             Images
           </p>
-          <p
+          {/* <p
             className={`${
               optionSelected === reviews && "border-b-2 border-white"
             } hover:border-b-2 hover:border-white cursor-pointer`}
             onClick={() => scrollOptionsToTop(reviews)}
           >
             Reviews
-          </p>
+          </p> */}
         </div>
       </div>
 
@@ -223,7 +223,7 @@ const Additional = ({
 
       {optionSelected === imageSection && <TvShowsImages id={id} />}
 
-      {optionSelected === reviews && <Reviews id={id} />}
+      {/* {optionSelected === reviews && <Reviews id={id} />} */}
     </>
   );
 };

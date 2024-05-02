@@ -23,15 +23,11 @@ const WatchlistPart = ({ id: movieId }) => {
 
   const handleRemoveWatchlist = async () => {
     const response = await removeFromWatchlist(_id, { movieId });
-
-    console.log("response", response);
-
     dispatch(updateWatchlistData(response));
   };
 
   const handleAddToWatchlist = async () => {
     const response = await addToWatchlist(_id, { movieId });
-    console.log("response", response);
     dispatch(updateWatchlistData(response));
   };
 
@@ -39,7 +35,7 @@ const WatchlistPart = ({ id: movieId }) => {
     <>
       {bool ? (
         <div
-          className={`border-2 border-white rounded-3xl p-3 cursor-pointer`}
+          className={`border-2 border-white rounded-3xl p-3 cursor-pointer bg-gray-200`}
           onClick={handleRemoveWatchlist}
         >
           Remove from Watchlist

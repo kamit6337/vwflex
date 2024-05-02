@@ -12,7 +12,7 @@ const checkUserLogin = catchAsyncError(async () => {
   const token = cookies().get("token");
 
   if (!token) {
-    redirect("/login");
+    redirect("/login?msg=You session has expired. Please login again.");
   }
 
   const decoded = verifyWebToken(token.value);
@@ -22,7 +22,7 @@ const checkUserLogin = catchAsyncError(async () => {
   const findUser = await User.findOne({ _id: decoded.id }).lean();
 
   if (!findUser) {
-    redirect("/login");
+    redirect("/login?msg=Please Login again");
   }
 
   return makeSerializable(findUser);

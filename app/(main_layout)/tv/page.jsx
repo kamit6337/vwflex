@@ -9,7 +9,9 @@ import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 
 const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
   const query = await fetchTvShowDetails(id, season);
-  if (!query) return;
+  if (!query) {
+    throw new Error("Issue in getting tv show detail");
+  }
 
   const { details } = query;
 

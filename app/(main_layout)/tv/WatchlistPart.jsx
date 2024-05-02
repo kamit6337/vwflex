@@ -16,10 +16,6 @@ const WatchlistPart = ({ id: tvId, season }) => {
   const bool = useMemo(() => {
     if (tv.length === 0) return false;
 
-    console.log("tv", tv);
-    console.log("tvId", tvId);
-    console.log("season", season);
-
     const findTv = tv.find(
       (obj) => obj.id === tvId.toString() && obj.season == season
     );
@@ -29,13 +25,11 @@ const WatchlistPart = ({ id: tvId, season }) => {
 
   const handleRemoveWatchlist = async () => {
     const response = await removeFromWatchlist(_id, { tvId, season });
-    console.log("response", response);
     dispatch(updateWatchlistData(response));
   };
 
   const handleAddToWatchlist = async () => {
     const response = await addToWatchlist(_id, { tvId, season });
-    console.log("response", response);
     dispatch(updateWatchlistData(response));
   };
 

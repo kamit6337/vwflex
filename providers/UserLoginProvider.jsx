@@ -11,8 +11,6 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const UserLoginProvider = ({ children }) => {
-  console.log("user login provider");
-
   const dispatch = useDispatch();
   const [isSuccessful, setIsSuccessful] = useState(false);
   const router = useRouter();
@@ -25,10 +23,8 @@ const UserLoginProvider = ({ children }) => {
           getFixed(),
         ]);
         const watchlist = await userWatchlist(userLogin._id);
-
         dispatch(initialFixedData(fixedQuery));
         dispatch(initialWatchlistData(watchlist));
-
         setIsSuccessful(true);
       } catch (error) {
         setIsSuccessful(false);

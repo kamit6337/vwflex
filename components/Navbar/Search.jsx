@@ -30,6 +30,7 @@ const Search = () => {
 
   const resetSearch = () => {
     reset({ search: "" });
+    setFocus("search");
   };
   return (
     <>
@@ -38,9 +39,9 @@ const Search = () => {
         onClick={() => setOpenSearch((prev) => !prev)}
       >
         {openSearch ? (
-          <Icons.cancel className="h-full text-2xl" />
+          <Icons.cancel className="h-full text-2xl text-gray-400" />
         ) : (
-          <Icons.search className="h-full text-2xl" />
+          <Icons.search className="h-full text-2xl text-gray-400" />
         )}
       </p>
 

@@ -12,9 +12,7 @@ const Episodes = ({ data }) => {
   useEffect(() => {
     if (ref.current) {
       const width = ref.current.clientWidth;
-
       const divHeight = width * (169 / 300);
-
       setHeight(divHeight);
     }
   }, []);

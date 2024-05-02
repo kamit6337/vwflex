@@ -1,4 +1,4 @@
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { IoHomeOutline, IoHomeSharp } from "react-icons/io5";
 import {
   PiNoteLight,
@@ -45,6 +45,7 @@ export const Icons = {
   profile: CgProfile,
   upArrowSolid: TiArrowSortedUp,
   downArrow: IoIosArrowDown,
+  upArrow: IoIosArrowUp,
   setting: AiOutlineSetting,
   search: AiOutlineSearch,
   plus: AiOutlinePlus,
@@ -71,7 +72,6 @@ export const Icons = {
   bellOff: BsBellSlash,
   leftArrow: MdKeyboardArrowLeft,
   rightArrow: MdKeyboardArrowRight,
-  upArrow: MdKeyboardArrowUp,
   likeIcon: BiLike,
   solidLikeIcon: BiSolidLike,
   dislikeIcon: BiDislike,

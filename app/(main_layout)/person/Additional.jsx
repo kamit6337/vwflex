@@ -22,7 +22,7 @@ const Additional = ({ credits, images, fixed }) => {
         top: window.innerHeight - 56,
         behavior: "smooth",
       });
-    }, 200);
+    }, 500);
   };
 
   const moviesKnown_for = {

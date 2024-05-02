@@ -21,7 +21,7 @@
 
 @layer utilities {
   .text_navbar {
-    @apply font-semibold text-xl;
+    @apply tracking-wider text-gray-400 font-semibold;
   }
 }
 
