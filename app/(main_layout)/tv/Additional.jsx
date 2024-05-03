@@ -137,26 +137,7 @@ const Additional = ({
               </p>
               <div className="flex justify-start gap-4 flex-wrap">
                 {created_by.map((by, i) => {
-                  const { name, profile_path } = by;
-
-                  const size = imageDetail.backdrop_sizes[0];
-                  const createBaseUrl = `${imageDetail.secure_base_url}${size}`;
-                  const createPhoto = `${createBaseUrl}${profile_path}`;
-
-                  return (
-                    <div key={i} className="flex flex-col items-center gap-2">
-                      <div className="w-20">
-                        <img
-                          src={createPhoto}
-                          alt={name}
-                          className="w-full object-cover rounded-lg"
-                        />
-                      </div>
-                      <p key={i} className="sm:text-sm">
-                        {by.name}
-                      </p>
-                    </div>
-                  );
+                  return <div key={i}>{by.name}</div>;
                 })}
               </div>
             </div>
@@ -212,7 +193,7 @@ const Additional = ({
       )}
 
       {optionSelected === episodesSection && (
-        <div className="w-full flex flex-col gap-8 py-20 px-10">
+        <div className="w-full flex flex-col gap-8 sm_lap:gap-6 py-20 px-10 sm_lap:px-6">
           <Episodes data={episodes} />
         </div>
       )}

@@ -23,7 +23,7 @@ const PeoplesHorizontalList = ({
   zIndex = 10,
   instant = false,
 }) => {
-  const numberOfProfile = 6;
+  const [numberOfProfile, setNumberOfProfile] = useState(6);
   const [totalPages, setTotalpages] = useState(data?.totalPages);
   const [index, setIndex] = useState(0);
   const [peoplesData, setPeoplesData] = useState(() => {
@@ -43,6 +43,27 @@ const PeoplesHorizontalList = ({
     triggerOnce: true,
     rootMargin: "100px 0px 0px 0px",
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 680) {
+        setNumberOfProfile(4);
+      } else if (window.innerWidth < 900) {
+        setNumberOfProfile(5);
+      } else {
+        setNumberOfProfile(6);
+      }
+    };
+
+    // Initial call to handleResize
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (peoplesData && peoplesData.length > 0) return;
@@ -150,6 +171,8 @@ const PeoplesHorizontalList = ({
     );
   }
 
+  console.log("numberOfProfile", numberOfProfile);
+
   return (
     <section
       className="flex flex-col gap-4 relative pt-5 pb-16"
@@ -158,7 +181,9 @@ const PeoplesHorizontalList = ({
     >
       {title && (
         <div className="flex justify-between items-center">
-          <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
+          <p className="ml-14 text-xl font-semibold tracking-wider tablet:ml-10 tablet:text-base">
+            {title}
+          </p>
           {trending && (
             <select
               value={selectTime}
@@ -177,7 +202,7 @@ const PeoplesHorizontalList = ({
       )}
 
       <div className="relative">
-        <div className="ml-10 mr-5">
+        <div className="ml-10 tablet:ml-4 mr-5">
           <div
             className="flex transition-all duration-500"
             style={{ translate: `${100 * index}%` }}
@@ -203,7 +228,7 @@ const PeoplesHorizontalList = ({
                     key={i}
                     className={`${
                       personIndex === i &&
-                      "scale-125  transition-all duration-300"
+                      "scale-125 sm_lap:scale-110  transition-all duration-300"
                     } relative grow-0 shrink-0  px-2`}
                     style={{
                       zIndex: personIndex === i ? 999 : -1,
@@ -231,11 +256,11 @@ const PeoplesHorizontalList = ({
 
                       {personIndex === i && (
                         <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_bg rounded-b-xl flex flex-col gap-2">
-                          <p>{name}</p>
-                          <p className="text-sm">
+                          <p className="sm_lap:text-sm">{name}</p>
+                          <p className="text-sm sm_lap:text-[10px]">
                             Profession : {known_for_department}
                           </p>
-                          <div className="text-xs">
+                          <div className="text-xs sm_lap:text-[10px]">
                             <p>Known for :</p>
                             <p>
                               {known_for?.reduce((acc, curr, i, arr) => {
@@ -300,10 +325,7 @@ const PeoplesHorizontalList = ({
 
       <div className="ml-14 w-max h-10 ">
         {index <= -2 && (
-          <p
-            className="h-full rounded-3xl text-xs border border-white px-3 py-2 cursor-pointer flex justify-center items-center"
-            onClick={() => setIndex(0)}
-          >
+          <p className="back_to_start" onClick={() => setIndex(0)}>
             Back to Start
           </p>
         )}

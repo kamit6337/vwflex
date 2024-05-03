@@ -36,7 +36,11 @@ const Episodes = ({ data }) => {
 
         return (
           <section key={i} className="w-full flex gap-5">
-            <div className="w-1/4 " ref={ref} style={{ height: `${height}px` }}>
+            <div
+              className="w-1/4 sm_lap:w-1/3"
+              ref={ref}
+              style={{ height: `${height}px` }}
+            >
               {still_path ? (
                 <img
                   src={createPhoto}
@@ -59,12 +63,14 @@ const Episodes = ({ data }) => {
                 <p className="mx-2">-</p>
                 <p>{name}</p>
               </div>
-              <div className="flex gap-6 text-gray-400">
+              <div className="flex gap-6 text-gray-400 tablet:text-sm">
                 <p>{IndianTypeDate(air_date)}</p>
                 <p>{runtime} min</p>
               </div>
 
-              <div className="text-gray-400">{overview}</div>
+              <div className="text-gray-400 sm_lap:text-sm tablet:text-xs">
+                {overview}
+              </div>
             </div>
           </section>
         );

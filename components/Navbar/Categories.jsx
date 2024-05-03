@@ -11,7 +11,7 @@ const Categories = () => {
       <div
         className={`${
           toggleCategories && "border-b border-white text-white"
-        }  p-3 cursor-pointer tracking-wider text-gray-400 font-semibold  flex items-center gap-2`}
+        }  text_navbar`}
         onMouseEnter={() => setToggleCategories(true)}
       >
         <p>Categories</p>
@@ -30,9 +30,11 @@ const Categories = () => {
       {toggleCategories && (
         <div className="absolute left-0 z-50 top-full w-full bg-slate-800 rounded p-10 flex gap-20">
           <div className="flex-1 space-y-8 ">
-            <p className="cursor-pointer text-lg font-semibold ">Genres</p>
-            <div className="flex justify-between gap-8 text-gray-400">
-              <div className="space-y-5">
+            <p className="cursor-pointer text-lg tablet:text-base font-semibold">
+              Genres
+            </p>
+            <div className="flex justify-between gap-8 text-gray-400 tablet:text-sm">
+              <div className="space-y-5 ">
                 <p className="cursor-pointer">Action</p>
                 <p className="cursor-pointer">Animation</p>
                 <p className="cursor-pointer">Documentary</p>
@@ -51,10 +53,10 @@ const Categories = () => {
             </div>
           </div>
           <div className="w-1/3 space-y-8">
-            <p className="cursor-pointer text-lg font-semibold">
+            <p className="cursor-pointer text-lg tablet:text-base font-semibold">
               Features Collection
             </p>
-            <div className="flex justify-between gap-8 text-gray-400">
+            <div className="flex justify-between gap-8 text-gray-400 tablet:text-sm">
               <div className="space-y-8">
                 <p className="cursor-pointer">Hindi</p>
                 <p className="cursor-pointer">English</p>

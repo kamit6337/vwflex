@@ -2,9 +2,7 @@
 "use client";
 
 import HorizontalList from "@components/HorizontalList";
-import MoviesHorizontalList from "@components/movies/MoviesHorizontalList";
-import TvHorizontalList from "@components/TvHorizontalList";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const creditsSection = "credits";
 const imagesSection = "images";
@@ -14,15 +12,20 @@ const TV = "tv";
 const Additional = ({ credits, images, fixed }) => {
   const [optionSelected, setOptionSelected] = useState(creditsSection);
 
+  const ref = useRef(null);
+
   const scrollOptionsToTop = (value) => {
     setOptionSelected(value);
 
     setTimeout(function () {
+      const boundingRect = ref.current.getBoundingClientRect();
+      const topOffset = boundingRect.top + window.scrollY - 56;
+
       window.scrollTo({
-        top: window.innerHeight - 56,
+        top: topOffset,
         behavior: "smooth",
       });
-    }, 500);
+    }, 200);
   };
 
   const moviesKnown_for = {
@@ -34,9 +37,9 @@ const Additional = ({ credits, images, fixed }) => {
   };
 
   return (
-    <>
-      <div className="sticky top-14 bottom-0 z-20 w-full text-lg sm:text-base font-medium tracking-wider  flex justify-center pb-2 h-[60px] ">
-        <div className="w-max flex items-center gap-6 rounded-2xl sm:rounded-xl px-10 sm:px-4 h-full  border-2 border-slate-600 bg-black">
+    <div ref={ref}>
+      <div className="sticky top-14 z-20 w-full  font-medium tracking-wider flex justify-center pb-2 h-[60px] sm_lap:text-sm">
+        <div className="w-max flex items-center gap-6 rounded-2xl px-10 h-full  border-2 border-slate-600 bg-black">
           <p
             className={`${
               optionSelected === creditsSection && "border-b-2 border-white"
@@ -80,7 +83,7 @@ const Additional = ({ credits, images, fixed }) => {
       )}
 
       {optionSelected === imagesSection && (
-        <div className="flex flex-wrap p-10 ">
+        <div className="flex flex-wrap p-10 tablet:p-2 ">
           {images.map((image, i) => {
             const { ratio, path } = image;
 
@@ -89,7 +92,10 @@ const Additional = ({ credits, images, fixed }) => {
             const createPhoto = `${createBaseUrl}${path}`;
 
             return (
-              <div key={i} className="w-1/5 px-2 py-4">
+              <div
+                key={i}
+                className="w-1/5 sm_lap:w-1/4 tablet:w-1/3 px-2 py-4"
+              >
                 <img
                   src={createPhoto}
                   alt="image"
@@ -101,7 +107,7 @@ const Additional = ({ credits, images, fixed }) => {
           })}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

@@ -21,7 +21,15 @@
 
 @layer utilities {
   .text_navbar {
-    @apply tracking-wider text-gray-400 font-semibold;
+    @apply p-3 cursor-pointer tracking-wider text-gray-400 font-semibold flex items-center gap-2 tablet:text-sm;
+  }
+
+  .text_navbar_option {
+    @apply w-full p-3 cursor-pointer tablet:text-sm  hover:bg-white hover:text-my_bg;
+  }
+
+  .back_to_start {
+    @apply h-full rounded-3xl text-xs border border-white px-3 tablet:text-[10px] cursor-pointer flex justify-center items-center;
   }
 }
 
@@ -36,10 +44,23 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  -moz-box-shadow: inset 100px 0px 100px 5px var(--my_bg);
-  -webkit-box-shadow: inset 100px 0px 100px 5px var(--my_bg);
-  box-shadow: inset 400px -120px 500px 100px var(--my_bg),
-    0px 0px 100px 100px var(--my_bg);
+  -moz-box-shadow: inset 400px -120px 500px 100px var(--my_bg);
+  -webkit-box-shadow: inset 400px -120px 500px 100px var(--my_bg);
+  box-shadow: inset 400px -120px 500px 100px var(--my_bg);
+}
+
+.image_shadow_tablet {
+  position: relative;
+}
+
+.image_shadow_tablet::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-box-shadow: inset 70px -50px 300px 5px var(--my_bg);
+  -moz-box-shadow: inset 70px -50px 300px 5px var(--my_bg);
+  box-shadow: inset 70px -50px 300px 5px var(--my_bg);
 }
 
 .detail_image_shadow {

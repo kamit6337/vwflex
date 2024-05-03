@@ -28,9 +28,29 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
 
       maxIndexGoesTo = -Math.floor(divide);
     }
-
     return maxIndexGoesTo;
   }, [data, numImagePerScrren]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 680) {
+        setNumImagePerScreen(3);
+      } else if (window.innerWidth < 900) {
+        setNumImagePerScreen(4);
+      } else {
+        setNumImagePerScreen(5);
+      }
+    };
+
+    // Initial call to handleResize
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (index >= 0) {
@@ -64,12 +84,14 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
     >
       {title && (
         <div className="flex justify-between items-center">
-          <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
+          <p className="ml-14 text-xl font-semibold tracking-wider tablet:ml-10 tablet:text-base">
+            {title}
+          </p>
         </div>
       )}
 
       <div className="relative">
-        <div className="ml-10 mr-5">
+        <div className="ml-10 tablet:ml-4 mr-5">
           <div
             className={`flex transition-all duration-500`}
             style={{ translate: `${100 * index}%` }}
@@ -130,18 +152,24 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
 
                       {movieIndex === i && (
                         <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_hover rounded-b-xl">
-                          <div className="flex justify-between items-center gap-2">
+                          <div className="flex justify-between items-start gap-2">
                             <div>
-                              <p className="">{original_name}</p>
-                              <p className="text-xs">{name}</p>
+                              <p className="sm_lap:text-sm">{original_name}</p>
+                              <p className="text-xs sm_lap:text-[10px]-">
+                                {name}
+                              </p>
                             </div>
-                            {vote_average && (
+                            {vote_average ? (
                               <p className="border text-sm rounded-full p-2">
                                 {OneNumberAfterDecimal(vote_average)}
                               </p>
+                            ) : (
+                              <p className="text-[10px] text-gray-300 ">
+                                Not Rated
+                              </p>
                             )}
                           </div>
-                          <p className="text-sm mt-2">
+                          <p className="text-sm mt-2 sm_lap:text-[10px]">
                             First Air : {IndianTypeDate(air_date)}
                           </p>
                         </div>

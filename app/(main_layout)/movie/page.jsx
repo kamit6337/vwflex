@@ -6,6 +6,15 @@ import WatchlistPart from "./WatchlistPart";
 import ImageOfDetail from "@components/ImageOfDetail";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 
+export const generateMetadata = async ({ searchParams: { id } }) => {
+  const query = await fetchMovieDetail(Number(id));
+
+  return {
+    title: query?.details.title,
+    description: query?.details.overview,
+  };
+};
+
 const MovieDetailPage = async ({ searchParams: { id } }) => {
   const query = await fetchMovieDetail(Number(id));
 
@@ -33,25 +42,25 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
         style={{ height: `calc(100vh - 56px)` }}
       >
         {/* IMAGE DIV */}
-        <div className="h-full image_shadow self-end">
+        <div className="h-full image_shadow tablet:image_shadow_tablet self-end">
           <ImageOfDetail backdrop_path={backdrop_path} title={title} />
         </div>
 
         {/* MOVIE BRIEF DETAIL */}
-        <div className="absolute left-0 ml-16 mt-10 flex flex-col items-start justify-end gap-0">
-          <div className="flex flex-col items-start gap-0  w-[450px]  ">
-            <p className="text-5xl font-extrabold tracking-wide leading-snug ">
+        <div className="absolute left-0 ml-16 sm_lap:ml-10 tablet:ml-4 mt-10 flex flex-col items-start justify-end">
+          <div className="flex flex-col items-start gap-0  w-[450px] tablet:w-80 sm_lap:w-96  ">
+            <p className="text-5xl font-extrabold tracking-wide leading-snug sm_lap:text-4xl  tablet:text-3xl">
               {title}
             </p>
             <div className="w-full h-[2px] mt-1 bg-white/70" />
           </div>
-          <div className="flex justify-start items-center gap-4 mt-8 mb-1 sm:gap-2">
+          <div className="flex justify-start items-center gap-4 mt-8 mb-1 tablet:text-sm">
             <p>IMDb {OneNumberAfterDecimal(vote_average)}</p>
             <p>{IndianTypeDate(release_date)}</p>
             <p>{inHourAndMin(runtime)}</p>
             <p>{adult ? "Adult" : "Universal"}</p>
           </div>
-          <div className="flex justify-start gap-4 sm:gap-2">
+          <div className="flex justify-start gap-4 tablet:text-sm">
             {genres.map((genre, i) => (
               <p key={i}>{genre.name}</p>
             ))}

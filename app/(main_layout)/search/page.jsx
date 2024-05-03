@@ -5,28 +5,41 @@ import PeoplesHorizontalList from "@components/PeoplesHorizontalList";
 const MOVIE = "movie";
 const TV = "tv";
 
+export const generateMetadata = async ({ searchParams: { q } }) => {
+  return {
+    title: q,
+    description: `Searching for keyword ${q}`,
+  };
+};
+
 const SearchPage = async ({ searchParams: { q } }) => {
   const searchResults = await searchQuery(q);
 
-  if (!searchResults) return;
+  if (!searchResults) {
+    throw new Error("Issue in finding the result");
+  }
 
   const { page, totalPages, movies, tv, peoples } = searchResults;
 
+  const filterMovies = movies.filter((obj) => obj.backdrop_path);
+  const filterTv = tv.filter((obj) => obj.backdrop_path);
+  const filterPeoples = peoples.filter((obj) => obj.profile_path);
+
   const moviesData = {
-    data: movies,
+    data: filterMovies,
   };
 
   const tvData = {
-    data: tv,
+    data: filterTv,
   };
   const peoplesData = {
-    data: peoples,
+    data: filterPeoples,
   };
 
   return (
     <>
-      <div className="p-10">
-        <p className="text-2xl font-semibold tracking-wide border-b w-max">
+      <div className="p-10 tablet:p-5">
+        <p className="text-2xl font-semibold tracking-wide border-b w-max tablet:text-xl">
           Search results of {`"${q}"`}
         </p>
       </div>

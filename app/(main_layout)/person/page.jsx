@@ -4,6 +4,15 @@ import fetchPersonDetails from "@api/query/peoples/fetchPersonDetails";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import Additional from "./Additional";
 
+export const generateMetadata = async ({ searchParams: { id } }) => {
+  const query = await fetchPersonDetails(Number(id));
+
+  return {
+    title: query?.details.name,
+    description: query?.details.biography,
+  };
+};
+
 const PersonDetailPage = async ({ searchParams: { id } }) => {
   const fixedQuery = await fixed();
 
@@ -29,7 +38,7 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
 
   return (
     <section>
-      <div className="flex gap-5 w-full p-16 ">
+      <div className="flex gap-5 w-full p-16 sm_lap:px-8 tablet:px-2">
         <div className="w-1/4">
           <img
             src={createPhoto}
@@ -44,7 +53,9 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
             <p>Birth : {IndianTypeDate(birthday)}</p>
             {deathday && <p>Death : {IndianTypeDate(deathday)}</p>}
           </div>
-          <p className="tracking-wide ">{biography}</p>
+          <p className="tracking-wide sm_lap:text-sm tablet:text-xs tablet:tracking-wider tablet:leading-normal">
+            {biography}
+          </p>
         </div>
       </div>
       <Additional images={images} credits={credits} fixed={fixedQuery} />

@@ -9,7 +9,7 @@ import Store from "./Store";
 const Navbar = () => {
   return (
     <nav className="w-full h-full flex justify-center items-center ">
-      <div className="flex items-center gap-20 w-max relative">
+      <div className="flex items-center gap-20 sm_lap:gap-10 tablet:gap-2 w-max relative">
         <p className="cursor-pointer text-xl font-semibold tracking-wider text-white">
           <Link href={`/`} prefetch={false}>
             VwFlex

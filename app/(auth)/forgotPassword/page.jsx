@@ -46,7 +46,7 @@ const ForgotPasswordPage = () => {
       </Helmet>
       <section className="w-full h-screen flex flex-col justify-center items-center bg-white text-black">
         <form
-          className="h-[600px] w-[600px] bg-color_2 border border-color_3 text-color_4 flex flex-col justify-center  gap-4 px-8 rounded-xl"
+          className="h-[600px] w-[600px] border flex flex-col justify-center  gap-4 px-8 rounded-xl shadow-xl"
           onSubmit={handleSubmit(onSubmit)}
         >
           <p className="text-xl font-bold tracking-wide text-center mb-6">

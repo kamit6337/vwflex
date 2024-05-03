@@ -37,14 +37,14 @@ const WatchlistPart = ({ id: tvId, season }) => {
     <>
       {bool ? (
         <div
-          className={`border-2 border-white rounded-3xl p-3 cursor-pointer`}
+          className={`rounded-3xl p-3 px-5 cursor-pointer bg-gray-400`}
           onClick={handleRemoveWatchlist}
         >
           Remove from Watchlist
         </div>
       ) : (
         <div
-          className={`border-2 border-white rounded-3xl p-3 cursor-pointer`}
+          className={`border-2 border-white rounded-3xl p-3 px-5 cursor-pointer`}
           onClick={handleAddToWatchlist}
         >
           Add to Watchlist

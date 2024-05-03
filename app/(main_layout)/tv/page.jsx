@@ -1,11 +1,21 @@
 import fetchTvShowDetails from "@api/query/tv/fetchTvShowDetails";
-import { Icons } from "@assets/icons";
 import ChangeSeason from "./ChangeSeason";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import Additional from "./Additional";
 import ImageOfDetail from "@components/ImageOfDetail";
 import WatchlistPart from "./WatchlistPart";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
+
+export const generateMetadata = async ({
+  searchParams: { id, season = null },
+}) => {
+  const query = await fetchTvShowDetails(id, season);
+
+  return {
+    title: query?.details.original_name,
+    description: query?.details.overview,
+  };
+};
 
 const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
   const query = await fetchTvShowDetails(id, season);
@@ -17,22 +27,13 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
 
   const {
     season_number,
-    created_by,
     adult,
-    first_air_date,
     genres,
-    last_air_date,
     name,
     original_name,
-    number_of_episodes,
     number_of_seasons,
-    overview,
-    production_companies,
-    production_countries,
-    spoken_languages,
     vote_average,
     backdrop_path,
-    poster_path,
     episodes,
     air_date,
   } = details;
@@ -50,9 +51,9 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
         </div>
 
         {/* TV BRIEF DETAIL */}
-        <div className="absolute left-0 ml-16 mt-10 flex flex-col items-start justify-end gap-0">
+        <div className="absolute left-0 ml-16 sm_lap:ml-10 tablet:ml-4 mt-10 flex flex-col items-start justify-end">
           <div className="flex flex-col items-start mb-4">
-            <p className="text-5xl font-extrabold tracking-wide leading-snug sm:text-3xl sm:font-semibold">
+            <p className="text-5xl font-extrabold tracking-wide leading-snug sm_lap:text-4xl  tablet:text-3xl">
               {original_name}
             </p>
             <div className="w-full h-[2px] mt-1 bg-white/70" />
@@ -66,12 +67,12 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
             />
           </div>
 
-          <div className="flex justify-start items-center gap-4">
+          <div className="flex justify-start items-center gap-4 tablet:text-sm">
             <p>IMDb {OneNumberAfterDecimal(vote_average)}</p>
             <p>{adult ? "Adult" : "Universal"}</p>
             <p>{episodes.length} episodes</p>
           </div>
-          <div className="flex items-center gap-2 my-1">
+          <div className="flex items-center gap-2 my-1 tablet:text-sm">
             {genres.map((genre, i) => (
               <p key={i}>{genre.name}</p>
             ))}

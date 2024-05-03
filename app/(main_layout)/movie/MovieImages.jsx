@@ -52,7 +52,7 @@ const MovieImages = ({ id }) => {
 
   return (
     <>
-      <div className="grid grid-cols-4  gap-4 px-5 pb-20 pt-10">
+      <div className="grid grid-cols-4 sm_lap:grid-cols-3 tablet:grid-cols-2  gap-4 px-5 pb-20 pt-10">
         {images.map((obj, i) => {
           const { path } = obj;
 

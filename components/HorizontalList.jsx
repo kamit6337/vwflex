@@ -43,6 +43,27 @@ const HorizontalList = ({
   });
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 680) {
+        setNumImagePerScreen(2);
+      } else if (window.innerWidth < 900) {
+        setNumImagePerScreen(3);
+      } else {
+        setNumImagePerScreen(4);
+      }
+    };
+
+    // Initial call to handleResize
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     if (mediaData && mediaData.length > 0) return;
     if (!promise) return;
 
@@ -157,7 +178,9 @@ const HorizontalList = ({
     >
       {title && (
         <div className="flex justify-between items-center">
-          <p className="ml-14 text-xl font-semibold tracking-wider">{title}</p>
+          <p className="ml-14 text-xl font-semibold tracking-wider tablet:ml-10 tablet:text-base">
+            {title}
+          </p>
 
           {trending && (
             <select
@@ -177,7 +200,7 @@ const HorizontalList = ({
       )}
 
       <div className="relative">
-        <div className="ml-10 mr-5">
+        <div className="ml-10 tablet:ml-4 mr-5">
           <div
             className="flex transition-all duration-500"
             style={{ translate: `${100 * index}%` }}
@@ -193,6 +216,7 @@ const HorizontalList = ({
                       mediaIndex={mediaIndex}
                       resetMediaIndex={resetMediaIndex}
                       handleMouseEnter={handleMouseEnter}
+                      perScreen={numImagePerScrren}
                     />
                   );
                 }
@@ -206,6 +230,7 @@ const HorizontalList = ({
                       mediaIndex={mediaIndex}
                       resetMediaIndex={resetMediaIndex}
                       handleMouseEnter={handleMouseEnter}
+                      perScreen={numImagePerScrren}
                     />
                   );
                 }
@@ -250,12 +275,9 @@ const HorizontalList = ({
         )}
       </div>
 
-      <div className="ml-14 w-max h-10 ">
+      <div className="ml-14 w-max h-10 tablet:h-8 ">
         {index <= -2 && (
-          <p
-            className="h-full rounded-3xl text-xs border border-white px-3 py-2 cursor-pointer flex justify-center items-center"
-            onClick={() => setIndex(0)}
-          >
+          <p className="back_to_start" onClick={() => setIndex(0)}>
             Back to Start
           </p>
         )}

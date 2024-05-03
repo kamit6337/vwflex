@@ -3,6 +3,10 @@ const priceInMillions = (money) => {
 
   const convertToMillions = Math.floor(Number(money) / 1000000);
 
+  if (convertToMillions < 1) {
+    return "No data yet";
+  }
+
   // 2054 millions
   const convertToString = String(convertToMillions);
 
