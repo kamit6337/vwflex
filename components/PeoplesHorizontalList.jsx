@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-
 import { Icons } from "@assets/icons";
 import { fixedState } from "@redux/slice/fixedSlice";
 import debounce from "@utils/javascript/debounce";
@@ -71,14 +70,21 @@ const PeoplesHorizontalList = ({
     if (!promise) return;
 
     if (inView) {
-      setIsLoadingInitialQuery(true);
-
       const fetchInitialQuery = async () => {
-        const query = await promise();
-        const filter = query.data.filter((person) => person.profile_path);
-        setPeoplesData(filter);
-        setTotalpages(query.totalPages);
-        setIsLoadingInitialQuery(false);
+        try {
+          setIsLoadingInitialQuery(true);
+          const query = await promise();
+          const filter = query.data.filter((person) => person.profile_path);
+          setPeoplesData(filter);
+          setTotalpages(query.totalPages);
+        } catch (error) {
+          console.error(
+            "error occured in finding next page of Peoples",
+            error?.message
+          );
+        } finally {
+          setIsLoadingInitialQuery(false);
+        }
       };
 
       fetchInitialQuery();
@@ -120,7 +126,7 @@ const PeoplesHorizontalList = ({
     }
 
     return maxIndexGoesTo;
-  }, [peoplesData]);
+  }, [peoplesData, numberOfProfile]);
 
   useEffect(() => {
     if (index >= 0) {
@@ -171,7 +177,9 @@ const PeoplesHorizontalList = ({
     );
   }
 
-  console.log("numberOfProfile", numberOfProfile);
+  if (!peoplesData || peoplesData?.length === 0) {
+    return;
+  }
 
   return (
     <section

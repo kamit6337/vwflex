@@ -68,13 +68,18 @@ const HorizontalList = ({
     if (!promise) return;
 
     if (inView) {
-      setIsLoadingInitialQuery(true);
       const fetchInitialQuery = async () => {
-        const query = await promise();
-        const filter = query.data.filter((media) => media.backdrop_path);
-        setMediaData(filter);
-        setTotalpages(query.totalPages);
-        setIsLoadingInitialQuery(false);
+        setIsLoadingInitialQuery(true);
+        try {
+          const query = await promise();
+          const filter = query.data.filter((media) => media.backdrop_path);
+          setMediaData(filter);
+          setTotalpages(query.totalPages);
+        } catch (error) {
+          console.error("Error in getting Media when inview", error?.message);
+        } finally {
+          setIsLoadingInitialQuery(false);
+        }
       };
 
       fetchInitialQuery();
@@ -88,15 +93,21 @@ const HorizontalList = ({
       if (currentPage <= totalPages) {
         setIsLoading(true);
 
-        const query = await promise(currentPage);
-        const filter = query.data.filter((media) => media.backdrop_path);
-
-        setMediaData((prev) => [...prev, ...filter]);
-        setPage((prev) => prev + 1);
+        try {
+          const query = await promise(currentPage);
+          const filter = query.data.filter((media) => media.backdrop_path);
+          setMediaData((prev) => [...prev, ...filter]);
+          setPage((prev) => prev + 1);
+        } catch (error) {
+          console.error(
+            "error occured in finding next page of Movies or TV Shows",
+            error?.message
+          );
+        } finally {
+          setStartFetching(false);
+          setIsLoading(false);
+        }
       }
-
-      setStartFetching(false);
-      setIsLoading(false);
     };
 
     if (startFetching && !isLoading) {
@@ -170,11 +181,14 @@ const HorizontalList = ({
     );
   }
 
+  if (!mediaData || mediaData?.length === 0) {
+    return <div className="h-1" ref={instant ? null : ref} />;
+  }
+
   return (
     <section
       className="flex flex-col gap-4 relative pt-5 pb-16"
       style={{ zIndex }}
-      ref={instant ? null : ref}
     >
       {title && (
         <div className="flex justify-between items-center">
