@@ -21,16 +21,27 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   await connectToDB();
 
+  if (process.env.NODE_ENV === "production") {
+    // Disable React DevTools
+    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
+      for (const prop in window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] =
+          typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] === "function"
+            ? () => {}
+            : null;
+      }
+    }
+  }
+
   return (
     <html lang="en" className={poppins.className}>
       <body className="w-full h-screen">
         <OfflineDetector />
         <ReactQueryProvider>
-
-        <ReactReduxProvider>
-          <main>{children}</main>
-          <ScrollToTop />
-        </ReactReduxProvider>
+          <ReactReduxProvider>
+            <main>{children}</main>
+            <ScrollToTop />
+          </ReactReduxProvider>
         </ReactQueryProvider>
       </body>
     </html>

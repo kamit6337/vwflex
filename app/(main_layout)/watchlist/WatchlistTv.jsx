@@ -2,7 +2,6 @@
 
 import fetchTvShowDetails from "@api/query/tv/fetchTvShowDetails";
 import TvHorizontalList from "@components/TvHorizontalList";
-import Loading from "@containers/Loading";
 import { watchlistState } from "@redux/slice/watchlistSlice";
 import { useQueries } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
@@ -15,10 +14,10 @@ const WatchlistTvPage = () => {
       const { id, season } = obj;
 
       return {
-        queryKey: ["Watchlist TV Shows", id, season],
+        queryKey: ["TV Show Detail", id, season],
         queryFn: () => fetchTvShowDetails(id, season),
         staleTime: Infinity,
-        enabled: tv.length > 0,
+        enabled: !!id,
       };
     }),
     combine: (results) => {

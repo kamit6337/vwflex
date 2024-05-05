@@ -5,7 +5,7 @@ const nextConfig = {
       // Enable parsing of JSON in the request body
       {
         source: "/api/:path*",
-        destination: "http://localhost:3000/api/:path*",
+        destination: "/api/:path*",
       },
     ];
   },

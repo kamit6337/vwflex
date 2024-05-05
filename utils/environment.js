@@ -9,6 +9,7 @@ const environment = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   MY_GMAIL_PASSWORD: process.env.MY_GMAIL_PASSWORD,
   MY_GMAIL_ID: process.env.MY_GMAIL_ID,
+  NODE_ENV: process.env.NODE_ENV,
   SALT_ROUND: Number(process.env.SALT_ROUND),
 };
 
