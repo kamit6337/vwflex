@@ -3,8 +3,6 @@
 
 import { useEffect, useState } from "react";
 import Episodes from "./Episodes";
-import { useSelector } from "react-redux";
-import { fixedState } from "@redux/slice/fixedSlice";
 import Recommendations from "./Recommendation";
 import Similar from "./Similar";
 import TvShowsImages from "./TvShowsImages";
@@ -26,7 +24,6 @@ const Additional = ({
   season,
 }) => {
   const [optionSelected, setOptionSelected] = useState(episodesSection);
-  const { imageDetail } = useSelector(fixedState);
   const {
     production_companies,
     production_countries,
@@ -106,14 +103,14 @@ const Additional = ({
           >
             Images
           </p>
-          {/* <p
+          <p
             className={`${
               optionSelected === reviews && "border-b-2 border-white"
             } hover:border-b-2 hover:border-white cursor-pointer`}
             onClick={() => scrollOptionsToTop(reviews)}
           >
             Reviews
-          </p> */}
+          </p>
         </div>
       </div>
 
@@ -204,7 +201,7 @@ const Additional = ({
 
       {optionSelected === imageSection && <TvShowsImages id={id} />}
 
-      {/* {optionSelected === reviews && <Reviews id={id} />} */}
+      {optionSelected === reviews && <Reviews id={id} />}
     </>
   );
 };

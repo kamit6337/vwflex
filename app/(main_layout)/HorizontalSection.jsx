@@ -1,9 +1,12 @@
+import { QueryClient } from "@tanstack/react-query";
 import PeoplesHorizontalList from "../../components/PeoplesHorizontalList";
 import HorizontalList from "@components/HorizontalList";
 
 const MOVIE = "movie";
 const TV = "tv";
 const PERSON = "person";
+
+const queryClient = new QueryClient();
 
 const HorizontalSection = async ({
   id,
@@ -16,7 +19,10 @@ const HorizontalSection = async ({
 }) => {
   let query;
   if (instant) {
-    query = await promise();
+    query = await queryClient.fetchQuery({
+      queryKey: [title, id],
+      queryFn: () => promise(),
+    });
   }
 
   if (trending && (type === MOVIE || type === TV)) {

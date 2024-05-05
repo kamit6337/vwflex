@@ -5,11 +5,19 @@ import Additional from "./Additional";
 import ImageOfDetail from "@components/ImageOfDetail";
 import WatchlistPart from "./WatchlistPart";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
+import { QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export const generateMetadata = async ({
   searchParams: { id, season = null },
 }) => {
-  const query = await fetchTvShowDetails(id, season);
+  const query = await queryClient.fetchQuery({
+    queryKey: ["TV Show Detail", id, season],
+    queryFn: () => fetchTvShowDetails(id, season),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   return {
     title: query?.details.original_name,
@@ -18,7 +26,15 @@ export const generateMetadata = async ({
 };
 
 const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
-  const query = await fetchTvShowDetails(id, season);
+  const query = await queryClient.fetchQuery({
+    queryKey: ["TV Show Detail", id, season],
+    queryFn: async () => {
+      return await fetchTvShowDetails(id, season);
+    },
+    staleTime: Infinity,
+    enabled: !!id,
+  });
+
   if (!query) {
     throw new Error("Issue in getting tv show detail");
   }

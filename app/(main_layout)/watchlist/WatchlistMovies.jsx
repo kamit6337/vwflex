@@ -4,76 +4,61 @@ import fetchMovieDetail from "@api/query/movie/fetchMovieDetail";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
 import { watchlistState } from "@redux/slice/watchlistSlice";
-import { useEffect, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
 const MOVIE = "movie";
 
 const WatchlistMoviesPage = () => {
   const { movies } = useSelector(watchlistState);
-  const [watchlistMovies, setWatchlistMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // MARK: WATCHLIST MOVIES QUERY
-  useEffect(() => {
-    if (!movies || movies.length === 0) {
-      setWatchlistMovies([]);
-      setIsLoading(false);
-      return;
-    }
-    const fetchWatchlistMovies = async () => {
-      try {
-        const promises = movies.map((id) => {
-          return fetchMovieDetail(Number(id), {
-            images: false,
-            recommendations: false,
-            reviews: false,
-            similar: false,
-          });
-        });
+  const { data, error, isLoading } = useQueries({
+    queries: movies.map((id) => ({
+      queryKey: ["Watchlist Movies", id],
+      queryFn: () =>
+        fetchMovieDetail(Number(id), {
+          images: false,
+          recommendations: false,
+          reviews: false,
+          similar: false,
+        }),
+      staleTime: Infinity,
+      enabled: movies.length > 0,
+    })),
+    combine: (results) => {
+      return {
+        data: results.map((result) => result.data),
+        isLoading: results.some((result) => result.isLoading),
+        error: results.some((result) => result.error),
+      };
+    },
+  });
 
-        const fetchAllMovies = await Promise.all(promises);
+  if (movies.length === 0) return;
 
-        let modifyMovies = fetchAllMovies.map((query) => {
-          return { ...query.details };
-        });
-        modifyMovies = {
-          data: modifyMovies,
-        };
-        setWatchlistMovies(modifyMovies);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchWatchlistMovies();
-  }, [movies]);
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-96">
-        <Loading />
-      </div>
-    );
-  }
+  if (isLoading) return;
 
   if (error) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
-        <p>{error}</p>
+        <p>Sorry, there is some issue in getting your watchlist movies</p>
       </div>
     );
   }
 
+  let modifyMovies = data.map((query) => {
+    return { ...query.details };
+  });
+  modifyMovies = {
+    data: modifyMovies,
+  };
+
   return (
     <>
       <div>
-        {watchlistMovies.data?.length > 0 && (
+        {modifyMovies.data?.length > 0 && (
           <HorizontalList
-            data={watchlistMovies}
+            data={modifyMovies}
             title={"Watchlist Movies"}
             zIndex={499}
             type={MOVIE}

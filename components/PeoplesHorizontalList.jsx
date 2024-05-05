@@ -2,6 +2,7 @@
 "use client";
 import { Icons } from "@assets/icons";
 import { fixedState } from "@redux/slice/fixedSlice";
+import { useQuery } from "@tanstack/react-query";
 import debounce from "@utils/javascript/debounce";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
@@ -33,7 +34,6 @@ const PeoplesHorizontalList = ({
   const [personIndex, setPersonIndex] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingInitialQuery, setIsLoadingInitialQuery] = useState(false);
   const [startFetching, setStartFetching] = useState(false);
   const [selectTime, setSelectTime] = useState(DAY);
   const { imageDetail } = useSelector(fixedState);
@@ -42,6 +42,21 @@ const PeoplesHorizontalList = ({
     triggerOnce: true,
     rootMargin: "100px 0px 0px 0px",
   });
+
+  const { isLoading: isLoadingInitialQuery, data: query } = useQuery({
+    queryKey: [title, id],
+    queryFn: () => promise(),
+    staleTime: Infinity,
+    enabled: !!promise && !instant && inView,
+  });
+
+  useEffect(() => {
+    if (query) {
+      const filter = query.data.filter((media) => media.profile_path);
+      setPeoplesData(filter);
+      setTotalpages(query.totalPages);
+    }
+  }, [query]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,33 +78,6 @@ const PeoplesHorizontalList = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
-  useEffect(() => {
-    if (peoplesData && peoplesData.length > 0) return;
-
-    if (!promise) return;
-
-    if (inView) {
-      const fetchInitialQuery = async () => {
-        try {
-          setIsLoadingInitialQuery(true);
-          const query = await promise();
-          const filter = query.data.filter((person) => person.profile_path);
-          setPeoplesData(filter);
-          setTotalpages(query.totalPages);
-        } catch (error) {
-          console.error(
-            "error occured in finding next page of Peoples",
-            error?.message
-          );
-        } finally {
-          setIsLoadingInitialQuery(false);
-        }
-      };
-
-      fetchInitialQuery();
-    }
-  }, [inView, peoplesData, promise]);
 
   useEffect(() => {
     const fetchQuery = async () => {
@@ -178,14 +166,13 @@ const PeoplesHorizontalList = ({
   }
 
   if (!peoplesData || peoplesData?.length === 0) {
-    return;
+    return <div className="h-1" ref={instant ? null : ref} />;
   }
 
   return (
     <section
       className="flex flex-col gap-4 relative pt-5 pb-16"
       style={{ zIndex }}
-      ref={instant ? null : ref}
     >
       {title && (
         <div className="flex justify-between items-center">

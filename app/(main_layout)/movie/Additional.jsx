@@ -15,13 +15,7 @@ const imageSection = "images";
 const reviews = "reviews";
 
 const Additional = ({ recommendations, details, id }) => {
-  const [optionSelected, setOptionSelected] = useState(recommendationSection);
-  const [refreshRecommendations, setRefreshRecommendations] =
-    useState(recommendations);
-
-  useEffect(() => {
-    setRefreshRecommendations(recommendations);
-  }, [id, recommendations]);
+  const [optionSelected, setOptionSelected] = useState(null);
 
   const {
     production_companies,
@@ -95,14 +89,14 @@ const Additional = ({ recommendations, details, id }) => {
           >
             Images
           </p>
-          {/* <p
+          <p
             className={`${
               optionSelected === reviews && "border-b-2 border-white"
             } hover:border-b-2 hover:border-white cursor-pointer`}
             onClick={() => scrollOptionsToTop(reviews)}
           >
             Reviews
-          </p> */}
+          </p>
         </div>
       </div>
 
@@ -195,14 +189,14 @@ const Additional = ({ recommendations, details, id }) => {
       )}
 
       {optionSelected === recommendationSection && (
-        <HorizontalList data={refreshRecommendations} type={MOVIE} />
+        <HorizontalList id={id} data={recommendations} type={MOVIE} />
       )}
 
       {optionSelected === imageSection && <MovieImages id={id} />}
 
       {optionSelected === similarSection && <SimilarMovies id={id} />}
 
-      {/* {optionSelected === reviews && <Reviews id={id} />} */}
+      {optionSelected === reviews && <Reviews id={id} />}
     </>
   );
 };

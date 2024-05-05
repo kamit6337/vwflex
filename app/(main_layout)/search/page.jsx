@@ -1,9 +1,12 @@
 import searchQuery from "@api/query/search/searchQuery";
 import HorizontalList from "@components/HorizontalList";
 import PeoplesHorizontalList from "@components/PeoplesHorizontalList";
+import { QueryClient } from "@tanstack/react-query";
 
 const MOVIE = "movie";
 const TV = "tv";
+
+const queryClient = new QueryClient();
 
 export const generateMetadata = async ({ searchParams: { q } }) => {
   return {
@@ -13,7 +16,14 @@ export const generateMetadata = async ({ searchParams: { q } }) => {
 };
 
 const SearchPage = async ({ searchParams: { q } }) => {
-  const searchResults = await searchQuery(q);
+  const searchResults = await queryClient.fetchQuery({
+    queryKey: ["Search", q],
+    queryFn: async () => {
+      return await searchQuery(q);
+    },
+    staleTime: Infinity,
+    enabled: !!q,
+  });
 
   if (!searchResults) {
     throw new Error("Issue in finding the result");

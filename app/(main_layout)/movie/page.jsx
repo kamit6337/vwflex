@@ -5,9 +5,17 @@ import Additional from "./Additional";
 import WatchlistPart from "./WatchlistPart";
 import ImageOfDetail from "@components/ImageOfDetail";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
+import { QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export const generateMetadata = async ({ searchParams: { id } }) => {
-  const query = await fetchMovieDetail(Number(id));
+  const query = await queryClient.fetchQuery({
+    queryKey: ["Movie Detail", id],
+    queryFn: () => fetchMovieDetail(Number(id)),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   return {
     title: query?.details.title,
@@ -16,7 +24,14 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
 };
 
 const MovieDetailPage = async ({ searchParams: { id } }) => {
-  const query = await fetchMovieDetail(Number(id));
+  const query = await queryClient.fetchQuery({
+    queryKey: ["Movie Detail", id],
+    queryFn: async () => {
+      return await fetchMovieDetail(Number(id));
+    },
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   if (!query) {
     throw new Error("Issue in getting movie detail");

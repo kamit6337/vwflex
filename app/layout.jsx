@@ -4,6 +4,7 @@ import ReactReduxProvider from "@providers/ReactReduxProvider";
 import ScrollToTop from "@lib/ScrollToTop";
 import connectToDB from "@utils/mongoose/connectToDB";
 import OfflineDetector from "@lib/OfflineDetector";
+import ReactQueryProvider from "@providers/ReactQueryProvider";
 
 // If loading a variable font, you don't need to specify the font weight
 const poppins = Poppins({
@@ -24,10 +25,13 @@ export default async function RootLayout({ children }) {
     <html lang="en" className={poppins.className}>
       <body className="w-full h-screen">
         <OfflineDetector />
+        <ReactQueryProvider>
+
         <ReactReduxProvider>
           <main>{children}</main>
           <ScrollToTop />
         </ReactReduxProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );

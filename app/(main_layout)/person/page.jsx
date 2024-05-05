@@ -3,9 +3,16 @@ import { fixed } from "@api/query/initialFetch";
 import fetchPersonDetails from "@api/query/peoples/fetchPersonDetails";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import Additional from "./Additional";
+import { QueryClient } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export const generateMetadata = async ({ searchParams: { id } }) => {
-  const query = await fetchPersonDetails(Number(id));
+  const query = await queryClient.fetchQuery({
+    queryKey: ["Person Detail", id],
+    queryFn: () => fetchPersonDetails(Number(id)),
+    staleTime: Infinity,
+  });
 
   return {
     title: query?.details.name,
@@ -16,7 +23,13 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
 const PersonDetailPage = async ({ searchParams: { id } }) => {
   const fixedQuery = await fixed();
 
-  const query = await fetchPersonDetails(Number(id));
+  const query = await queryClient.fetchQuery({
+    queryKey: ["Person Detail", id],
+    queryFn: async () => {
+      return await fetchPersonDetails(Number(id));
+    },
+    staleTime: Infinity,
+  });
 
   if (!query) return;
 

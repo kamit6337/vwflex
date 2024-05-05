@@ -1,49 +1,29 @@
 /* eslint-disable @next/next/no-img-element */
 import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
-import { useEffect, useState } from "react";
 import Loading from "@containers/Loading";
 import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
-import Toastify from "@lib/Toastify";
+import { useQuery } from "@tanstack/react-query";
 
 const Reviews = ({ id }) => {
   const { imageDetail } = useSelector(fixedState);
-  const [list, setList] = useState(null);
-  const [totalPages, setTotalPages] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { ToastContainer, showErrorMessage } = Toastify();
+  const { isLoading, data } = useQuery({
+    queryKey: ["Movie Reviews", id],
+    queryFn: () => fetchMovieAdditional(id, { reviews: true }),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
-  useEffect(() => {
-    if (!id) return;
+  if (isLoading) {
+    return (
+      <div className="w-full h-96">
+        <Loading />
+      </div>
+    );
+  }
 
-    const fetchMovieReviews = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetchMovieAdditional(id, { reviews: true });
-        console.log("response", response);
-        setTotalPages(response.totalPages);
-        setCurrentPage(response.page);
-        setList(response.data);
-      } catch (error) {
-        showErrorMessage({ message: error.message });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchMovieReviews();
-  }, [id]);
-
-  // if (isLoading) {
-  //   return (
-  //     <div className="w-full h-96">
-  //       <Loading />
-  //     </div>
-  //   );
-  // }
-
-  if (!list || list.length === 0) {
+  if (!data || data.data.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have reviews</p>
@@ -54,7 +34,7 @@ const Reviews = ({ id }) => {
   return (
     <>
       <div className="px-4 py-20 flex flex-col gap-20">
-        {list.map((obj, i) => {
+        {data.data.map((obj, i) => {
           const {
             author,
             content,
@@ -90,7 +70,6 @@ const Reviews = ({ id }) => {
           );
         })}
       </div>
-      <ToastContainer />
     </>
   );
 };

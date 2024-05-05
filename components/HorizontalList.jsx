@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import MovieCard from "./MovieCard";
 import TvCard from "./TvCard";
+import { useQuery } from "@tanstack/react-query";
 
 const MOVIE = "movie";
 const TV = "tv";
@@ -20,7 +21,7 @@ const HorizontalList = ({
   trending = false,
   promise = null,
   zIndex = 10,
-  instant = false,
+  instant,
 }) => {
   const [totalPages, setTotalpages] = useState(data?.totalPages);
   const [index, setIndex] = useState(0);
@@ -33,7 +34,7 @@ const HorizontalList = ({
   const [mediaIndex, setMediaIndex] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingInitialQuery, setIsLoadingInitialQuery] = useState(false);
+  // const [isLoadingInitialQuery, setIsLoadingInitialQuery] = useState(false);
   const [startFetching, setStartFetching] = useState(false);
   const [selectTime, setSelectTime] = useState(DAY);
 
@@ -41,6 +42,20 @@ const HorizontalList = ({
     triggerOnce: true,
     rootMargin: "100px 0px 0px 0px",
   });
+
+  const { data: query } = useQuery({
+    queryKey: [title, id],
+    queryFn: () => promise(),
+    staleTime: Infinity,
+    enabled: !!promise && !instant && inView,
+  });
+
+  useEffect(() => {
+    if (id) {
+      setMediaData(data?.data.filter((media) => media.backdrop_path));
+      setTotalpages(data?.totalPages);
+    }
+  }, [id, data]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -55,36 +70,19 @@ const HorizontalList = ({
 
     // Initial call to handleResize
     handleResize();
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   useEffect(() => {
-    if (mediaData && mediaData.length > 0) return;
-    if (!promise) return;
-
-    if (inView) {
-      const fetchInitialQuery = async () => {
-        setIsLoadingInitialQuery(true);
-        try {
-          const query = await promise();
-          const filter = query.data.filter((media) => media.backdrop_path);
-          setMediaData(filter);
-          setTotalpages(query.totalPages);
-        } catch (error) {
-          console.error("Error in getting Media when inview", error?.message);
-        } finally {
-          setIsLoadingInitialQuery(false);
-        }
-      };
-
-      fetchInitialQuery();
+    if (query) {
+      const filter = query.data.filter((media) => media.backdrop_path);
+      setMediaData(filter);
+      setTotalpages(query.totalPages);
     }
-  }, [inView, mediaData, promise]);
+  }, [query]);
 
   useEffect(() => {
     const fetchQuery = async () => {
@@ -172,14 +170,6 @@ const HorizontalList = ({
     );
     setMediaData(fetchTrendingMovie);
   };
-
-  if (isLoadingInitialQuery) {
-    return (
-      <div className="w-full h-40 flex justify-center items-center">
-        <div className="loading" />
-      </div>
-    );
-  }
 
   if (!mediaData || mediaData?.length === 0) {
     return <div className="h-1" ref={instant ? null : ref} />;

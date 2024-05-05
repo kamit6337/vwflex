@@ -1,38 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
 import Loading from "@containers/Loading";
-import Toastify from "@lib/Toastify";
 import { fixedState } from "@redux/slice/fixedSlice";
 import { toggleInLargeImage } from "@redux/slice/toggleSlice";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 const MovieImages = ({ id }) => {
   const dispatch = useDispatch();
   const { imageDetail } = useSelector(fixedState);
-  const [images, setImages] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const { ToastContainer, showErrorMessage } = Toastify();
-
-  useEffect(() => {
-    if (id) {
-      const fetchImages = async () => {
-        setIsLoading(true);
-        try {
-          const response = await fetchMovieAdditional(id, { images: true });
-
-          setImages(response);
-        } catch (error) {
-          showErrorMessage({ message: error.message });
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchImages();
-    }
-  }, [id]);
+  const { data, isLoading } = useQuery({
+    queryKey: ["Movie Images", id],
+    queryFn: () => fetchMovieAdditional(id, { images: true }),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   if (isLoading) {
     return (
@@ -42,7 +25,7 @@ const MovieImages = ({ id }) => {
     );
   }
 
-  if (!images || images.length === 0) {
+  if (!data || data.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have images</p>
@@ -53,7 +36,7 @@ const MovieImages = ({ id }) => {
   return (
     <>
       <div className="grid grid-cols-4 sm_lap:grid-cols-3 tablet:grid-cols-2  gap-4 px-5 pb-20 pt-10">
-        {images.map((obj, i) => {
+        {data.map((obj, i) => {
           const { path } = obj;
 
           const size = imageDetail.backdrop_sizes[0];
@@ -80,7 +63,6 @@ const MovieImages = ({ id }) => {
           );
         })}
       </div>
-      <ToastContainer />
     </>
   );
 };

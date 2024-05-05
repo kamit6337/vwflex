@@ -1,34 +1,17 @@
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
-import Toastify from "@lib/Toastify";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const TV = "tv";
 
 const Similar = ({ id }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
-
-  const { ToastContainer, showErrorMessage } = Toastify();
-
-  useEffect(() => {
-    if (id) {
-      const fetchImages = async () => {
-        setIsLoading(true);
-        try {
-          const response = await fetchTvShowAdditional(id, { similar: true });
-          setData(response);
-        } catch (error) {
-          showErrorMessage({ message: error.message });
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchImages();
-    }
-  }, [id]);
+  const { isLoading, data } = useQuery({
+    queryKey: ["Similar TV Shows", id],
+    queryFn: () => fetchTvShowAdditional(id, { similar: true }),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   if (isLoading) {
     return (
@@ -48,8 +31,7 @@ const Similar = ({ id }) => {
 
   return (
     <>
-      <HorizontalList data={data} type={TV} />;
-      <ToastContainer />
+      <HorizontalList data={data} type={TV} />
     </>
   );
 };

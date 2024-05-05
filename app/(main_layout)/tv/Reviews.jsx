@@ -1,40 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
-import { useEffect, useState } from "react";
 import Loading from "@containers/Loading";
 import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
 import makeTimeFromUTC from "@utils/javascript/makeTimeFromUTC";
 import ExpandableText from "@lib/ExpandableText";
-import Toastify from "@lib/Toastify";
+import { useQuery } from "@tanstack/react-query";
 
 const Reviews = ({ id }) => {
   const { imageDetail } = useSelector(fixedState);
-  const [list, setList] = useState([]);
-  const [totalPages, setTotalPages] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
 
-  const { ToastContainer, showErrorMessage } = Toastify();
-
-  useEffect(() => {
-    if (!id) return;
-
-    const fetchMovieReviews = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetchTvShowAdditional(id, { reviews: true });
-
-        setTotalPages(response.totalPages);
-        setCurrentPage(response.page);
-        setList(response.data);
-        setIsLoading(false);
-      } catch (error) {
-        showErrorMessage({ message: error.message });
-      }
-    };
-    fetchMovieReviews();
-  }, [id, showErrorMessage]);
+  const { isLoading, data } = useQuery({
+    queryKey: ["TV Shows Reviews", id],
+    queryFn: () => fetchTvShowAdditional(id, { reviews: true }),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   if (isLoading) {
     return (
@@ -44,7 +25,7 @@ const Reviews = ({ id }) => {
     );
   }
 
-  if (list.length === 0) {
+  if (!data || data.data.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have reviews</p>
@@ -55,7 +36,7 @@ const Reviews = ({ id }) => {
   return (
     <>
       <div className="px-4 py-20 flex flex-col gap-10">
-        {list.map((obj, i) => {
+        {data.data.map((obj, i) => {
           const {
             author,
             content,
@@ -94,7 +75,6 @@ const Reviews = ({ id }) => {
           );
         })}
       </div>
-      <ToastContainer />
     </>
   );
 };

@@ -1,33 +1,17 @@
 import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
-import Toastify from "@lib/Toastify";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const MOVIE = "movie";
 
 const SimilarMovies = ({ id }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState(null);
-  const { ToastContainer, showErrorMessage } = Toastify();
-
-  useEffect(() => {
-    if (id) {
-      const fetchImages = async () => {
-        setIsLoading(true);
-        try {
-          const response = await fetchMovieAdditional(id, { similar: true });
-          setData(response);
-        } catch (error) {
-          showErrorMessage({ message: error.message });
-        } finally {
-          setIsLoading(false);
-        }
-      };
-
-      fetchImages();
-    }
-  }, [id]);
+  const { data, isLoading } = useQuery({
+    queryKey: ["Similar Movies", id],
+    queryFn: () => fetchMovieAdditional(id, { similar: true }),
+    staleTime: Infinity,
+    enabled: !!id,
+  });
 
   if (isLoading) {
     return (
@@ -47,8 +31,7 @@ const SimilarMovies = ({ id }) => {
 
   return (
     <>
-      <HorizontalList data={data} type={MOVIE} />;
-      <ToastContainer />
+      <HorizontalList data={data} type={MOVIE} />
     </>
   );
 };
