@@ -49,8 +49,6 @@ const SearchPage = async ({ searchParams: { q } }) => {
     data: filterPeoples,
   };
 
-  console.log("movies data", moviesData);
-
   return (
     <>
       <div className="p-10 tablet:p-5">

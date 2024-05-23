@@ -51,12 +51,11 @@ const HorizontalList = ({
   });
 
   useEffect(() => {
-    if (id) {
-      console.log("data", data);
+    if (data?.data?.length > 0) {
       setMediaData(data?.data.filter((media) => media.backdrop_path));
       setTotalpages(data?.totalPages);
     }
-  }, [id, data]);
+  }, [data]);
 
   useEffect(() => {
     const handleResize = () => {

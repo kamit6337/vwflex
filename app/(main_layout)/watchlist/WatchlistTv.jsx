@@ -9,18 +9,15 @@ import { useSelector } from "react-redux";
 
 const WatchlistTvPage = () => {
   const { tv } = useSelector(watchlistState);
+  console.log("tv", tv);
 
   const { data, error, isLoading } = useQueries({
-    queries: tv.map((obj) => {
-      const { id, season } = obj;
-
-      return {
-        queryKey: ["TV Show Detail", id, season],
-        queryFn: () => fetchTvShowDetails(id, season),
-        staleTime: Infinity,
-        enabled: !!id,
-      };
-    }),
+    queries: tv.map(({ id, season }) => ({
+      queryKey: ["TV Show Detail", id, season],
+      queryFn: () => fetchTvShowDetails(id, season),
+      staleTime: Infinity,
+      enabled: !!id,
+    })),
     combine: (results) => {
       return {
         data: results.map((result) => result.data),
@@ -30,7 +27,9 @@ const WatchlistTvPage = () => {
     },
   });
 
-  if (tv.length === 0) return;
+  console.log("data", data);
+
+  if (tv.length === 0 || data.length === 0) return;
 
   if (isLoading) return;
 
