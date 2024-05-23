@@ -2,6 +2,7 @@
 
 import fetchMovieDetail from "@api/query/movie/fetchMovieDetail";
 import HorizontalList from "@components/HorizontalList";
+import ShowErrorMsg from "@components/ShowErrorMsg";
 import Loading from "@containers/Loading";
 import { watchlistState } from "@redux/slice/watchlistSlice";
 import { useQueries } from "@tanstack/react-query";
@@ -40,9 +41,9 @@ const WatchlistMoviesPage = () => {
 
   if (error) {
     return (
-      <div className="w-full h-96 flex justify-center items-center">
-        <p>Sorry, there is some issue in getting your watchlist movies</p>
-      </div>
+      <ShowErrorMsg
+        message={"Sorry, there is some issue in getting your watchlist movies"}
+      />
     );
   }
 

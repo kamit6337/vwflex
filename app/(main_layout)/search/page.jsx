@@ -1,7 +1,11 @@
 import searchQuery from "@api/query/search/searchQuery";
 import HorizontalList from "@components/HorizontalList";
 import PeoplesHorizontalList from "@components/PeoplesHorizontalList";
-import { QueryClient } from "@tanstack/react-query";
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from "@tanstack/react-query";
 
 const MOVIE = "movie";
 const TV = "tv";
@@ -45,6 +49,8 @@ const SearchPage = async ({ searchParams: { q } }) => {
     data: filterPeoples,
   };
 
+  console.log("movies data", moviesData);
+
   return (
     <>
       <div className="p-10 tablet:p-5">
@@ -59,29 +65,35 @@ const SearchPage = async ({ searchParams: { q } }) => {
       )}
 
       {moviesData.data?.length > 0 && (
-        <HorizontalList
-          data={moviesData}
-          type={MOVIE}
-          title={"Searched Movies"}
-          zIndex={9}
-        />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <HorizontalList
+            data={moviesData}
+            type={MOVIE}
+            title={"Searched Movies"}
+            zIndex={9}
+          />
+        </HydrationBoundary>
       )}
 
       {tvData.data?.length > 0 && (
-        <HorizontalList
-          data={tvData}
-          type={TV}
-          title={"Searched TV Shows"}
-          zIndex={7}
-        />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <HorizontalList
+            data={tvData}
+            type={TV}
+            title={"Searched TV Shows"}
+            zIndex={7}
+          />
+        </HydrationBoundary>
       )}
 
       {peoplesData.data?.length > 0 && (
-        <PeoplesHorizontalList
-          data={peoplesData}
-          title={"Searched Peoples"}
-          zIndex={5}
-        />
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          <PeoplesHorizontalList
+            data={peoplesData}
+            title={"Searched Peoples"}
+            zIndex={5}
+          />
+        </HydrationBoundary>
       )}
     </>
   );

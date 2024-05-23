@@ -2,16 +2,18 @@
 "use client";
 
 import HorizontalList from "@components/HorizontalList";
+import { fixedState } from "@redux/slice/fixedSlice";
 import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 
 const creditsSection = "credits";
 const imagesSection = "images";
 const MOVIE = "movie";
 const TV = "tv";
 
-const Additional = ({ credits, images, fixed }) => {
+const Additional = ({ credits, images }) => {
   const [optionSelected, setOptionSelected] = useState(creditsSection);
-
+  const { imageDetail } = useSelector(fixedState);
   const ref = useRef(null);
 
   const scrollOptionsToTop = (value) => {
@@ -87,8 +89,8 @@ const Additional = ({ credits, images, fixed }) => {
           {images.map((image, i) => {
             const { ratio, path } = image;
 
-            const size = fixed.imageDetail.profile_sizes.at(-1);
-            const createBaseUrl = `${fixed.imageDetail.secure_base_url}${size}`;
+            const size = imageDetail.profile_sizes.at(-1);
+            const createBaseUrl = `${imageDetail.secure_base_url}${size}`;
             const createPhoto = `${createBaseUrl}${path}`;
 
             return (

@@ -59,6 +59,14 @@ const PeoplesHorizontalList = ({
   }, [query]);
 
   useEffect(() => {
+    if (id) {
+      const filter = data.data.filter((media) => media.profile_path);
+      setPeoplesData(filter);
+      setTotalpages(data.totalPages);
+    }
+  }, [id, data]);
+
+  useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 680) {
         setNumberOfProfile(4);

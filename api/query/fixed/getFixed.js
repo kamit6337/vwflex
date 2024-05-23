@@ -15,15 +15,22 @@ const url_list = [
 const getFixed = catchAsyncError(async () => {
   const response = {};
 
-  const [images, movieGenres, tvGenres, countries] = await Promise.all(
-    url_list.map(async (path) => {
-      return queryClient.fetchQuery({
-        queryKey: ["fixed", path],
-        queryFn: () => getReq(path),
-        staleTime: Infinity,
-      });
-    })
-  );
+  const [images, movieGenres, tvGenres, countries] = await Promise.all([
+    getReq("/configuration"),
+    getReq("/genre/movie/list"),
+    getReq("/genre/tv/list"),
+    getReq("/configuration/countries"),
+  ]);
+
+  // const [images, movieGenres, tvGenres, countries] = await Promise.all(
+  //   url_list.map(async (path) => {
+  //     return queryClient.fetchQuery({
+  //       queryKey: ["fixed", path],
+  //       queryFn: () => getReq(path),
+  //       staleTime: Infinity,
+  //     });
+  //   })
+  // );
 
   response.imageDetail = images.images;
   const newGenres = new Set([...movieGenres.genres, ...tvGenres.genres]);

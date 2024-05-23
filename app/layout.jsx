@@ -3,8 +3,8 @@ import { Poppins } from "next/font/google";
 import ReactReduxProvider from "@providers/ReactReduxProvider";
 import ScrollToTop from "@lib/ScrollToTop";
 import connectToDB from "@utils/mongoose/connectToDB";
-import OfflineDetector from "@lib/OfflineDetector";
 import ReactQueryProvider from "@providers/ReactQueryProvider";
+import OfflineDetector from "@lib/OfflineDetector";
 
 // If loading a variable font, you don't need to specify the font weight
 const poppins = Poppins({
@@ -20,18 +20,6 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   await connectToDB();
-
-  if (process.env.NODE_ENV === "production") {
-    // Disable React DevTools
-    if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === "object") {
-      for (const prop in window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
-        window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] =
-          typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] === "function"
-            ? () => {}
-            : null;
-      }
-    }
-  }
 
   return (
     <html lang="en" className={poppins.className}>

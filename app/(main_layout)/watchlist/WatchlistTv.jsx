@@ -1,6 +1,7 @@
 "use client";
 
 import fetchTvShowDetails from "@api/query/tv/fetchTvShowDetails";
+import ShowErrorMsg from "@components/ShowErrorMsg";
 import TvHorizontalList from "@components/TvHorizontalList";
 import { watchlistState } from "@redux/slice/watchlistSlice";
 import { useQueries } from "@tanstack/react-query";
@@ -35,9 +36,11 @@ const WatchlistTvPage = () => {
 
   if (error) {
     return (
-      <div className="w-full h-96 flex justify-center items-center">
-        <p>Sorry, there is some issue in getting your watchlist tv shows</p>
-      </div>
+      <ShowErrorMsg
+        message={
+          "Sorry, there is some issue in getting your watchlist tv shows"
+        }
+      />
     );
   }
 

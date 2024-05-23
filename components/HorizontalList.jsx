@@ -52,6 +52,7 @@ const HorizontalList = ({
 
   useEffect(() => {
     if (id) {
+      console.log("data", data);
       setMediaData(data?.data.filter((media) => media.backdrop_path));
       setTotalpages(data?.totalPages);
     }
