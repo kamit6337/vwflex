@@ -1,8 +1,8 @@
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const searchQuery = catchAsyncError(async (q, { page = 1 } = {}) => {
-  const search = await serverAxios.get("/search/multi", {
+  const search = await getReq("/search/multi", {
     params: { query: q, page },
   });
 

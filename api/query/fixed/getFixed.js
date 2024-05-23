@@ -1,15 +1,15 @@
 "use server";
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const getFixed = catchAsyncError(async () => {
   const response = {};
 
   const [images, movieGenres, tvGenres, countries] = await Promise.all([
-    serverAxios.get("/configuration"),
-    serverAxios.get("/genre/movie/list"),
-    serverAxios.get("/genre/tv/list"),
-    serverAxios.get("/configuration/countries"),
+    getReq("/configuration"),
+    getReq("/genre/movie/list"),
+    getReq("/genre/tv/list"),
+    getReq("/configuration/countries"),
   ]);
 
   response.imageDetail = images.images;

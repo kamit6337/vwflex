@@ -1,7 +1,7 @@
 "use server";
 
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const DAY = "day";
 const WEEK = "week";
@@ -10,11 +10,11 @@ const trendingMovies = catchAsyncError(async (time = DAY) => {
   let trendingMovies;
 
   if (time === DAY) {
-    trendingMovies = await serverAxios.get(`/trending/movie/${DAY}`);
+    trendingMovies = await getReq(`/trending/movie/${DAY}`);
   }
 
   if (time === WEEK) {
-    trendingMovies = await serverAxios.get(`/trending/movie/${WEEK}`);
+    trendingMovies = await getReq(`/trending/movie/${WEEK}`);
   }
 
   const response = {

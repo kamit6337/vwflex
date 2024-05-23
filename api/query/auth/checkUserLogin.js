@@ -6,13 +6,12 @@ import verifyWebToken from "@utils/auth/verifyWebToken";
 import makeSerializable from "@utils/javascript/makeSerializable";
 import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 const checkUserLogin = catchAsyncError(async () => {
   const token = cookies().get("token");
 
   if (!token) {
-    redirect("/login?msg=You session has expired. Please login again.");
+    throw new Error("You session has expired. Please login again");
   }
 
   const decoded = verifyWebToken(token.value);
@@ -22,7 +21,7 @@ const checkUserLogin = catchAsyncError(async () => {
   const findUser = await User.findOne({ _id: decoded.id }).lean();
 
   if (!findUser) {
-    redirect("/login?msg=Please Login again");
+    throw new Error("Please Login again");
   }
 
   return makeSerializable(findUser);

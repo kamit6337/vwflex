@@ -1,10 +1,10 @@
 "use server";
 
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const upcomingMoviesList = catchAsyncError(async (page = 1) => {
-  const upcomingMovies = await serverAxios.get("/movie/upcoming", {
+  const upcomingMovies = await getReq("/movie/upcoming", {
     params: { page },
   });
 

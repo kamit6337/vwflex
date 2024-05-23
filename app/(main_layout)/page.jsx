@@ -6,7 +6,7 @@ import connectToDB from "@utils/mongoose/connectToDB";
 const zIndex = 499;
 
 export default async function Home() {
-  await Promise.all([connectToDB, initialFetch]);
+  // await Promise.all([connectToDB, initialFetch]);
 
   return (
     <>

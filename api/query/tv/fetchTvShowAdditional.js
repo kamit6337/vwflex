@@ -1,7 +1,7 @@
 "use server";
 
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const fetchTvShowAdditional = catchAsyncError(
   async (
@@ -19,7 +19,7 @@ const fetchTvShowAdditional = catchAsyncError(
     }
 
     if (reviews) {
-      let tvShowReviews = await serverAxios.get(`/tv/${id}/reviews`, {
+      let tvShowReviews = await getReq(`/tv/${id}/reviews`, {
         params: { page },
       });
 
@@ -32,7 +32,7 @@ const fetchTvShowAdditional = catchAsyncError(
     }
 
     if (images) {
-      const tvShowImages = await serverAxios.get(`/tv/${id}/images`);
+      const tvShowImages = await getReq(`/tv/${id}/images`);
 
       const imageList = [...tvShowImages?.backdrops]?.map((obj) => {
         const { aspect_ratio: ratio, file_path: path } = obj;
@@ -44,7 +44,7 @@ const fetchTvShowAdditional = catchAsyncError(
     }
 
     if (recommendations) {
-      const recommendationTvShow = await serverAxios.get(
+      const recommendationTvShow = await getReq(
         `/tv/${id}/recommendations`,
         {
           params: { page },
@@ -59,7 +59,7 @@ const fetchTvShowAdditional = catchAsyncError(
     }
 
     if (similar) {
-      const similarTvShow = await serverAxios.get(`/tv/${id}/similar`, {
+      const similarTvShow = await getReq(`/tv/${id}/similar`, {
         params: { page },
       });
 

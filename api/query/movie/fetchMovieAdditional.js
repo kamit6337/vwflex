@@ -1,7 +1,7 @@
 "use server";
 
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const fetchMovieAdditional = catchAsyncError(
   async (
@@ -13,7 +13,7 @@ const fetchMovieAdditional = catchAsyncError(
     }
 
     if (images) {
-      const fetchMovieImages = await serverAxios.get(`/movie/${id}/images`);
+      const fetchMovieImages = await getReq(`/movie/${id}/images`);
 
       const modifyMovieImages = fetchMovieImages?.backdrops?.map((obj) => {
         const { aspect_ratio: ratio, file_path: path } = obj;
@@ -25,7 +25,7 @@ const fetchMovieAdditional = catchAsyncError(
     }
 
     if (reviews) {
-      let movieReviews = await serverAxios.get(`/movie/${id}/reviews`, {
+      let movieReviews = await getReq(`/movie/${id}/reviews`, {
         params: { page },
       });
 
@@ -38,7 +38,7 @@ const fetchMovieAdditional = catchAsyncError(
     }
 
     if (similar) {
-      let similarMovie = await serverAxios.get(`/movie/${id}/similar`, {
+      let similarMovie = await getReq(`/movie/${id}/similar`, {
         params: { page },
       });
       similarMovie = {

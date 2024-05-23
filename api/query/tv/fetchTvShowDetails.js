@@ -1,9 +1,9 @@
 "use server";
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const fetchTvShowDetails = catchAsyncError(async (id, season = null) => {
-  const tv = await serverAxios.get(`/tv/${id}`);
+  const tv = await getReq(`/tv/${id}`);
   const { number_of_seasons } = tv;
 
   let currentSeason;
@@ -13,7 +13,7 @@ const fetchTvShowDetails = catchAsyncError(async (id, season = null) => {
     currentSeason = season;
   }
 
-  const tvSeason = await serverAxios.get(`/tv/${id}/season/${currentSeason}`);
+  const tvSeason = await getReq(`/tv/${id}/season/${currentSeason}`);
 
   const modifyTv = { ...tv };
 

@@ -1,9 +1,9 @@
 "use server";
 import catchAsyncError from "@lib/catchAsyncError";
-import serverAxios from "@utils/server/serverAxios";
+import { getReq } from "@utils/api/serverApi";
 
 const popularPeoples = catchAsyncError(async (page = 1) => {
-  const peoples = await serverAxios.get("/person/popular", {
+  const peoples = await getReq("/person/popular", {
     params: { page },
   });
 
