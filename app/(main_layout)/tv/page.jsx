@@ -16,7 +16,6 @@ export const generateMetadata = async ({
     queryKey: ["TV Show Detail", id, season],
     queryFn: () => fetchTvShowDetails(id, season),
     staleTime: Infinity,
-    enabled: !!id,
   });
 
   return {
@@ -32,7 +31,6 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
       return await fetchTvShowDetails(id, season);
     },
     staleTime: Infinity,
-    enabled: !!id,
   });
 
   if (!query) {

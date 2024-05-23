@@ -1,6 +1,9 @@
 "use client";
-const error = () => {
-  return <div>Error occur in find person detail</div>;
+
+import ShowErrorMsg from "@components/ShowErrorMsg";
+
+const error = ({ error }) => {
+  return <ShowErrorMsg message={error.message} />;
 };
 
 export default error;

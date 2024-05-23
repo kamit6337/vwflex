@@ -22,7 +22,6 @@ const SearchPage = async ({ searchParams: { q } }) => {
       return await searchQuery(q);
     },
     staleTime: Infinity,
-    enabled: !!q,
   });
 
   if (!searchResults) {

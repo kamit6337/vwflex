@@ -1,9 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
-import { fixed } from "@api/query/initialFetch";
 import fetchPersonDetails from "@api/query/peoples/fetchPersonDetails";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import Additional from "./Additional";
 import { QueryClient } from "@tanstack/react-query";
+import getFixed from "@api/query/fixed/getFixed";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +21,7 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
 };
 
 const PersonDetailPage = async ({ searchParams: { id } }) => {
-  const fixedQuery = await fixed();
+  const fixedQuery = await getFixed();
 
   const query = await queryClient.fetchQuery({
     queryKey: ["Person Detail", id],

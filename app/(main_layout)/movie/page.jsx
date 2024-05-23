@@ -14,7 +14,6 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
     queryKey: ["Movie Detail", id],
     queryFn: () => fetchMovieDetail(Number(id)),
     staleTime: Infinity,
-    enabled: !!id,
   });
 
   return {
@@ -30,7 +29,6 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
       return await fetchMovieDetail(Number(id));
     },
     staleTime: Infinity,
-    enabled: !!id,
   });
 
   if (!query) {
