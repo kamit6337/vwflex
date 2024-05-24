@@ -2,7 +2,6 @@
 
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
-import Watchlist from "@models/WartchlistModel";
 import generateWebToken from "@utils/auth/generateWebToken";
 import environment from "@utils/environment";
 import connectToDB from "@utils/mongoose/connectToDB";
@@ -24,10 +23,6 @@ const userSignUp = catchAsyncError(async (obj) => {
     name,
     email,
     password: hashPassword,
-  });
-
-  await Watchlist.create({
-    user: createUser._id,
   });
 
   const token = generateWebToken({

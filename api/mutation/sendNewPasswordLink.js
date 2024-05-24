@@ -42,8 +42,6 @@ const sendNewPasswordLink = catchAsyncError(async (email) => {
     }
   );
 
-  console.log("token", token);
-
   const otpUrl = `${environment.SERVER_URL}/createNewPassword?token=${token}&email=${email}`;
 
   // Render HTML template with dynamic OTP

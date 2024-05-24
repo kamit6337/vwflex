@@ -10,10 +10,9 @@ import { useRouter } from "next/navigation";
 
 const CreateNewPassword = ({ searchParams }) => {
   const router = useRouter();
-  const [toggle, setToggle] = useState({
-    password: false,
-    confirmPassword: false,
-  });
+  const [togglePassword, setTogglePassword] = useState(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
+
   const { email, token } = searchParams;
 
   const { ToastContainer, showErrorMessage, showSuccessMessage } = Toastify();
@@ -62,7 +61,7 @@ const CreateNewPassword = ({ searchParams }) => {
           <div>
             <div className="h-12 flex justify-between items-center border  rounded-lg ">
               <input
-                type={toggle.password ? "text" : "password"}
+                type={togglePassword ? "text" : "password"}
                 {...register("password", {
                   required: "Password is required",
                   minLength: {
@@ -78,16 +77,9 @@ const CreateNewPassword = ({ searchParams }) => {
 
               <div
                 className="w-20 flex justify-center items-center text-color_4 cursor-pointer"
-                onClick={() =>
-                  setToggle((prev) => {
-                    return {
-                      ...prev,
-                      password: !prev.password,
-                    };
-                  })
-                }
+                onClick={() => setTogglePassword((prev) => !prev)}
               >
-                <p>{toggle.password ? "Hide" : "Show"}</p>
+                <p>{togglePassword ? "Hide" : "Show"}</p>
               </div>
             </div>
             <p role="alert" className="text-xs text-red-500 pl-2 h-4">
@@ -99,7 +91,7 @@ const CreateNewPassword = ({ searchParams }) => {
           <div>
             <div className="h-12 flex justify-between items-center border rounded-lg">
               <input
-                type={toggle.confirmPassword ? "text" : "password"}
+                type={toggleConfirmPassword ? "text" : "password"}
                 {...register("confirmPassword", {
                   required: true,
                   validate: (value) => {
@@ -115,16 +107,9 @@ const CreateNewPassword = ({ searchParams }) => {
 
               <div
                 className="w-20 flex justify-center items-center text-color_4 cursor-pointer"
-                onClick={() =>
-                  setToggle((prev) => {
-                    return {
-                      ...prev,
-                      confirmPassword: !prev.confirmPassword,
-                    };
-                  })
-                }
+                onClick={() => setToggleConfirmPassword((prev) => !prev)}
               >
-                <p>{toggle.confirmPassword ? "Hide" : "Show"}</p>
+                <p>{toggleConfirmPassword ? "Hide" : "Show"}</p>
               </div>
             </div>
 

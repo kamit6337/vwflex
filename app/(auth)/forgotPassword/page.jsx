@@ -30,10 +30,10 @@ const ForgotPasswordPage = () => {
       showSuccessMessage({ message: "Successfully Sent OTP to your Email ID" });
       setTimeout(() => {
         router.push("/login");
-      }, 2000);
+      }, 5000);
     } catch (error) {
       showErrorMessage({
-        message: error.message || "Something went wrong. Try later...",
+        message: "Something went wrong. Try later...",
       });
     }
   };
