@@ -1,12 +1,15 @@
 "use client";
 
-const global_error = ({ error }) => {
+import GeneralError from "@components/GeneralError";
+
+const GlobalError = ({ error }) => {
   return (
-    <div>
-      <p>global_error</p>
-      <p>{error.message}</p>
-    </div>
+    <html>
+      <body>
+        <GeneralError hScreen={true} />
+      </body>
+    </html>
   );
 };
 
-export default global_error;
+export default GlobalError;

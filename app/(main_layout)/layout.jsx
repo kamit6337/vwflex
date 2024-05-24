@@ -2,10 +2,10 @@ import Footer from "@components/Footer/Footer";
 import Navbar from "@components/Navbar/Navbar";
 import UserLoginProvider from "@providers/UserLoginProvider";
 import GlobalShow from "./GlobalShow";
-import connectToDB from "@utils/mongoose/connectToDB";
+import checkUserLogin from "@api/query/auth/checkUserLogin";
 
 const MainLayout = async ({ children }) => {
-  await connectToDB();
+  await checkUserLogin();
 
   return (
     <UserLoginProvider>

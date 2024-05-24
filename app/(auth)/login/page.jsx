@@ -34,7 +34,8 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      await userLogin(data);
+      const response = await userLogin(data);
+      localStorage.setItem("user", JSON.stringify(response));
       router.push("/");
     } catch (error) {
       showErrorMessage({

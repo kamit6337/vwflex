@@ -25,7 +25,7 @@ const watchlistMovieSchema = new Schema(
     },
     release_date: {
       type: String,
-      required: true,
+      default: null,
     },
     vote_average: {
       type: Number,

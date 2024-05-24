@@ -39,8 +39,9 @@ const userSignUp = catchAsyncError(async (obj) => {
 
   // Serialize the createUser object
   const createUserSerialized = {
-    ...createUser.toObject(),
     _id: createUser._id.toString(),
+    name: createUser.name,
+    email: createUser.email,
   };
 
   return createUserSerialized;

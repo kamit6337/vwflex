@@ -1,9 +1,9 @@
 "use client";
 
-import ShowErrorMsg from "@components/ShowErrorMsg";
+import GeneralError from "@components/GeneralError";
 
-const error = ({ error }) => {
-  return <ShowErrorMsg message={error.message} />;
+const error = () => {
+  return <GeneralError />;
 };
 
 export default error;

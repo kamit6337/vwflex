@@ -1,31 +1,23 @@
 "use client";
-import checkUserLogin from "@api/query/auth/checkUserLogin";
 import logout from "@api/query/auth/logout";
 import { Icons } from "@assets/icons";
+import Toastify from "@lib/Toastify";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
   const [openProfile, setOpenProfile] = useState(false);
   const [user, setUser] = useState(null);
+  const { ToastContainer, showErrorMessage } = Toastify();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await checkUserLogin();
-        setUser(response);
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-
-    fetchUserData();
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
 
   const handleLogout = async () => {
     try {
       await logout();
     } catch (error) {
-      console.log("error in logout", error);
+      showErrorMessage({ message: "Issue in logout. Please try later" });
     }
   };
 
@@ -52,6 +44,7 @@ const Profile = () => {
           </p>
         </div>
       )}
+      <ToastContainer />
     </>
   );
 };

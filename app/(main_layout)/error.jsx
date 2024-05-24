@@ -1,12 +1,9 @@
 "use client";
 
-const ErrorPage = ({ error }) => {
-  return (
-    <div>
-      <p>Error from Page </p>
-      <p>{error.message}</p>
-    </div>
-  );
+import GeneralError from "@components/GeneralError";
+
+const error = () => {
+  return <GeneralError />;
 };
 
-export default ErrorPage;
+export default error;

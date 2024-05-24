@@ -1,12 +1,13 @@
 "use client";
 
-const error = ({ error }) => {
-  return (
-    <div>
-      <p>Error from main layout</p>
-      <p>{error.message}</p>
-    </div>
-  );
+import { useRouter } from "next/navigation";
+
+const LoginError = ({ error }) => {
+  const router = useRouter();
+
+  router.push(`/login?msg=${"Please login"}`);
+
+  return null;
 };
 
-export default error;
+export default LoginError;

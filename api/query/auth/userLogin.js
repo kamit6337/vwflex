@@ -16,7 +16,7 @@ const userLogin = catchAsyncError(async (obj) => {
 
   await connectToDB();
 
-  const findUser = await User.findOne({ email }).select("+password");
+  const findUser = await User.findOne({ email }).select("+password").lean();
 
   if (!findUser) {
     throw new Error("Email  is incorrect");
@@ -44,8 +44,9 @@ const userLogin = catchAsyncError(async (obj) => {
   });
 
   const findUserSerializable = {
-    ...findUser.toObject(),
     _id: findUser._id.toString(),
+    name: findUser.name,
+    email: findUser.email,
   };
 
   return findUserSerializable;

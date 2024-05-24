@@ -1,12 +1,8 @@
 "use client";
 
-import checkUserLogin from "@api/query/auth/checkUserLogin";
 import getFixed from "@api/query/fixed/getFixed";
-import userWatchlist from "@api/query/watchlist/userWatchlistTv";
 import { initialFixedData } from "@redux/slice/fixedSlice";
-import { initialWatchlistData } from "@redux/slice/watchlistSlice";
 import { useRouter } from "next/navigation";
-
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -18,13 +14,8 @@ const UserLoginProvider = ({ children }) => {
   useEffect(() => {
     const checkIsUserLoggedIn = async () => {
       try {
-        const [userLogin, fixedQuery] = await Promise.all([
-          checkUserLogin(),
-          getFixed(),
-        ]);
-        const watchlist = await userWatchlist(userLogin._id);
+        const fixedQuery = await getFixed();
         dispatch(initialFixedData(fixedQuery));
-        dispatch(initialWatchlistData(watchlist));
         setIsSuccessful(true);
       } catch (error) {
         setIsSuccessful(false);

@@ -3,7 +3,6 @@
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
-import makeSerializable from "@utils/javascript/makeSerializable";
 import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
@@ -24,7 +23,7 @@ const checkUserLogin = catchAsyncError(async () => {
     throw new Error("Please Login again");
   }
 
-  return makeSerializable(findUser);
+  return true;
 });
 
 export default checkUserLogin;

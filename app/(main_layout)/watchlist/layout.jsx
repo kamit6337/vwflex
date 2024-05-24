@@ -5,12 +5,12 @@ export const metadata = () => {
   };
 };
 
-const WatchlistLayout = ({ children, movies, tv }) => {
+const WatchlistLayout = ({ movies, tv }) => {
   return (
     <>
       {movies}
       {tv}
-      {children}
+     
     </>
   );
 };

@@ -38,8 +38,8 @@ const SignUp = () => {
     delete formData.confirmPassword;
 
     try {
-      await userSignUp(formData);
-
+      const response = await userSignUp(formData);
+      localStorage.setItem("user", JSON.stringify(response));
       router.push("/");
     } catch (error) {
       showErrorMessage({ message: error.message });
