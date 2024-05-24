@@ -100,16 +100,11 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
               data.map((tv, i) => {
                 const {
                   tvId,
-                  season_number,
-                  backdrop_path,
-                  genre_ids,
-                  id,
+                  season,
                   original_name,
                   poster_path,
-                  first_air_date,
                   name,
                   vote_average,
-                  overview,
                   air_date,
                 } = tv;
 
@@ -135,7 +130,7 @@ const TvHorizontalList = ({ title, data, zIndex = 10 }) => {
                       className="relative rounded-xl"
                       onMouseLeave={() => setMovieIndex(null)}
                     >
-                      <Link href={`/tv?id=${tvId}&season=${season_number}`}>
+                      <Link href={`/tv?id=${tvId}&season=${season}`}>
                         <div
                           onMouseEnter={() => handleMouseEnter(i)}
                           className="cursor-pointer"

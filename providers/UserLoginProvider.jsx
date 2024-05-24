@@ -2,7 +2,7 @@
 
 import checkUserLogin from "@api/query/auth/checkUserLogin";
 import getFixed from "@api/query/fixed/getFixed";
-import userWatchlist from "@api/query/watchlist/userWatchlist";
+import userWatchlist from "@api/query/watchlist/userWatchlistTv";
 import { initialFixedData } from "@redux/slice/fixedSlice";
 import { initialWatchlistData } from "@redux/slice/watchlistSlice";
 import { useRouter } from "next/navigation";

@@ -6,6 +6,7 @@ import WatchlistPart from "./WatchlistPart";
 import ImageOfDetail from "@components/ImageOfDetail";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import { QueryClient } from "@tanstack/react-query";
+import isMovieInWatchlist from "@api/query/watchlist/isMovieInWatchlist";
 
 const queryClient = new QueryClient();
 
@@ -31,9 +32,7 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
     staleTime: Infinity,
   });
 
-  if (!query) {
-    throw new Error("Issue in getting movie detail");
-  }
+  const movieWatchlist = await isMovieInWatchlist(id);
 
   const { details, recommendations } = query;
 
@@ -79,7 +78,7 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
             ))}
           </div>
           <div className="mt-2">
-            <WatchlistPart id={id} />
+            <WatchlistPart details={details} initial={movieWatchlist} id={id} />
           </div>
         </div>
       </div>

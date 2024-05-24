@@ -4,6 +4,7 @@ import Loading from "@containers/Loading";
 import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
 import { useQuery } from "@tanstack/react-query";
+import ExpandableText from "@lib/ExpandableText";
 
 const Reviews = ({ id }) => {
   const { imageDetail } = useSelector(fixedState);
@@ -33,7 +34,7 @@ const Reviews = ({ id }) => {
 
   return (
     <>
-      <div className="px-4 py-20 flex flex-col gap-20">
+      <div className="px-4 py-20 flex flex-col gap-20 tablet:px-2">
         {data.data.map((obj, i) => {
           const {
             author,
@@ -48,11 +49,11 @@ const Reviews = ({ id }) => {
           return (
             <div
               key={i}
-              className="flex gap-4 bg-slate-800 rounded-xl py-5 px-3"
+              className="flex gap-4 bg-slate-800 rounded-xl py-5 px-3 tablet:gap-2 tablet:px-2"
             >
-              <div className="w-32 flex flex-col items-center">
+              <div className="w-32 sm_lap:w-24 flex flex-col items-center tablet:w-14">
                 {avatar_path && (
-                  <div className="w-16 h-16">
+                  <div className="size-16 sm_lap:size-14 tablet:size-10">
                     <img
                       src={originalPhoto}
                       alt={author}
@@ -60,11 +61,13 @@ const Reviews = ({ id }) => {
                     />
                   </div>
                 )}
-                <p className="break-all">{author}</p>
+                <p className="mt-2 break-all tablet:text-sm">{author}</p>
               </div>
               <div className="flex-1 flex flex-col gap-4">
                 {rating && <p>{rating}/10</p>}
-                <p>{content}</p>
+                <div className="tablet:text-xs sm_lap:text-sm tablet:leading-5 leading-6 tablet:tracking-wider tracking-wide">
+                  <ExpandableText text={content} />
+                </div>
               </div>
             </div>
           );

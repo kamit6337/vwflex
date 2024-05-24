@@ -6,6 +6,7 @@ import ImageOfDetail from "@components/ImageOfDetail";
 import WatchlistPart from "./WatchlistPart";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import { QueryClient } from "@tanstack/react-query";
+import isTvInWatchlist from "@api/query/watchlist/isTvInWatchlist";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,8 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     },
     staleTime: Infinity,
   });
+
+  const watchlistTv = await isTvInWatchlist(id, season);
 
   if (!query) {
     throw new Error("Issue in getting tv show detail");
@@ -99,7 +102,12 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
           </div>
 
           <div className="mt-2">
-            <WatchlistPart id={id} season={season} />
+            <WatchlistPart
+              id={id}
+              season={season}
+              initial={watchlistTv}
+              details={details}
+            />
           </div>
         </div>
       </div>

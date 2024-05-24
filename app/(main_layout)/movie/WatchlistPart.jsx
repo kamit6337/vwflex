@@ -1,39 +1,41 @@
 "use client";
 
-import addToWatchlist from "@api/mutation/watchlist/addToWatchlist";
-import removeFromWatchlist from "@api/mutation/watchlist/removeFromWatchlist";
-import {
-  updateWatchlistData,
-  watchlistState,
-} from "@redux/slice/watchlistSlice";
-import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import addMovieToWatchlist from "@api/mutation/watchlist/movie/addMovieToWatchlist";
+import removeMovieFromWatchlist from "@api/mutation/watchlist/movie/removeMovieFromWatchlist";
+import Toastify from "@lib/Toastify";
+import { useEffect, useState } from "react";
 
-const WatchlistPart = ({ id: movieId }) => {
-  const dispatch = useDispatch();
-  const { movies, id: _id } = useSelector(watchlistState);
+const WatchlistPart = ({ details, initial, id }) => {
+  const [toggleWatchlist, setToggleWatchlist] = useState(initial);
+  const { ToastContainer, showErrorMessage } = Toastify();
 
-  const bool = useMemo(() => {
-    if (movies.length === 0) return false;
-
-    const findMovie = movies.includes(movieId.toString());
-
-    return findMovie;
-  }, [movies, movieId]);
+  useEffect(() => {
+    if (id) {
+      setToggleWatchlist(initial);
+    }
+  }, [id]);
 
   const handleRemoveWatchlist = async () => {
-    const response = await removeFromWatchlist(_id, { movieId });
-    dispatch(updateWatchlistData(response));
+    try {
+      await removeMovieFromWatchlist(details);
+      setToggleWatchlist(false);
+    } catch (error) {
+      showErrorMessage({ message: "Something went wrong. Please try later" });
+    }
   };
 
   const handleAddToWatchlist = async () => {
-    const response = await addToWatchlist(_id, { movieId });
-    dispatch(updateWatchlistData(response));
+    try {
+      await addMovieToWatchlist(details);
+      setToggleWatchlist(true);
+    } catch (error) {
+      showErrorMessage({ message: "Something went wrong. Please try later" });
+    }
   };
 
   return (
     <>
-      {bool ? (
+      {toggleWatchlist ? (
         <div
           className={`rounded-3xl p-3 px-5 cursor-pointer bg-gray-400`}
           onClick={handleRemoveWatchlist}
@@ -48,6 +50,7 @@ const WatchlistPart = ({ id: movieId }) => {
           Add to Watchlist
         </div>
       )}
+      <ToastContainer />
     </>
   );
 };

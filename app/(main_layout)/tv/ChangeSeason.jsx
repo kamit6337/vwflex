@@ -20,7 +20,7 @@ const ChangeSeason = ({ season, showId, totalSeasons }) => {
   return (
     <select
       value={season}
-      className="text-black text-lg sm:text-base sm:p-2 font-medium tracking-wide p-4 rounded-2xl"
+      className="text-black font-medium tracking-wide p-3 tablet:p-2 rounded-2xl"
       onChange={handleSeasonSelect}
     >
       {Array.from({ length: totalSeasons }).map((num, i) => {

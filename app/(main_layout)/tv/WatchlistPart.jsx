@@ -1,41 +1,47 @@
 "use client";
 
-import addToWatchlist from "@api/mutation/watchlist/addToWatchlist";
-import removeFromWatchlist from "@api/mutation/watchlist/removeFromWatchlist";
-import {
-  updateWatchlistData,
-  watchlistState,
-} from "@redux/slice/watchlistSlice";
-import { useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import addTvToWatchlist from "@api/mutation/watchlist/tv/addTvToWatchlist";
+import removeTvFromWatchlist from "@api/mutation/watchlist/tv/removeTvFromWatchlist";
+import Toastify from "@lib/Toastify";
+import { useEffect, useState } from "react";
 
-const WatchlistPart = ({ id: tvId, season }) => {
-  const dispatch = useDispatch();
-  const { tv, id: _id } = useSelector(watchlistState);
+const WatchlistPart = ({ id: tvId, season, initial, details }) => {
+  const [toggleWatchlist, setToggleWatchlist] = useState(initial);
+  const { ToastContainer, showErrorMessage } = Toastify();
 
-  const bool = useMemo(() => {
-    if (tv.length === 0) return false;
+  const obj = {
+    ...details,
+    tvId,
+    season,
+  };
 
-    const findTv = tv.find(
-      (obj) => obj.id === tvId.toString() && obj.season == season
-    );
-
-    return findTv;
-  }, [tv, tvId, season]);
+  useEffect(() => {
+    if (tvId && season) {
+      setToggleWatchlist(initial);
+    }
+  }, [tvId, season]);
 
   const handleRemoveWatchlist = async () => {
-    const response = await removeFromWatchlist(_id, { tvId, season });
-    dispatch(updateWatchlistData(response));
+    try {
+      await removeTvFromWatchlist(obj);
+      setToggleWatchlist(false);
+    } catch (error) {
+      showErrorMessage({ message: "Something went wrong. Please try later" });
+    }
   };
 
   const handleAddToWatchlist = async () => {
-    const response = await addToWatchlist(_id, { tvId, season });
-    dispatch(updateWatchlistData(response));
+    try {
+      await addTvToWatchlist(obj);
+      setToggleWatchlist(true);
+    } catch (error) {
+      showErrorMessage({ message: "Something went wrong. Please try later" });
+    }
   };
 
   return (
     <>
-      {bool ? (
+      {toggleWatchlist ? (
         <div
           className={`rounded-3xl p-3 px-5 cursor-pointer bg-gray-400`}
           onClick={handleRemoveWatchlist}
@@ -50,6 +56,7 @@ const WatchlistPart = ({ id: tvId, season }) => {
           Add to Watchlist
         </div>
       )}
+      <ToastContainer />
     </>
   );
 };
