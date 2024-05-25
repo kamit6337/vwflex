@@ -17,7 +17,7 @@ const watchlistTvSchema = new Schema(
     },
     air_date: {
       type: String,
-      required: true,
+      default: null,
     },
     name: {
       type: String,
@@ -33,7 +33,7 @@ const watchlistTvSchema = new Schema(
     },
     vote_average: {
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   { timestamps: true }

@@ -17,7 +17,7 @@ const watchlistMovieSchema = new Schema(
     },
     overview: {
       type: String,
-      required: true,
+      default: null,
     },
     backdrop_path: {
       type: String,
@@ -29,7 +29,7 @@ const watchlistMovieSchema = new Schema(
     },
     vote_average: {
       type: Number,
-      required: true,
+      default: 0,
     },
   },
   { timestamps: true }
