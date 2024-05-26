@@ -34,6 +34,8 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
 
   const movieWatchlist = await isMovieInWatchlist(id);
 
+  console.log("is movie in watchlist", id, movieWatchlist);
+
   const { details, recommendations } = query;
 
   const {

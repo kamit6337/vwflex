@@ -5,6 +5,8 @@ export const metadata = () => {
   };
 };
 
+export const dynamic = "force-dynamic";
+
 const WatchlistLayout = ({ children, movies, tv }) => {
   return (
     <>

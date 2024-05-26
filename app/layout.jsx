@@ -2,7 +2,6 @@ import "./globals.css";
 import { Poppins } from "next/font/google";
 import ReactReduxProvider from "@providers/ReactReduxProvider";
 import ScrollToTop from "@lib/ScrollToTop";
-import connectToDB from "@utils/mongoose/connectToDB";
 import ReactQueryProvider from "@providers/ReactQueryProvider";
 import OfflineDetector from "@lib/OfflineDetector";
 
@@ -19,8 +18,6 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  await connectToDB();
-
   return (
     <html lang="en" className={poppins.className}>
       <body className="w-full h-screen">

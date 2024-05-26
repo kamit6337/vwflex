@@ -36,9 +36,7 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
 
   const watchlistTv = await isTvInWatchlist(id, season);
 
-  if (!query) {
-    throw new Error("Issue in getting tv show detail");
-  }
+  console.log("is tv in watchlist", id, season, watchlistTv);
 
   const { details } = query;
 

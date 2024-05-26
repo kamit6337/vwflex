@@ -15,14 +15,7 @@ const episodesSection = "episodes";
 const imageSection = "images";
 const reviews = "reviews";
 
-const Additional = ({
-  recommendations,
-  similar,
-  details,
-  images,
-  id,
-  season,
-}) => {
+const Additional = ({ details, id, season }) => {
   const [optionSelected, setOptionSelected] = useState(episodesSection);
   const {
     production_companies,
@@ -38,12 +31,6 @@ const Additional = ({
   useEffect(() => {
     setOptionSelected(episodesSection);
   }, [id, season]);
-
-  useEffect(() => {
-    if (!recommendations || recommendations.data.length === 0) {
-      setOptionSelected(similarSection);
-    }
-  }, [recommendations]);
 
   const scrollOptionsToTop = (value) => {
     setOptionSelected(value);
@@ -68,17 +55,17 @@ const Additional = ({
           >
             Episodes
           </p>
-          {recommendations && recommendations.data.length > 0 && (
-            <p
-              className={`${
-                optionSelected === recommendationSection &&
-                "border-b-2 border-white"
-              } hover:border-b-2 hover:border-white cursor-pointer `}
-              onClick={() => scrollOptionsToTop(recommendationSection)}
-            >
-              Recommendations
-            </p>
-          )}
+
+          <p
+            className={`${
+              optionSelected === recommendationSection &&
+              "border-b-2 border-white"
+            } hover:border-b-2 hover:border-white cursor-pointer `}
+            onClick={() => scrollOptionsToTop(recommendationSection)}
+          >
+            Recommendations
+          </p>
+
           <p
             className={`${
               optionSelected === similarSection && "border-b-2 border-white"
@@ -129,7 +116,7 @@ const Additional = ({
 
           {created_by && created_by.length > 0 && (
             <div>
-              <p className="uppercase border-b-2 border-white/70 w-max font-semibold tracking-wider mb-4 ">
+              <p className="uppercase border-b-2 border-white/70 w-max font-semibold tracking-wider mb-2">
                 Created By
               </p>
               <div className="flex justify-start gap-4 flex-wrap">
