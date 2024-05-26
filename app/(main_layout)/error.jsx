@@ -1,9 +1,15 @@
 "use client";
 
-import GeneralError from "@components/GeneralError";
+import { useRouter } from "next/navigation";
 
-const error = () => {
-  return <GeneralError />;
+const MainLayoutError = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push(`/login?msg=${"Please login"}`);
+  }, []);
+
+  return null;
 };
 
-export default error;
+export default MainLayoutError;

@@ -1,4 +1,5 @@
 const environment = {
+  NODE_ENV: process.env.NODE_ENV,
   SERVER_URL: process.env.SERVER_URL,
   MONGO_DB_URI: process.env.MONGO_DB_URI,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
@@ -9,7 +10,8 @@ const environment = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   MY_GMAIL_PASSWORD: process.env.MY_GMAIL_PASSWORD,
   MY_GMAIL_ID: process.env.MY_GMAIL_ID,
-  NODE_ENV: process.env.NODE_ENV,
+  NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   SALT_ROUND: Number(process.env.SALT_ROUND),
 };
 
