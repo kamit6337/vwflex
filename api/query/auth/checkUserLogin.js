@@ -3,6 +3,7 @@
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
+import makeSerializable from "@utils/javascript/makeSerializable";
 import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
@@ -10,20 +11,24 @@ const checkUserLogin = catchAsyncError(async () => {
   const token = cookies().get("token");
 
   if (!token) {
-    throw new Error("You session has expired. Please login again");
+    return false;
   }
 
   const decoded = verifyWebToken(token.value);
+
+  if (!decoded) {
+    return false;
+  }
 
   await connectToDB();
 
   const findUser = await User.findOne({ _id: decoded.id }).lean();
 
   if (!findUser) {
-    throw new Error("Please Login again");
+    return false;
   }
 
-  return true;
+  return makeSerializable(findUser);
 });
 
 export default checkUserLogin;

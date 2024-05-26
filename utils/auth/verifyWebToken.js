@@ -9,13 +9,12 @@
 import environment from "@utils/environment";
 import jwt from "jsonwebtoken";
 
-const verifyWebToken = (token, secret = environment.JWT_SECRET_KEY) => {
+const verifyWebToken = (token, secret = environment.NEXTAUTH_SECRET) => {
   try {
     const decoded = jwt.verify(token, secret);
     return decoded;
   } catch (error) {
-    console.log("verify token error", error);
-    throw error;
+    return false;
   }
 };
 

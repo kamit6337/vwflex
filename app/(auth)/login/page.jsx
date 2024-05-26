@@ -10,13 +10,23 @@ import environment from "@utils/environment";
 import userLogin from "@api/query/auth/userLogin";
 import Toastify from "@lib/Toastify";
 import { Helmet } from "react-helmet";
+import { getProviders, signIn } from "next-auth/react";
+import CustomImages from "@assets/images";
+import Image from "next/image";
 
 const Login = () => {
   const router = useRouter();
   const [togglePassword, setTogglePassword] = useState(false);
   const msg = useSearchParams().get("msg");
   const { ToastContainer, showErrorMessage } = Toastify();
+  const [providers, setProviders] = useState(null);
 
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
+  }, []);
   const {
     register,
     handleSubmit,
@@ -44,22 +54,26 @@ const Login = () => {
     }
   };
 
+  const googleOAuth = (id) => {
+    signIn(id);
+  };
+
   return (
     <>
       <Helmet>
         <title>Login</title>
-        <meta name="discription" content="Login Page of VWFLEX" />
+        <meta name="discription" content="A Note making Web Apps" />
       </Helmet>
 
-      <div className="bg-white text-black h-screen w-full flex flex-col justify-center items-center gap-2 ">
+      <div className="h-screen w-full flex flex-col justify-center items-center gap-2  bg-white text-black">
         {/* NOTE: THE CENTER PAGE */}
-        <div className="h-[500px] w-[600px] border rounded-xl flex flex-col justify-evenly items-center px-8 shadow-lg">
+        <div className="h-[500px] w-[600px] tablet:h-[450px] border shadow-lg rounded-xl flex flex-col justify-evenly items-center px-8">
           {/* MARK: HEADLINE*/}
           <p className="text-xl font-bold tracking-wide">Login</p>
           {/* MARK: FORM AND GO TO LOGIN BUTTON*/}
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-2 w-full text-color_1"
+            className="flex flex-col gap-2 w-full "
           >
             {/* MARK: EMAIL FIELD*/}
 
@@ -136,12 +150,31 @@ const Login = () => {
                     <Link href={`/signup`}>Sign Up</Link>
                   </span>
                 </p>
-                <p>
+                <p className="underline">
                   <Link href={`/forgotPassword`}>Forgot Password</Link>
                 </p>
               </div>
             </div>
           </form>
+
+          {/* MARK: GO TO LOGIN PAGE*/}
+          {providers && (
+            <div
+              className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
+              onClick={() => googleOAuth(providers?.google.id)}
+            >
+              <div className="w-6">
+                <Image
+                  src={CustomImages.googleIcon}
+                  alt="Google Icon"
+                  className="w-full object-cover bg-transparent"
+                />
+              </div>
+              <p>
+                Login with <span>{providers?.google.name}</span>
+              </p>
+            </div>
+          )}
         </div>
         <ToastContainer />
       </div>

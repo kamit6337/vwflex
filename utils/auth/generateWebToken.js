@@ -13,7 +13,7 @@ import jwt from "jsonwebtoken";
 const generateWebToken = (
   payload,
   {
-    secret = environment.JWT_SECRET_KEY,
+    secret = environment.NEXTAUTH_SECRET,
     expires = environment.JWT_EXPIRES_IN,
   } = {}
 ) => {

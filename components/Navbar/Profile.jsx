@@ -4,14 +4,9 @@ import { Icons } from "@assets/icons";
 import Toastify from "@lib/Toastify";
 import { useEffect, useState } from "react";
 
-const Profile = () => {
+const Profile = ({ user }) => {
   const [openProfile, setOpenProfile] = useState(false);
-  const [user, setUser] = useState(null);
   const { ToastContainer, showErrorMessage } = Toastify();
-
-  useEffect(() => {
-    setUser(JSON.parse(localStorage.getItem("user")));
-  }, []);
 
   const handleLogout = async () => {
     try {

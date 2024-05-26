@@ -23,6 +23,10 @@ const userSchema = new Schema(
       default: null,
       select: false,
     },
+    image: {
+      type: String,
+      default: null,
+    },
     OAuthId: {
       type: String,
       default: null,

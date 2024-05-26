@@ -7,7 +7,6 @@ import connectToDB from "@utils/mongoose/connectToDB";
 
 const MainLayout = async ({ children }) => {
   await connectToDB();
-  await checkUserLogin();
 
   return (
     <UserLoginProvider>

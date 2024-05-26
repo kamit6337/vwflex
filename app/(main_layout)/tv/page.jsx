@@ -7,6 +7,9 @@ import WatchlistPart from "./WatchlistPart";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import { QueryClient } from "@tanstack/react-query";
 import isTvInWatchlist from "@api/query/watchlist/isTvInWatchlist";
+import checkUserLogin from "@api/query/auth/checkUserLogin";
+import Link from "next/link";
+import LoginButton from "@components/LoginButton";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +38,7 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
   });
 
   const watchlistTv = await isTvInWatchlist(id, season);
+  const user = await checkUserLogin();
 
   console.log("is tv in watchlist", id, season, watchlistTv);
 
@@ -100,12 +104,16 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
           </div>
 
           <div className="mt-2">
-            <WatchlistPart
-              id={id}
-              season={season}
-              initial={watchlistTv}
-              details={details}
-            />
+            {user ? (
+              <WatchlistPart
+                id={id}
+                season={season}
+                initial={watchlistTv}
+                details={details}
+              />
+            ) : (
+              <LoginButton />
+            )}
           </div>
         </div>
       </div>

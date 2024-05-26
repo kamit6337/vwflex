@@ -7,6 +7,9 @@ import ImageOfDetail from "@components/ImageOfDetail";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import { QueryClient } from "@tanstack/react-query";
 import isMovieInWatchlist from "@api/query/watchlist/isMovieInWatchlist";
+import checkUserLogin from "@api/query/auth/checkUserLogin";
+import Link from "next/link";
+import LoginButton from "@components/LoginButton";
 
 const queryClient = new QueryClient();
 
@@ -32,7 +35,8 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
     staleTime: Infinity,
   });
 
-  const movieWatchlist = await isMovieInWatchlist(id);
+  const user = await checkUserLogin();
+  const movieWatchlist = await isMovieInWatchlist(user, id);
 
   console.log("is movie in watchlist", id, movieWatchlist);
 
@@ -80,7 +84,15 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
             ))}
           </div>
           <div className="mt-2">
-            <WatchlistPart details={details} initial={movieWatchlist} id={id} />
+            {user ? (
+              <WatchlistPart
+                details={details}
+                initial={movieWatchlist}
+                id={id}
+              />
+            ) : (
+              <LoginButton />
+            )}
           </div>
         </div>
       </div>
