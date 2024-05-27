@@ -10,10 +10,11 @@ const isTvInWatchlist = catchAsyncError(async (tvId, season) => {
   const token = cookies().get("token");
 
   if (!token) {
-    throw new Error("You session has expired. Please login again");
+    return false;
   }
 
   const decoded = verifyWebToken(token.value);
+
   const userId = decoded.id;
 
   if (!season) return;

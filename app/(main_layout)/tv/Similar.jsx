@@ -1,17 +1,29 @@
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const TV = "tv";
 
 const Similar = ({ id }) => {
-  const { isLoading, data } = useQuery({
-    queryKey: ["Similar TV Shows", id],
-    queryFn: () => fetchTvShowAdditional(id, { similar: true }),
-    staleTime: Infinity,
-    enabled: !!id,
-  });
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchTvShowAdditional(id, {
+          similar: true,
+        });
+        setData(response);
+      } catch (error) {
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
 
   if (isLoading) {
     return (

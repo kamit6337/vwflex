@@ -3,18 +3,28 @@ import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
 import Loading from "@containers/Loading";
 import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
-import { useQuery } from "@tanstack/react-query";
 import ExpandableText from "@lib/ExpandableText";
+import { useEffect, useState } from "react";
 
 const Reviews = ({ id }) => {
   const { imageDetail } = useSelector(fixedState);
 
-  const { isLoading, data } = useQuery({
-    queryKey: ["Movie Reviews", id],
-    queryFn: () => fetchMovieAdditional(id, { reviews: true }),
-    staleTime: Infinity,
-    enabled: !!id,
-  });
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchMovieAdditional(id, { reviews: true });
+        setData(response);
+      } catch (error) {
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
 
   if (isLoading) {
     return (

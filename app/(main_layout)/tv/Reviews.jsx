@@ -3,19 +3,29 @@ import Loading from "@containers/Loading";
 import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
-import makeTimeFromUTC from "@utils/javascript/makeTimeFromUTC";
 import ExpandableText from "@lib/ExpandableText";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const Reviews = ({ id }) => {
   const { imageDetail } = useSelector(fixedState);
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { isLoading, data } = useQuery({
-    queryKey: ["TV Shows Reviews", id],
-    queryFn: () => fetchTvShowAdditional(id, { reviews: true }),
-    staleTime: Infinity,
-    enabled: !!id,
-  });
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchTvShowAdditional(id, {
+          reviews: true,
+        });
+        setData(response);
+      } catch (error) {
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
 
   if (isLoading) {
     return (

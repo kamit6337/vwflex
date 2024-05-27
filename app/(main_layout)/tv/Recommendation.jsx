@@ -1,19 +1,29 @@
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
+import { useEffect, useState } from "react";
 
 const TV = "tv";
 
 const Recommendations = ({ id }) => {
-  const { isLoading, data } = useQuery({
-    queryKey: ["Recommended TV Shows", id],
-    queryFn: () =>
-      fetchTvShowAdditional(id, {
-        recommendations: true,
-      }),
-    staleTime: Infinity,
-    enabled: !!id,
-  });
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchTvShowAdditional(id, {
+          recommendations: true,
+        });
+        setData(response);
+      } catch (error) {
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
 
   if (isLoading) {
     return (

@@ -6,9 +6,7 @@ import WatchlistPart from "./WatchlistPart";
 import ImageOfDetail from "@components/ImageOfDetail";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import { QueryClient } from "@tanstack/react-query";
-import isMovieInWatchlist from "@api/query/watchlist/isMovieInWatchlist";
 import checkUserLogin from "@api/query/auth/checkUserLogin";
-import Link from "next/link";
 import LoginButton from "@components/LoginButton";
 
 const queryClient = new QueryClient();
@@ -27,7 +25,7 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
 };
 
 const MovieDetailPage = async ({ searchParams: { id } }) => {
-  const query = await queryClient.fetchQuery({
+  const query = queryClient.fetchQuery({
     queryKey: ["Movie Detail", id],
     queryFn: async () => {
       return await fetchMovieDetail(Number(id));
@@ -35,12 +33,9 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
     staleTime: Infinity,
   });
 
-  const user = await checkUserLogin();
-  const movieWatchlist = await isMovieInWatchlist(user, id);
+  const [movieData, user] = await Promise.all([query, checkUserLogin()]);
 
-  console.log("is movie in watchlist", id, movieWatchlist);
-
-  const { details, recommendations } = query;
+  const { details, recommendations } = movieData;
 
   const {
     adult,
@@ -85,11 +80,7 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
           </div>
           <div className="mt-2">
             {user ? (
-              <WatchlistPart
-                details={details}
-                initial={movieWatchlist}
-                id={id}
-              />
+              <WatchlistPart details={details} id={id} />
             ) : (
               <LoginButton />
             )}

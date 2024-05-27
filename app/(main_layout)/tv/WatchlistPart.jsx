@@ -2,16 +2,14 @@
 
 import addTvToWatchlist from "@api/mutation/watchlist/tv/addTvToWatchlist";
 import removeTvFromWatchlist from "@api/mutation/watchlist/tv/removeTvFromWatchlist";
+import isTvInWatchlist from "@api/query/watchlist/isTvInWatchlist";
 import Toastify from "@lib/Toastify";
 import { useEffect, useState } from "react";
 
-const WatchlistPart = ({ id: tvId, season, initial, details }) => {
-  const [toggleWatchlist, setToggleWatchlist] = useState(initial);
+const WatchlistPart = ({ id: tvId, season, details }) => {
+  const [toggleWatchlist, setToggleWatchlist] = useState(false);
   const { ToastContainer, showErrorMessage } = Toastify();
   const [isDisabledButton, setIsDisabledButton] = useState(false);
-
-  console.log("initial ", initial);
-  console.log("isDisabledButton", isDisabledButton);
 
   const obj = {
     ...details,
@@ -21,7 +19,10 @@ const WatchlistPart = ({ id: tvId, season, initial, details }) => {
 
   useEffect(() => {
     if (tvId && season) {
-      setToggleWatchlist(initial);
+      (async () => {
+        const watchlistTv = await isTvInWatchlist(tvId, season);
+        setToggleWatchlist(watchlistTv);
+      })();
     }
   }, [tvId, season]);
 

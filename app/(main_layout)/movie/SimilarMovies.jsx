@@ -1,17 +1,27 @@
 import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 const MOVIE = "movie";
 
 const SimilarMovies = ({ id }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["Similar Movies", id],
-    queryFn: () => fetchMovieAdditional(id, { similar: true }),
-    staleTime: Infinity,
-    enabled: !!id,
-  });
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetchMovieAdditional(id, { similar: true });
+        setData(response);
+      } catch (error) {
+        setData(null);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, [id]);
 
   if (isLoading) {
     return (

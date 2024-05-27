@@ -2,17 +2,21 @@
 
 import addMovieToWatchlist from "@api/mutation/watchlist/movie/addMovieToWatchlist";
 import removeMovieFromWatchlist from "@api/mutation/watchlist/movie/removeMovieFromWatchlist";
+import isMovieInWatchlist from "@api/query/watchlist/isMovieInWatchlist";
 import Toastify from "@lib/Toastify";
 import { useEffect, useState } from "react";
 
-const WatchlistPart = ({ details, initial, id }) => {
-  const [toggleWatchlist, setToggleWatchlist] = useState(initial);
+const WatchlistPart = ({ details, id }) => {
+  const [toggleWatchlist, setToggleWatchlist] = useState(false);
   const { ToastContainer, showErrorMessage } = Toastify();
   const [isDisabledButton, setIsDisabledButton] = useState(false);
 
   useEffect(() => {
     if (id) {
-      setToggleWatchlist(initial);
+      (async () => {
+        const movieWatchlist = await isMovieInWatchlist(id);
+        setToggleWatchlist(movieWatchlist);
+      })();
     }
   }, [id]);
 

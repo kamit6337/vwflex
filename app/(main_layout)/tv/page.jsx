@@ -6,9 +6,7 @@ import ImageOfDetail from "@components/ImageOfDetail";
 import WatchlistPart from "./WatchlistPart";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import { QueryClient } from "@tanstack/react-query";
-import isTvInWatchlist from "@api/query/watchlist/isTvInWatchlist";
 import checkUserLogin from "@api/query/auth/checkUserLogin";
-import Link from "next/link";
 import LoginButton from "@components/LoginButton";
 
 const queryClient = new QueryClient();
@@ -29,7 +27,7 @@ export const generateMetadata = async ({
 };
 
 const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
-  const query = await queryClient.fetchQuery({
+  const query = queryClient.fetchQuery({
     queryKey: ["TV Show Detail", id, season],
     queryFn: async () => {
       return await fetchTvShowDetails(id, season);
@@ -37,12 +35,9 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     staleTime: Infinity,
   });
 
-  const watchlistTv = await isTvInWatchlist(id, season);
-  const user = await checkUserLogin();
+  const [tvDetails, user] = await Promise.all([query, checkUserLogin()]);
 
-  console.log("is tv in watchlist", id, season, watchlistTv);
-
-  const { details } = query;
+  const { details } = tvDetails;
 
   const {
     season_number,
@@ -105,12 +100,7 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
 
           <div className="mt-2">
             {user ? (
-              <WatchlistPart
-                id={id}
-                season={season}
-                initial={watchlistTv}
-                details={details}
-              />
+              <WatchlistPart id={id} season={season} details={details} />
             ) : (
               <LoginButton />
             )}

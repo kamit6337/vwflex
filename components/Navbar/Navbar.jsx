@@ -30,7 +30,11 @@ const Navbar = async () => {
         </div>
         <div className="flex h-full items-center gap-4">
           <Search />
-          {user ? <Profile user={user} /> : <LoginButton sm_width={true} />}
+          {user ? (
+            <Profile name={user.name} email={user.email} />
+          ) : (
+            <LoginButton sm_width={true} />
+          )}
         </div>
       </div>
     </nav>
