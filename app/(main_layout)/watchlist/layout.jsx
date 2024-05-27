@@ -8,8 +8,6 @@ export const metadata = () => {
   };
 };
 
-export const dynamic = "force-dynamic";
-
 const WatchlistLayout = async ({ children, movies, tv }) => {
   const user = await checkUserLogin();
 

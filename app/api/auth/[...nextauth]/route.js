@@ -20,6 +20,8 @@ const handler = NextAuth({
     async signIn({ user, account, profile }) {
       const { id, name, email, image } = user;
 
+      console.log("user", user);
+
       //MARK: CHECK WHETHER USER IS PRESENT OR NOT
       const findUser = await User.findOne({
         OAuthId: id,
@@ -34,10 +36,16 @@ const handler = NextAuth({
           role: findUser.role,
         });
 
-        cookies().set("token", token, {
+        const obj = {
           httpOnly: true,
           maxAge: environment.JWT_EXPIRES_IN, // in milliseconds
-        });
+        };
+
+        if (environment.NODE_ENV === "production") {
+          obj.secure = true;
+        }
+
+        cookies().set("token", token, obj);
 
         return true;
       }
@@ -61,10 +69,16 @@ const handler = NextAuth({
         role: createUser.role,
       });
 
-      cookies().set("token", token, {
+      const obj = {
         httpOnly: true,
         maxAge: environment.JWT_EXPIRES_IN, // in milliseconds
-      });
+      };
+
+      if (environment.NODE_ENV === "production") {
+        obj.secure = true;
+      }
+
+      cookies().set("token", token, obj);
 
       return true;
     },
