@@ -1,6 +1,7 @@
 import User from "@models/UserModel";
 import generateWebToken from "@utils/auth/generateWebToken";
 import environment from "@utils/environment";
+import connectToDB from "@utils/mongoose/connectToDB";
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { cookies } from "next/headers";
@@ -21,6 +22,8 @@ const handler = NextAuth({
       const { id, name, email, image } = user;
 
       console.log("user", user);
+
+      await connectToDB();
 
       //MARK: CHECK WHETHER USER IS PRESENT OR NOT
       const findUser = await User.findOne({
