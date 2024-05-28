@@ -4,6 +4,7 @@ import ReactReduxProvider from "@providers/ReactReduxProvider";
 import ScrollToTop from "@lib/ScrollToTop";
 import ReactQueryProvider from "@providers/ReactQueryProvider";
 import OfflineDetector from "@lib/OfflineDetector";
+import CustomImages from "@assets/images";
 
 // If loading a variable font, you don't need to specify the font weight
 const poppins = Poppins({

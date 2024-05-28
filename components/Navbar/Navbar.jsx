@@ -7,6 +7,8 @@ import Profile from "./Profile";
 import Store from "./Store";
 import checkUserLogin from "@api/query/auth/checkUserLogin";
 import LoginButton from "@components/LoginButton";
+import Image from "next/image";
+import CustomImages from "@assets/images";
 
 const Navbar = async () => {
   const user = await checkUserLogin();
@@ -14,11 +16,11 @@ const Navbar = async () => {
   return (
     <nav className="w-full h-full flex justify-center items-center ">
       <div className="flex items-center gap-20 sm_lap:gap-10 tablet:gap-2 w-max relative">
-        <p className="cursor-pointer text-xl font-semibold tracking-wider text-white">
+        <div className="w-32">
           <Link href={`/`} prefetch={false}>
-            VwFlex
+            <Image src={CustomImages.logo} alt="Logo" className="w-full" />
           </Link>
-        </p>
+        </div>
         <div className="self-center flex justify-between h-full whitespace-nowrap ">
           {/* MARK: HOME COMPONENT */}
           <Home />
