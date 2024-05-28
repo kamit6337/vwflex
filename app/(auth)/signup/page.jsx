@@ -1,11 +1,14 @@
 "use client";
 
 import userSignUp from "@api/query/auth/userSignUp";
+import CustomImages from "@assets/images";
 import Loading from "@containers/Loading";
 import Toastify from "@lib/Toastify";
+import { getProviders, signIn } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useForm } from "react-hook-form";
 import validator from "validator";
@@ -16,6 +19,14 @@ const SignUp = () => {
     password: false,
     confirmPassword: false,
   });
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
+  }, []);
 
   const { ToastContainer, showErrorMessage } = Toastify();
 
@@ -44,6 +55,10 @@ const SignUp = () => {
     } catch (error) {
       showErrorMessage({ message: error.message });
     }
+  };
+
+  const googleOAuth = (id) => {
+    signIn(id);
   };
 
   return (
@@ -200,8 +215,27 @@ const SignUp = () => {
               </p>
             </div>
           </form>
+          {/* MARK: GO TO OAUTH LOGIN PAGE*/}
+          {providers && (
+            <div
+              className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
+              onClick={() => googleOAuth(providers?.google.id)}
+            >
+              <div className="w-6">
+                <Image
+                  src={CustomImages.googleIcon}
+                  alt="Google Icon"
+                  className="w-full object-cover bg-transparent"
+                />
+              </div>
+              <p>
+                Login with <span>{providers?.google.name}</span>
+              </p>
+            </div>
+          )}
         </div>
       </div>
+
       <ToastContainer />
     </>
   );

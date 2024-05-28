@@ -21,8 +21,6 @@ const handler = NextAuth({
     async signIn({ user, account, profile }) {
       const { id, name, email, image } = user;
 
-      console.log("user", user);
-
       await connectToDB();
 
       //MARK: CHECK WHETHER USER IS PRESENT OR NOT
@@ -33,9 +31,7 @@ const handler = NextAuth({
       if (findUser) {
         const token = generateWebToken({
           id: findUser._id,
-          name: findUser.name,
-          image: findUser.image,
-          email: findUser.email,
+
           role: findUser.role,
         });
 
@@ -66,9 +62,7 @@ const handler = NextAuth({
 
       const token = generateWebToken({
         id: createUser._id,
-        name: createUser.name,
-        image: createUser.image,
-        email: createUser.email,
+
         role: createUser.role,
       });
 

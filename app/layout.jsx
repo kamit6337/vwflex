@@ -21,6 +21,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   return (
     <html lang="en" className={poppins.className}>
+      <link rel="icon" href="/vwflex_favicon1.png" sizes="any" />
       <body className="w-full h-screen">
         <OfflineDetector />
         <ReactQueryProvider>

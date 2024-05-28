@@ -33,8 +33,6 @@ const userLogin = catchAsyncError(async (obj) => {
 
   const token = generateWebToken({
     id: findUser._id,
-    name: findUser.name,
-    email: findUser.email,
     role: findUser.role,
   });
 

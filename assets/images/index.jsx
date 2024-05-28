@@ -1,11 +1,9 @@
 import googleIcon from "./google_transparent_icon.png";
-import logo from "./vwflex.png";
-import favicon from "./vwflex_favicon.png";
+import logo from "./vwflex1.png";
 
 const CustomImages = {
   googleIcon,
   logo,
-  favicon,
 };
 
 export default CustomImages;

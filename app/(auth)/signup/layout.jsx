@@ -1,3 +1,5 @@
+import { getProviders } from "next-auth/react";
+
 export const metadata = () => {
   return {
     title: "Sign Up",
@@ -5,7 +7,8 @@ export const metadata = () => {
   };
 };
 
-const layout = ({ children }) => {
+const layout = async ({ children }) => {
+  await getProviders();
   return <>{children}</>;
 };
 

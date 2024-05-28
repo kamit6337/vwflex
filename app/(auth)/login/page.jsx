@@ -6,7 +6,6 @@ import validator from "validator";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@containers/Loading";
 import Link from "next/link";
-import environment from "@utils/environment";
 import userLogin from "@api/query/auth/userLogin";
 import Toastify from "@lib/Toastify";
 import { Helmet } from "react-helmet";
@@ -157,7 +156,7 @@ const Login = () => {
             </div>
           </form>
 
-          {/* MARK: GO TO LOGIN PAGE*/}
+          {/* MARK: GO TO OAUTH LOGIN PAGE*/}
           {providers && (
             <div
               className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
