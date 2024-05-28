@@ -1,3 +1,5 @@
+"use server";
+
 import catchAsyncError from "@lib/catchAsyncError";
 import WatchListMovie from "@models/WatchlistMovieModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
@@ -6,7 +8,6 @@ import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
 const userWatchlistMovies = catchAsyncError(async () => {
-  console.log("Come here movies");
   const token = cookies().get("token");
 
   if (!token) {

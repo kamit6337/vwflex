@@ -8,7 +8,7 @@ export const metadata = () => {
   };
 };
 
-const WatchlistLayout = async ({ children, movies, tv }) => {
+const WatchlistLayout = async ({ children }) => {
   const user = await checkUserLogin();
 
   if (!user) {
@@ -23,13 +23,7 @@ const WatchlistLayout = async ({ children, movies, tv }) => {
     );
   }
 
-  return (
-    <>
-      {children}
-      {movies}
-      {tv}
-    </>
-  );
+  return <>{children}</>;
 };
 
 export default WatchlistLayout;

@@ -8,8 +8,6 @@ import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
 const userWatchlistTv = catchAsyncError(async () => {
-  console.log("Come here tv");
-
   const token = cookies().get("token");
 
   if (!token) {
