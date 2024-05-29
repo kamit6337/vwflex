@@ -11,7 +11,6 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
   const query = await queryClient.fetchQuery({
     queryKey: ["Person Detail", id],
     queryFn: () => fetchPersonDetails(Number(id)),
-    staleTime: Infinity,
   });
 
   return {
@@ -26,7 +25,6 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
     queryFn: async () => {
       return await fetchPersonDetails(Number(id));
     },
-    staleTime: Infinity,
   });
 
   if (!query) return;
