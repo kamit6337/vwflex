@@ -3,28 +3,18 @@ import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
 import Loading from "@containers/Loading";
 import { fixedState } from "@redux/slice/fixedSlice";
 import { toggleInLargeImage } from "@redux/slice/toggleSlice";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { useDispatch, useSelector } from "react-redux";
 
 const MovieImages = ({ id }) => {
   const dispatch = useDispatch();
   const { imageDetail } = useSelector(fixedState);
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetchMovieAdditional(id, { images: true });
-        setData(response);
-      } catch (error) {
-        setData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [id]);
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["Movie additional", "images", id],
+    queryFn: () => fetchMovieAdditional(id, { images: true }),
+    staleTime: Infinity,
+  });
 
   if (isLoading) {
     return (
@@ -34,7 +24,7 @@ const MovieImages = ({ id }) => {
     );
   }
 
-  if (!data || data.length === 0) {
+  if (error || !data || data.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have images</p>

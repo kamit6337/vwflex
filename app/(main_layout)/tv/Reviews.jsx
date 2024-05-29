@@ -4,28 +4,19 @@ import { useSelector } from "react-redux";
 import { fixedState } from "@redux/slice/fixedSlice";
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
 import ExpandableText from "@lib/ExpandableText";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const Reviews = ({ id }) => {
   const { imageDetail } = useSelector(fixedState);
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetchTvShowAdditional(id, {
-          reviews: true,
-        });
-        setData(response);
-      } catch (error) {
-        setData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [id]);
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["tv additional", "reviews", id],
+    queryFn: () =>
+      fetchTvShowAdditional(id, {
+        reviews: true,
+      }),
+    staleTime: Infinity,
+  });
 
   if (isLoading) {
     return (
@@ -35,7 +26,7 @@ const Reviews = ({ id }) => {
     );
   }
 
-  if (!data || data.data.length === 0) {
+  if (error || !data || data.data.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have reviews</p>

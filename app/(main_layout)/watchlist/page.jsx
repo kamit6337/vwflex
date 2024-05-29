@@ -1,37 +1,14 @@
 "use client";
-import userWatchlistMovies from "@api/query/watchlist/userWatchlistMovies";
-import userWatchlistTv from "@api/query/watchlist/userWatchlistTv";
+import useWatchlistQuery from "@api/query/watchlist/useWatchlistQuery";
 import GeneralError from "@components/GeneralError";
 import HorizontalList from "@components/HorizontalList";
 import TvHorizontalList from "@components/TvHorizontalList";
 import Loading from "@containers/Loading";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 const MOVIE = "movie";
 
 const WatchlistPage = () => {
-  const [error, setError] = useState(false);
-  const [movies, setMovies] = useState([]);
-  const [tv, setTv] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const [movies, tv] = await Promise.all([
-          userWatchlistMovies(),
-          userWatchlistTv(),
-        ]);
-        setMovies(movies);
-        setTv(tv);
-      } catch (error) {
-        setError(true);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, []);
+  const { isLoading, error, data } = useWatchlistQuery();
 
   if (isLoading) {
     return (
@@ -44,6 +21,8 @@ const WatchlistPage = () => {
   if (error) {
     return <GeneralError />;
   }
+
+  const [movies, tv] = data;
 
   if (movies.length === 0 && tv.length === 0) {
     return (

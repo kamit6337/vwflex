@@ -17,7 +17,6 @@ export const generateMetadata = async ({
   const query = await queryClient.fetchQuery({
     queryKey: ["TV Show Detail", id, season],
     queryFn: () => fetchTvShowDetails(id, season),
-    staleTime: Infinity,
   });
 
   return {
@@ -32,7 +31,6 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     queryFn: async () => {
       return await fetchTvShowDetails(id, season);
     },
-    staleTime: Infinity,
   });
 
   const [tvDetails, user] = await Promise.all([query, checkUserLogin()]);

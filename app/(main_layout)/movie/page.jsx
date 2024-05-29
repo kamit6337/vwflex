@@ -15,7 +15,6 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
   const query = await queryClient.fetchQuery({
     queryKey: ["Movie Detail", id],
     queryFn: () => fetchMovieDetail(Number(id)),
-    staleTime: Infinity,
   });
 
   return {
@@ -30,7 +29,6 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
     queryFn: async () => {
       return await fetchMovieDetail(Number(id));
     },
-    staleTime: Infinity,
   });
 
   const [movieData, user] = await Promise.all([query, checkUserLogin()]);

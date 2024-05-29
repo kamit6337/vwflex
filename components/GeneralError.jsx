@@ -13,7 +13,10 @@ const GeneralError = ({ hScreen = false }) => {
     >
       <main className="flex flex-col items-center gap-10 p-10 border border-white rounded">
         <p>Something went wrong. Please Refresh</p>
-        <button onClick={handleRefresh} className="w-full py-2 bg-gray-400">
+        <button
+          onClick={handleRefresh}
+          className="w-full py-2 bg-gray-400 hover:bg-gray-500"
+        >
           Refresh
         </button>
       </main>

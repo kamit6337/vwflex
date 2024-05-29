@@ -1,29 +1,19 @@
 import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
 import HorizontalList from "@components/HorizontalList";
 import Loading from "@containers/Loading";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 const TV = "tv";
 
 const Recommendations = ({ id }) => {
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setIsLoading(true);
-        const response = await fetchTvShowAdditional(id, {
-          recommendations: true,
-        });
-        setData(response);
-      } catch (error) {
-        setData(null);
-      } finally {
-        setIsLoading(false);
-      }
-    })();
-  }, [id]);
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["tv additional", "recommendations", id],
+    queryFn: () =>
+      fetchTvShowAdditional(id, {
+        recommendations: true,
+      }),
+    staleTime: Infinity,
+  });
 
   if (isLoading) {
     return (
@@ -33,7 +23,7 @@ const Recommendations = ({ id }) => {
     );
   }
 
-  if (!data || data?.data.length === 0) {
+  if (error || !data || data?.data.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have Recommended TV Shows data</p>

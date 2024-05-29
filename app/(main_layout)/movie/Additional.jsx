@@ -2,7 +2,7 @@
 
 import HorizontalList from "@components/HorizontalList";
 import priceInMillions from "@utils/javascript/priceInMillions";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import MovieImages from "./MovieImages";
 import SimilarMovies from "./SimilarMovies";
 import Reviews from "./Reviews";
@@ -192,9 +192,9 @@ const Additional = ({ recommendations, details, id }) => {
         <HorizontalList id={id} data={recommendations} type={MOVIE} />
       )}
 
-      {optionSelected === imageSection && <MovieImages id={id} />}
-
       {optionSelected === similarSection && <SimilarMovies id={id} />}
+
+      {optionSelected === imageSection && <MovieImages id={id} />}
 
       {optionSelected === reviews && <Reviews id={id} />}
     </>
