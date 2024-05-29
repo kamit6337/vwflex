@@ -2,6 +2,8 @@
 
 <p>It's a Video Streaming(OTT) web app like Netflix, Amazon Prime, Hotstar build in Next JS where a list of different categories/genres of movies/tv shows are provided to watch</p>
 
+<a href="https://vwflex.vercel.app"><u>Live Website</u></a>
+
 <h1>Tech used : </h1>
 <ul>
 <li>Next JS - <i>Server Side Rendered React JS app</i></li>
