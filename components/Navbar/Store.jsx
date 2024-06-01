@@ -8,7 +8,7 @@ const Store = () => {
 
   return (
     <div
-      className="h-full relative hover:bg-slate-800 "
+      className="h-full relative hover:bg-slate-800 mobile:hidden"
       onMouseLeave={() => setToggleStore(false)}
     >
       <div

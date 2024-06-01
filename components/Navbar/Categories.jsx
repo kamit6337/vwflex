@@ -7,7 +7,10 @@ const Categories = () => {
   const [toggleCategories, setToggleCategories] = useState(false);
 
   return (
-    <div onMouseLeave={() => setToggleCategories(false)}>
+    <div
+      className="mobile:hidden"
+      onMouseLeave={() => setToggleCategories(false)}
+    >
       <div
         className={`${
           toggleCategories && "border-b border-white text-white"
