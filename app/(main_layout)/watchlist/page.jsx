@@ -1,6 +1,6 @@
 import userWatchlistMovies from "@api/query/watchlist/userWatchlistMovies";
 import userWatchlistTv from "@api/query/watchlist/userWatchlistTv";
-import Watchlist from "./watchlist";
+import Watchlist from "./Watchlist";
 import {
   HydrationBoundary,
   QueryClient,
