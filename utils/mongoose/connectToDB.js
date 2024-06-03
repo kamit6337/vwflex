@@ -8,7 +8,7 @@ const connectToDB = async () => {
 
   if (isDatabaseConnected) {
     console.log("Database is already connected");
-    return;
+    return true;
   }
 
   try {
@@ -17,6 +17,7 @@ const connectToDB = async () => {
       console.log("Connected to MongoDB");
       isDatabaseConnected = true;
     });
+    return true;
   } catch (error) {
     console.log("Disconnected from MongoDB", error);
     isDatabaseConnected = false;

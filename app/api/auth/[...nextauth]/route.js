@@ -21,7 +21,11 @@ const handler = NextAuth({
     async signIn({ user, account, profile }) {
       const { id, name, email, image } = user;
 
-      await connectToDB();
+      const bool = await connectToDB();
+
+      if (!bool) {
+        return false;
+      }
 
       //MARK: CHECK WHETHER USER IS PRESENT OR NOT
       const findUser = await User.findOne({
