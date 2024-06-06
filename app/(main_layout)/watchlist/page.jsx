@@ -15,7 +15,7 @@ export const metadata = () => {
 };
 
 const getUserWatchlist = unstable_cache(
-  async () => Promise.all([userWatchlistMovies(), userWatchlistTv()]),
+  async (userId) => Promise.all([userWatchlistMovies(userId), userWatchlistTv(userId)]),
   ["watchlist"]
 );
 
@@ -34,7 +34,9 @@ const WatchlistPage = async () => {
     );
   }
 
-  const data = await getUserWatchlist();
+const userId = user._id
+
+  const data = await getUserWatchlist(userId);
 
   const [movies, tv] = data;
 

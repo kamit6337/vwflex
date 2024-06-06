@@ -7,16 +7,7 @@ import makeSerializable from "@utils/javascript/makeSerializable";
 import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
-const userWatchlistTv = catchAsyncError(async () => {
-  const token = cookies().get("token");
-
-  if (!token) {
-    throw new Error("You session has expired. Please login again");
-  }
-
-  const decoded = verifyWebToken(token.value);
-  const userId = decoded.id;
-
+const userWatchlistTv = catchAsyncError(async (userId) => {
   await connectToDB();
 
   const movies = await WatchListTv.find({
