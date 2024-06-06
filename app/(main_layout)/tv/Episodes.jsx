@@ -50,14 +50,14 @@ const Episodes = ({ data }) => {
                 />
               ) : (
                 <div className="w-full h-full flex justify-center items-start">
-                  <p className="border border-slate-500 p-3">
+                  <p className="border border-slate-500 p-3 mobile:text-xs ">
                     No Image Available
                   </p>
                 </div>
               )}
             </div>
-            <div className="flex-1 flex flex-col items-start w-full mt-1 gap-2 ">
-              <div className="flex  gap-2 font-semibold text-xl">
+            <div className="flex-1 flex flex-col gap-2 mobile:gap-1 items-start w-full mt-1  mobile:mt-0">
+              <div className="flex gap-2 font-semibold text-xl tablet:text-base">
                 <p>S{season_number} </p>
                 <p>E{episode_number}</p>
                 <p className="mx-2">-</p>

@@ -4,6 +4,7 @@ import catchAsyncError from "@lib/catchAsyncError";
 import WatchListTv from "@models/WatchlistTvModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
 import connectToDB from "@utils/mongoose/connectToDB";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 const addTvToWatchlist = catchAsyncError(async (details) => {
@@ -28,7 +29,7 @@ const addTvToWatchlist = catchAsyncError(async (details) => {
 
   await connectToDB();
 
- await WatchListTv.create({
+  await WatchListTv.create({
     user: userId,
     tvId: Number(tvId),
     season: Number(season),
@@ -39,9 +40,7 @@ const addTvToWatchlist = catchAsyncError(async (details) => {
     vote_average,
   });
 
-
-
- 
+  revalidatePath("/watchlist");
 
   return "Added Successfully";
 });

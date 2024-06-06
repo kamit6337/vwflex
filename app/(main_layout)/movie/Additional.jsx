@@ -53,7 +53,7 @@ const Additional = ({ recommendations, details, id }) => {
   return (
     <>
       <div className="sticky top-14 bottom-0 z-20 w-full font-medium tracking-wider flex justify-center pb-2 h-[60px] tablet:text-sm">
-        <div className="w-max flex items-center gap-6 rounded-2xl  px-10 h-full  border-2 border-slate-600 bg-black">
+        <div className="w-max flex items-center gap-6 tablet:gap-3   rounded-2xl  px-10 tablet:px-5 h-full  border-2 border-slate-600 bg-black mobile:text-xs">
           {recommendations && recommendations.data.length > 0 && (
             <p
               className={`${
@@ -101,22 +101,19 @@ const Additional = ({ recommendations, details, id }) => {
       </div>
 
       {/* optionSelected */}
-
       {optionSelected === detailSection && (
-        <div className="p-16 sm:px-5 pr-0 flex flex-col items-start justify-between gap-12 relative z-10 w-4/5 sm:w-full">
+        <div className="p-16 tablet:px-5 pr-0 flex flex-col items-start justify-between gap-12 relative z-10 w-4/5 tablet:w-full ">
           {overview && (
             <div>
-              <p className="text-xl sm:text-base sm:font-semibold border-b-2 border-white/70 w-max font-semibold tracking-wider mb-2 uppercase">
-                overview
+              <p className="details_title">overview</p>
+              <p className="tracking-wider leading-6 tablet:text-sm">
+                {overview}
               </p>
-              <p className="tracking-wider leading-6 sm:text-sm">{overview}</p>
             </div>
           )}
           {description && (
             <div>
-              <p className="text-xl sm:text-base sm:font-semibold border-b-2 border-white/70 w-max font-semibold tracking-wider mb-2 ">
-                DESCRIPTION
-              </p>
+              <p className="details_title">DESCRIPTION</p>
               <p className="tracking-wider leading-6 sm:text-sm">
                 {description}
               </p>
@@ -125,26 +122,20 @@ const Additional = ({ recommendations, details, id }) => {
 
           {budget > 0 && (
             <div>
-              <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
-                BUDGET
-              </p>
+              <p className="details_title">BUDGET</p>
               <p className="sm:text-sm">{priceInMillions(budget)}</p>
             </div>
           )}
 
           {revenue > 0 && (
             <div>
-              <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
-                REVENUE
-              </p>
+              <p className="details_title">REVENUE</p>
               <p className="sm:text-sm">{priceInMillions(revenue)}</p>
             </div>
           )}
 
           <div>
-            <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
-              PRODUCTION COMPANIES
-            </p>
+            <p className="details_title">PRODUCTION COMPANIES</p>
             <div className="flex justify-start gap-8 sm:gap-4 sm:flex-wrap">
               {production_companies.map((company, i) => {
                 return (
@@ -157,9 +148,7 @@ const Additional = ({ recommendations, details, id }) => {
           </div>
 
           <div>
-            <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70 sm:gap-4 sm:flex-wrap">
-              PRODUCTION COUNTRIES
-            </p>
+            <p className="details_title">PRODUCTION COUNTRIES</p>
             <div className="flex justify-start gap-8">
               {production_countries.map((country, i) => {
                 return (
@@ -172,9 +161,7 @@ const Additional = ({ recommendations, details, id }) => {
           </div>
 
           <div>
-            <p className="text-xl w-max font-semibold tracking-wider mb-2 sm:text-base sm:font-semibold border-b-2 border-white/70">
-              AUDIO LANGUAGE
-            </p>
+            <p className="details_title">AUDIO LANGUAGE</p>
             <div className="flex justify-start gap-6">
               {spoken_languages.map((language, i) => {
                 return (

@@ -3,6 +3,7 @@
 import catchAsyncError from "@lib/catchAsyncError";
 import WatchListTv from "@models/WatchlistTvModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 const removeTvFromWatchlist = catchAsyncError(async (details) => {
@@ -22,6 +23,8 @@ const removeTvFromWatchlist = catchAsyncError(async (details) => {
     tvId: Number(tvId),
     season: Number(season),
   });
+
+  revalidatePath("/watchlist");
 
   return "Removed Successfully";
 });

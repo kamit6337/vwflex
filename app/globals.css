@@ -31,6 +31,10 @@
   .back_to_start {
     @apply h-full rounded-3xl text-xs border border-white px-3 tablet:text-[10px] cursor-pointer flex justify-center items-center;
   }
+
+  .details_title {
+    @apply text-lg tablet:text-base border-b-2 border-white/70 w-max font-semibold tracking-wider mb-2 uppercase;
+  }
 }
 
 /* NOTE: DETAIL IMAGE SHADOW */

@@ -3,6 +3,7 @@
 import catchAsyncError from "@lib/catchAsyncError";
 import WatchListMovie from "@models/WatchlistMovieModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 const removeMovieFromWatchlist = catchAsyncError(async (details) => {
@@ -22,7 +23,7 @@ const removeMovieFromWatchlist = catchAsyncError(async (details) => {
     id: movieId,
   });
 
-
+  revalidatePath("/watchlist");
 
   return "Removed Successfully";
 });

@@ -4,6 +4,7 @@ import catchAsyncError from "@lib/catchAsyncError";
 import WatchListMovie from "@models/WatchlistMovieModel";
 import verifyWebToken from "@utils/auth/verifyWebToken";
 import connectToDB from "@utils/mongoose/connectToDB";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 const addMovieToWatchlist = catchAsyncError(async (details) => {
@@ -37,7 +38,7 @@ const addMovieToWatchlist = catchAsyncError(async (details) => {
     vote_average,
   });
 
-
+  revalidatePath("/watchlist");
 
   return "Add Successfully";
 });
