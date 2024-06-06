@@ -3,7 +3,6 @@
 import addMovieToWatchlist from "@api/mutation/watchlist/movie/addMovieToWatchlist";
 import removeMovieFromWatchlist from "@api/mutation/watchlist/movie/removeMovieFromWatchlist";
 import isMovieInWatchlist from "@api/query/watchlist/isMovieInWatchlist";
-import useWatchlistQuery from "@api/query/watchlist/useWatchlistQuery";
 import Toastify from "@lib/Toastify";
 import { useEffect, useState } from "react";
 
@@ -11,7 +10,6 @@ const WatchlistPart = ({ details, id }) => {
   const [toggleWatchlist, setToggleWatchlist] = useState(false);
   const { ToastContainer, showErrorMessage } = Toastify();
   const [isDisabledButton, setIsDisabledButton] = useState(false);
-  const { refetch } = useWatchlistQuery();
 
   useEffect(() => {
     if (id) {
@@ -27,7 +25,6 @@ const WatchlistPart = ({ details, id }) => {
       setIsDisabledButton(true);
       await removeMovieFromWatchlist(details);
       setToggleWatchlist(false);
-      refetch();
     } catch (error) {
       showErrorMessage({ message: "Something went wrong. Please try later" });
     } finally {
@@ -40,7 +37,6 @@ const WatchlistPart = ({ details, id }) => {
       setIsDisabledButton(true);
       await addMovieToWatchlist(details);
       setToggleWatchlist(true);
-      refetch();
     } catch (error) {
       showErrorMessage({ message: "Something went wrong. Please try later" });
     } finally {

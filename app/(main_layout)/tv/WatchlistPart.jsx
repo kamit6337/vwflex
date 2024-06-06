@@ -3,7 +3,6 @@
 import addTvToWatchlist from "@api/mutation/watchlist/tv/addTvToWatchlist";
 import removeTvFromWatchlist from "@api/mutation/watchlist/tv/removeTvFromWatchlist";
 import isTvInWatchlist from "@api/query/watchlist/isTvInWatchlist";
-import useWatchlistQuery from "@api/query/watchlist/useWatchlistQuery";
 import Toastify from "@lib/Toastify";
 import { useEffect, useState } from "react";
 
@@ -11,7 +10,6 @@ const WatchlistPart = ({ id: tvId, season, details }) => {
   const [toggleWatchlist, setToggleWatchlist] = useState(false);
   const { ToastContainer, showErrorMessage } = Toastify();
   const [isDisabledButton, setIsDisabledButton] = useState(false);
-  const { refetch } = useWatchlistQuery();
   const obj = {
     ...details,
     tvId,
@@ -32,7 +30,6 @@ const WatchlistPart = ({ id: tvId, season, details }) => {
       setIsDisabledButton(true);
       await removeTvFromWatchlist(obj);
       setToggleWatchlist(false);
-      refetch();
     } catch (error) {
       showErrorMessage({ message: "Something went wrong. Please try later" });
     } finally {
@@ -45,7 +42,6 @@ const WatchlistPart = ({ id: tvId, season, details }) => {
       setIsDisabledButton(true);
       await addTvToWatchlist(obj);
       setToggleWatchlist(true);
-      refetch();
     } catch (error) {
       showErrorMessage({ message: "Something went wrong. Please try later" });
     } finally {
