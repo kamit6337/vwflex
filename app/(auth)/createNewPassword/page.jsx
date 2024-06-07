@@ -6,14 +6,14 @@ import { Helmet } from "react-helmet";
 import Toastify from "@lib/Toastify";
 import Loading from "@containers/Loading";
 import newPassword from "@api/mutation/newPassword";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-const CreateNewPassword = ({ searchParams }) => {
+const CreateNewPassword = () => {
   const router = useRouter();
   const [togglePassword, setTogglePassword] = useState(false);
   const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
-
-  const { email, token } = searchParams;
+  const email = useSearchParams().get("email");
+  const token = useSearchParams().get("token");
 
   const { ToastContainer, showErrorMessage, showSuccessMessage } = Toastify();
 

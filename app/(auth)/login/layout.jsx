@@ -1,4 +1,6 @@
+import Loading from "@containers/Loading";
 import { getProviders } from "next-auth/react";
+import { Suspense } from "react";
 
 export const metadata = () => {
   return {
@@ -10,7 +12,11 @@ export const metadata = () => {
 const layout = async ({ children }) => {
   await getProviders();
 
-  return <>{children}</>;
+  return (
+    <>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </>
+  );
 };
 
 export default layout;

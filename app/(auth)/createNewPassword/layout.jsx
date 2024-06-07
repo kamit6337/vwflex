@@ -1,3 +1,6 @@
+import Loading from "@containers/Loading";
+import { Suspense } from "react";
+
 export const metadata = () => {
   return {
     title: "Create New Password",
@@ -6,7 +9,11 @@ export const metadata = () => {
 };
 
 const layout = ({ children }) => {
-  return <>{children}</>;
+  return (
+    <>
+      <Suspense fallback={<Loading />}>{children}</Suspense>
+    </>
+  );
 };
 
 export default layout;

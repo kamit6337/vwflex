@@ -1,7 +1,7 @@
 import Footer from "@components/Footer/Footer";
+import GlobalShow from "@components/GlobalShow";
 import Navbar from "@components/Navbar/Navbar";
 import UserLoginProvider from "@providers/UserLoginProvider";
-import GlobalShow from "./GlobalShow";
 import connectToDB from "@utils/mongoose/connectToDB";
 
 const MainLayout = async ({ children }) => {

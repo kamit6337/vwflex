@@ -1,6 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
-import PeoplesHorizontalList from "../../components/PeoplesHorizontalList";
 import HorizontalList from "@components/HorizontalList";
+import PeoplesHorizontalList from "./PeoplesHorizontalList";
 
 const MOVIE = "movie";
 const TV = "tv";

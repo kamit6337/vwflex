@@ -1,5 +1,5 @@
 import queryList from "@api/query/queryList";
-import HorizontalSection from "../HorizontalSection";
+import HorizontalSection from "@components/HorizontalSection";
 
 const zIndex = 499;
 const MOVIE = "movie";
