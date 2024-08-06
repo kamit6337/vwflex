@@ -167,7 +167,7 @@ const Additional = ({ details, id, season }) => {
       )}
 
       {optionSelected === episodesSection && (
-        <div className="w-full flex flex-col gap-8 sm_lap:gap-6 py-20 tablet:py-10 px-10 sm_lap:px-6">
+        <div className="w-full flex flex-col gap-8 sm_lap:gap-6 py-20 tablet:py-10 px-10 sm_lap:px-6 tablet:px-3">
           <Episodes data={episodes} />
         </div>
       )}

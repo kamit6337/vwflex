@@ -10,11 +10,20 @@ const Episodes = ({ data }) => {
   const [height, setHeight] = useState(null);
 
   useEffect(() => {
-    if (ref.current) {
-      const width = ref.current.clientWidth;
-      const divHeight = width * (169 / 300);
-      setHeight(divHeight);
-    }
+    const handleResize = () => {
+      if (ref.current) {
+        const width = ref.current.clientWidth;
+        const divHeight = width * (169 / 300);
+        setHeight(divHeight);
+      }
+    };
+
+    // Initial call to handleResize
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   return (
@@ -35,9 +44,9 @@ const Episodes = ({ data }) => {
         const createPhoto = `${createBaseUrl}${still_path}`;
 
         return (
-          <section key={i} className="w-full flex gap-5">
+          <section key={i} className="w-full flex gap-5 tablet:gap-3">
             <div
-              className="w-1/4 sm_lap:w-1/3"
+              className="w-1/4 sm_lap:w-1/3 tablet:w-2/5"
               ref={ref}
               style={{ height: `${height}px` }}
             >
