@@ -1,4 +1,5 @@
 import User from "@models/UserModel";
+import cookieOptions from "@utils/auth/cookieOptions";
 import generateWebToken from "@utils/auth/generateWebToken";
 import environment from "@utils/environment";
 import connectToDB from "@utils/mongoose/connectToDB";
@@ -29,26 +30,16 @@ const handler = NextAuth({
 
       //MARK: CHECK WHETHER USER IS PRESENT OR NOT
       const findUser = await User.findOne({
-        OAuthId: id,
+        email,
       });
 
       if (findUser) {
         const token = generateWebToken({
           id: findUser._id,
-
           role: findUser.role,
         });
 
-        const obj = {
-          httpOnly: true,
-          maxAge: environment.JWT_EXPIRES_IN, // in milliseconds
-        };
-
-        if (environment.NODE_ENV === "production") {
-          obj.secure = true;
-        }
-
-        cookies().set("token", token, obj);
+        cookies().set("token", token, cookieOptions);
 
         return true;
       }
@@ -66,20 +57,10 @@ const handler = NextAuth({
 
       const token = generateWebToken({
         id: createUser._id,
-
         role: createUser.role,
       });
 
-      const obj = {
-        httpOnly: true,
-        maxAge: environment.JWT_EXPIRES_IN, // in milliseconds
-      };
-
-      if (environment.NODE_ENV === "production") {
-        obj.secure = true;
-      }
-
-      cookies().set("token", token, obj);
+      cookies().set("token", token, cookieOptions);
 
       return true;
     },

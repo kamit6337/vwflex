@@ -2,6 +2,7 @@
 
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
+import cookieOptions from "@utils/auth/cookieOptions";
 import generateWebToken from "@utils/auth/generateWebToken";
 import environment from "@utils/environment";
 import connectToDB from "@utils/mongoose/connectToDB";
@@ -30,12 +31,8 @@ const userSignUp = catchAsyncError(async (obj) => {
     role: createUser.role,
   });
 
-  const oneDay = 24 * 60 * 60 * 1000;
 
-  cookies().set("token", token, {
-    httpOnly: true,
-    expires: Date.now() + oneDay,
-  });
+  cookies().set("token", token, cookieOptions);
 
   // Serialize the createUser object
   const createUserSerialized = {

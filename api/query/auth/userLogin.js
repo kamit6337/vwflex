@@ -2,6 +2,7 @@
 
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
+import cookieOptions from "@utils/auth/cookieOptions";
 import generateWebToken from "@utils/auth/generateWebToken";
 import connectToDB from "@utils/mongoose/connectToDB";
 import bcrypt from "bcryptjs";
@@ -36,12 +37,7 @@ const userLogin = catchAsyncError(async (obj) => {
     role: findUser.role,
   });
 
-  const oneDay = 24 * 60 * 60 * 1000;
-
-  cookies().set("token", token, {
-    httpOnly: true,
-    expires: Date.now() + oneDay,
-  });
+  cookies().set("token", token, cookieOptions);
 
   const findUserSerializable = {
     _id: findUser._id.toString(),
