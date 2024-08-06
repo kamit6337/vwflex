@@ -2,7 +2,7 @@
 
 import catchAsyncError from "@lib/catchAsyncError";
 import WatchListTv from "@models/WatchlistTvModel";
-import verifyWebToken from "@utils/auth/verifyWebToken";
+import { decrypt } from "@utils/encryption/encryptAndDecrypt";
 import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
@@ -13,7 +13,7 @@ const isTvInWatchlist = catchAsyncError(async (tvId, season) => {
     return false;
   }
 
-  const decoded = verifyWebToken(token.value);
+  const decoded = decrypt(token.value);
 
   const userId = decoded.id;
 

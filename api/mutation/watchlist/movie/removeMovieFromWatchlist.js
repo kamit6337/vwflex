@@ -2,7 +2,7 @@
 
 import catchAsyncError from "@lib/catchAsyncError";
 import WatchListMovie from "@models/WatchlistMovieModel";
-import verifyWebToken from "@utils/auth/verifyWebToken";
+import { decrypt } from "@utils/encryption/encryptAndDecrypt";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -13,7 +13,7 @@ const removeMovieFromWatchlist = catchAsyncError(async (details) => {
     throw new Error("You session has expired. Please login again");
   }
 
-  const decoded = verifyWebToken(token.value);
+  const decoded = decrypt(token.value);
   const userId = decoded.id;
 
   const { id: movieId } = details;
