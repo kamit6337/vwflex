@@ -102,7 +102,7 @@ const Additional = ({ recommendations, details, id }) => {
 
       {/* optionSelected */}
       {optionSelected === detailSection && (
-        <div className="p-16 tablet:px-5 pr-0 flex flex-col items-start justify-between gap-12 relative z-10 w-4/5 tablet:w-full ">
+        <div className="p-16 tablet:px-5 flex flex-col items-start justify-between gap-12 relative z-10 w-full ">
           {overview && (
             <div>
               <p className="details_title">overview</p>

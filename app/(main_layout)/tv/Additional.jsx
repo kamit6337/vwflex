@@ -104,11 +104,13 @@ const Additional = ({ details, id, season }) => {
       {/* MARK: OPTIONS SELECTED */}
 
       {optionSelected === detailSection && (
-        <div className="p-16 tablet:px-5 pr-0 flex flex-col items-start justify-between gap-12 relative z-10 w-4/5 tablet:w-full">
+        <div className="p-16 tablet:px-5 flex flex-col items-start justify-between gap-12 relative z-10 w-full">
           {overview && (
             <div>
               <p className="details_title">DESCRIPTION</p>
-              <p className="tracking-wider leading-6 sm:text-sm">{overview}</p>
+              <p className="tracking-wider leading-6 tablet:text-sm">
+                {overview}
+              </p>
             </div>
           )}
 
