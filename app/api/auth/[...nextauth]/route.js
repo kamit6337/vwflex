@@ -21,7 +21,6 @@ const handler = NextAuth({
   pages: {
     error: "/error",
   },
-
   callbacks: {
     async signIn({ user, account, profile }) {
       const { id, name, email, image } = user;
