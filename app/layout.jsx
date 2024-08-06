@@ -5,6 +5,8 @@ import ScrollToTop from "@lib/ScrollToTop";
 import ReactQueryProvider from "@providers/ReactQueryProvider";
 import OfflineDetector from "@lib/OfflineDetector";
 import CustomImages from "@assets/images";
+import AnalyticsProvider from "@providers/AnalyticsProvider";
+import environment from "@utils/environment";
 
 // If loading a variable font, you don't need to specify the font weight
 const poppins = Poppins({
@@ -24,12 +26,14 @@ export default async function RootLayout({ children }) {
       <link rel="icon" href="/vwflex_favicon1.png" sizes="any" />
       <body className="w-full h-screen">
         <OfflineDetector />
-        <ReactQueryProvider>
-          <ReactReduxProvider>
-            <main>{children}</main>
-            <ScrollToTop />
-          </ReactReduxProvider>
-        </ReactQueryProvider>
+        <AnalyticsProvider props={environment.GA4_MEASUREMENT_ID}>
+          <ReactQueryProvider>
+            <ReactReduxProvider>
+              <main>{children}</main>
+              <ScrollToTop />
+            </ReactReduxProvider>
+          </ReactQueryProvider>
+        </AnalyticsProvider>
       </body>
     </html>
   );

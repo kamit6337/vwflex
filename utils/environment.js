@@ -13,6 +13,7 @@ const environment = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   SALT_ROUND: Number(process.env.SALT_ROUND),
+  GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID,
 };
 
 export default environment;
