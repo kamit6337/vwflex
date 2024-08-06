@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const GeneralError = ({ hScreen = false }) => {
   const handleRefresh = () => {
     if (typeof window !== "undefined") {
@@ -19,6 +21,12 @@ const GeneralError = ({ hScreen = false }) => {
         >
           Refresh
         </button>
+        <Link
+          href={`/login`}
+          className="flex justify-center w-full py-2 bg-gray-400 hover:bg-gray-500"
+        >
+          Login
+        </Link>
       </main>
     </section>
   );

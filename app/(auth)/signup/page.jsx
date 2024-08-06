@@ -7,7 +7,7 @@ import { getProviders, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
 
@@ -23,7 +23,6 @@ const SignUp = () => {
   useEffect(() => {
     (async () => {
       const res = await getProviders();
-      console.log(res);
       setProviders(res);
     })();
   }, []);
@@ -47,9 +46,9 @@ const SignUp = () => {
     delete formData.confirmPassword;
 
     try {
-      const response = await userSignUp(formData);
-      localStorage.setItem("user", JSON.stringify(response));
-      router.push("/");
+      await userSignUp(formData);
+      localStorage.setItem("email", data.email);
+      router.push("/signup/verify");
     } catch (error) {
       showErrorMessage({ message: error.message });
     }
@@ -190,16 +189,17 @@ const SignUp = () => {
 
             {/* MARK: SUBMIT BUTTON*/}
             <div className="flex flex-col gap-2">
-              <div className="h-12  rounded-lg bg-purple-300 font-semibold text-lg tracking-wide cursor-pointer w-full text-color_1">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="auth_submit_btn"
+              >
                 {isSubmitting ? (
                   <Loading hScreen={false} small={true} />
                 ) : (
-                  <input
-                    type="submit"
-                    className="w-full h-full cursor-pointer"
-                  />
+                  "Submit"
                 )}
-              </div>
+              </button>
               <p className="text-sm ml-2 text-color_4">
                 Already had account
                 <span className="ml-2 underline">

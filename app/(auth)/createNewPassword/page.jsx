@@ -114,13 +114,13 @@ const CreateNewPassword = () => {
           </div>
 
           {/* MARK: SUBMIT BUTTON*/}
-          <div className="h-12  rounded-lg bg-purple-300 font-semibold text-lg tracking-wide cursor-pointer w-full text-color_1">
-            {isSubmitting ? (
-              <Loading hScreen={false} small={true} />
-            ) : (
-              <input type="submit" className="w-full h-full cursor-pointer" />
-            )}
-          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="auth_submit_btn"
+          >
+            {isSubmitting ? <Loading hScreen={false} small={true} /> : "Submit"}
+          </button>
         </form>
       </section>
       <ToastContainer />

@@ -1,47 +1,23 @@
 "use server";
-
 import catchAsyncError from "@lib/catchAsyncError";
-import User from "@models/UserModel";
-import cookieOptions from "@utils/auth/cookieOptions";
-import generateWebToken from "@utils/auth/generateWebToken";
-import environment from "@utils/environment";
-import connectToDB from "@utils/mongoose/connectToDB";
-import bcrypt from "bcryptjs";
+import sendingEmail from "@utils/email";
+import { encrypt } from "@utils/encryption/encryptAndDecrypt";
+import generate8digitNumber from "@utils/javascript/generate8digitNumber";
+import { otpTemplate } from "@utils/otpTemplate";
 import { cookies } from "next/headers";
 
-const userSignUp = catchAsyncError(async (obj) => {
-  const { name, email, password } = obj;
+const userSignUp = catchAsyncError(async (data) => {
+  const otp = generate8digitNumber();
 
-  if (!name || !email || !password) {
-    throw new Error("All field is needed");
-  }
+  const encryptData = encrypt({ ...data, otp });
 
-  await connectToDB();
-
-  const hashPassword = bcrypt.hashSync(password, environment.SALT_ROUND);
-
-  const createUser = await User.create({
-    name,
-    email,
-    password: hashPassword,
+  cookies().set("_sig", encryptData, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
-  const token = generateWebToken({
-    id: createUser._id,
-    role: createUser.role,
-  });
-
-
-  cookies().set("token", token, cookieOptions);
-
-  // Serialize the createUser object
-  const createUserSerialized = {
-    _id: createUser._id.toString(),
-    name: createUser.name,
-    email: createUser.email,
-  };
-
-  return createUserSerialized;
+  const html = otpTemplate(otp);
+  await sendingEmail(data.email, "Your OTP Code", html);
 });
 
 export default userSignUp;

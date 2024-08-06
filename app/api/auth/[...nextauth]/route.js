@@ -1,6 +1,6 @@
 import User from "@models/UserModel";
 import cookieOptions from "@utils/auth/cookieOptions";
-import generateWebToken from "@utils/auth/generateWebToken";
+import { encrypt } from "@utils/encryption/encryptAndDecrypt";
 import environment from "@utils/environment";
 import connectToDB from "@utils/mongoose/connectToDB";
 import NextAuth from "next-auth";
@@ -37,7 +37,7 @@ const handler = NextAuth({
       });
 
       if (findUser) {
-        const token = generateWebToken({
+        const token = encrypt({
           id: findUser._id,
           role: findUser.role,
         });
@@ -58,9 +58,9 @@ const handler = NextAuth({
         OAuthProvider: provider,
       });
 
-      const token = generateWebToken({
-        id: createUser._id,
-        role: createUser.role,
+      const token = encrypt({
+        id: findUser._id,
+        role: findUser.role,
       });
 
       cookies().set("token", token, cookieOptions);

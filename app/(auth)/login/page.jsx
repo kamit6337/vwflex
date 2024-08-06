@@ -32,8 +32,8 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "test@gmail.com",
+      password: "test1234",
     },
   });
 
@@ -43,8 +43,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await userLogin(data);
-      localStorage.setItem("user", JSON.stringify(response));
+      await userLogin(data);
       router.push("/");
     } catch (error) {
       showErrorMessage({
@@ -125,18 +124,17 @@ const Login = () => {
             {/* MARK: SUBMIT BUTTON*/}
 
             <div className="flex flex-col gap-2">
-              <div className="border h-12 mt-8 rounded-lg bg-purple-300 font-semibold text-lg tracking-wide cursor-pointer w-full text-center ">
-                {/* <Loading hScreen={false} small={true} /> */}
-
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-8 auth_submit_btn "
+              >
                 {isSubmitting ? (
                   <Loading hScreen={false} small={true} />
                 ) : (
-                  <input
-                    type="submit"
-                    className="w-full h-full cursor-pointer"
-                  />
+                  "Submit"
                 )}
-              </div>
+              </button>
               <div className=" text-color_4 text-sm flex justify-between items-center">
                 <p>
                   Create an account

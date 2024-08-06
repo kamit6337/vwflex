@@ -2,7 +2,7 @@
 
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
-import verifyWebToken from "@utils/auth/verifyWebToken";
+import { decrypt } from "@utils/encryption/encryptAndDecrypt";
 import environment from "@utils/environment";
 import bcrypt from "bcryptjs";
 
@@ -11,11 +11,11 @@ const newPassword = catchAsyncError(async (email, token, password) => {
     throw new Error("All fields is required");
   }
 
-  const decoded = verifyWebToken(token);
+  const decoded = decrypt(token);
 
   const currentDate = Date.now();
 
-  if (currentDate > decoded.expire) {
+  if (currentDate > decoded.exp) {
     throw new Error(
       "Link has expired. Click on Forgot Password to send new link"
     );

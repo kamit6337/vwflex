@@ -1,20 +1,18 @@
 "use server";
-
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
-import verifyWebToken from "@utils/auth/verifyWebToken";
-import makeSerializable from "@utils/javascript/makeSerializable";
+import { decrypt } from "@utils/encryption/encryptAndDecrypt";
 import connectToDB from "@utils/mongoose/connectToDB";
 import { cookies } from "next/headers";
 
 const checkUserLogin = catchAsyncError(async () => {
   const token = cookies().get("token");
 
-  if (!token) {
+  if (!token?.value) {
     return false;
   }
 
-  const decoded = verifyWebToken(token.value);
+  const decoded = decrypt(token.value);
 
   if (!decoded) {
     return false;
@@ -28,7 +26,7 @@ const checkUserLogin = catchAsyncError(async () => {
     return false;
   }
 
-  return makeSerializable(findUser);
+  return JSON.parse(JSON.stringify(findUser));
 });
 
 export default checkUserLogin;

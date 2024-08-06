@@ -1,9 +1,8 @@
 "use server";
-
 import catchAsyncError from "@lib/catchAsyncError";
 import User from "@models/UserModel";
 import cookieOptions from "@utils/auth/cookieOptions";
-import generateWebToken from "@utils/auth/generateWebToken";
+import { encrypt } from "@utils/encryption/encryptAndDecrypt";
 import connectToDB from "@utils/mongoose/connectToDB";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
@@ -32,20 +31,11 @@ const userLogin = catchAsyncError(async (obj) => {
     throw new Error("Password is incorrect");
   }
 
-  const token = generateWebToken({
-    id: findUser._id,
-    role: findUser.role,
-  });
+  const encryptUser = encrypt({ id: findUser._id, role: findUser.role });
 
-  cookies().set("token", token, cookieOptions);
+  cookies().set("token", encryptUser, cookieOptions);
 
-  const findUserSerializable = {
-    _id: findUser._id.toString(),
-    name: findUser.name,
-    email: findUser.email,
-  };
-
-  return findUserSerializable;
+  return JSON.parse(JSON.stringify(findUser));
 });
 
 export default userLogin;

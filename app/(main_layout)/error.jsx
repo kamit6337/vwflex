@@ -3,7 +3,11 @@
 import GeneralError from "@components/GeneralError";
 
 const error = () => {
-  return <GeneralError />;
+  return (
+    <>
+      <GeneralError />
+    </>
+  );
 };
 
 export default error;

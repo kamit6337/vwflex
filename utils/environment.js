@@ -1,5 +1,5 @@
 const environment = {
-  // SERVER_URL: process.env.SERVER_URL,
+  SERVER_URL: process.env.SERVER_URL,
   MONGO_DB_URI: process.env.MONGO_DB_URI,
   JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
   JWT_EXPIRES_IN: Number(process.env.JWT_EXPIRES_IN),
@@ -14,6 +14,10 @@ const environment = {
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   SALT_ROUND: Number(process.env.SALT_ROUND),
   GA4_MEASUREMENT_ID: process.env.GA4_MEASUREMENT_ID,
+  EMAIL_USER: process.env.EMAIL_USER,
+  EMAIL_PASS: process.env.EMAIL_PASS,
+  ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+  ENCRYPTION_IV: process.env.ENCRYPTION_IV,
 };
 
 export default environment;

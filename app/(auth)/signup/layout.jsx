@@ -8,7 +8,6 @@ export const metadata = () => {
 };
 
 const layout = async ({ children }) => {
-  await getProviders();
   return <>{children}</>;
 };
 
