@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import validator from "validator";
-import { Helmet } from "react-helmet";
 import { useRouter } from "next/navigation";
 import Toastify from "@lib/Toastify";
 import Loading from "@containers/Loading";
@@ -40,13 +39,9 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Forgot Password</title>
-        <meta name="discription" content="Send reset password link" />
-      </Helmet>
       <section className="w-full h-screen flex flex-col justify-center items-center bg-white text-black">
         <form
-          className="h-[600px] w-[600px] border flex flex-col justify-center  gap-4 px-8 rounded-xl shadow-xl"
+          className="h-[600px] mobile:w-full w-[600px] border flex flex-col justify-center  gap-4 px-8 rounded-xl shadow-xl"
           onSubmit={handleSubmit(onSubmit)}
         >
           <p className="text-xl font-bold tracking-wide text-center mb-6">

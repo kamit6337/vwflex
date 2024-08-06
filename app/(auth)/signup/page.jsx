@@ -1,15 +1,13 @@
 "use client";
-
 import userSignUp from "@api/query/auth/userSignUp";
 import CustomImages from "@assets/images";
 import Loading from "@containers/Loading";
 import Toastify from "@lib/Toastify";
-import { getProviders, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import validator from "validator";
 
@@ -19,14 +17,6 @@ const SignUp = () => {
     password: false,
     confirmPassword: false,
   });
-  const [providers, setProviders] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const res = await getProviders();
-      setProviders(res);
-    })();
-  }, []);
 
   const { ToastContainer, showErrorMessage } = Toastify();
 
@@ -63,14 +53,9 @@ const SignUp = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Sign Up</title>
-        <meta name="discription" content="Sign Up Page of VWFLEX" />
-      </Helmet>
-
       <div className="bg-white text-black h-screen w-full flex flex-col gap-2 justify-center items-center ">
         {/* NOTE: THE CENTER PAGE */}
-        <div className="box_shadow  w-[600px] border  rounded-xl  justify-between items-center  flex flex-col gap-10 p-6 shadow-lg">
+        <div className="box_shadow mobile:w-full w-[600px]  border  rounded-xl  justify-between items-center  flex flex-col gap-10 p-6 shadow-lg">
           {/* MARK: FORM AND GO TO LOGIN BUTTON*/}
           <p className="text-xl font-bold tracking-wide">Sign Up</p>
 
@@ -216,26 +201,24 @@ const SignUp = () => {
             </div>
           </form>
           {/* MARK: GO TO OAUTH LOGIN PAGE*/}
-          {providers && (
-            <div
-              className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
-              onClick={() => googleOAuth(providers?.google.id)}
-            >
-              <div className="w-6">
-                <Image
-                  src={CustomImages.googleIcon}
-                  alt="Google Icon"
-                  className="w-full object-cover bg-transparent"
-                />
-              </div>
-              <p>
-                Login with <span>{providers?.google.name}</span>
-              </p>
+
+          <div
+            className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
+            onClick={() => googleOAuth("google")}
+          >
+            <div className="w-6">
+              <Image
+                src={CustomImages.googleIcon}
+                alt="Google Icon"
+                className="w-full object-cover bg-transparent"
+              />
             </div>
-          )}
+            <p>
+              Sign Up with <span>Google</span>
+            </p>
+          </div>
         </div>
       </div>
-
       <ToastContainer />
     </>
   );

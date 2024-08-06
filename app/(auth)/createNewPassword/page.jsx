@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Helmet } from "react-helmet";
 import Toastify from "@lib/Toastify";
 import Loading from "@containers/Loading";
 import newPassword from "@api/mutation/newPassword";
@@ -45,14 +44,10 @@ const CreateNewPassword = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Create New Password</title>
-        <meta name="discription" content="create new password" />
-      </Helmet>
       <section className="h-screen w-full flex justify-center items-center bg-white text-black">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="h-80 w-[500px]  border rounded-md p-5 shadow-lg"
+          className="h-80 mobile:w-full w-[500px]  border rounded-md p-5 shadow-lg"
         >
           <p className="text-center font-semibold tracking-wide mb-10">
             Create New Password

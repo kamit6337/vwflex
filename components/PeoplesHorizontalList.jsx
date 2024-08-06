@@ -38,6 +38,8 @@ const PeoplesHorizontalList = ({
   const [selectTime, setSelectTime] = useState(DAY);
   const { imageDetail } = useSelector(fixedState);
 
+  console.log("numberOfProfile", numberOfProfile);
+
   const { ref, inView } = useInView({
     triggerOnce: true,
     rootMargin: "100px 0px 0px 0px",
@@ -68,9 +70,9 @@ const PeoplesHorizontalList = ({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 680) {
+      if (window.innerWidth <= 680) {
         setNumberOfProfile(4);
-      } else if (window.innerWidth < 900) {
+      } else if (window.innerWidth <= 900) {
         setNumberOfProfile(5);
       } else {
         setNumberOfProfile(6);
@@ -79,9 +81,7 @@ const PeoplesHorizontalList = ({
 
     // Initial call to handleResize
     handleResize();
-
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };

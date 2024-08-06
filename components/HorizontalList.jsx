@@ -1,7 +1,6 @@
 "use client";
 import { Icons } from "@assets/icons";
 import debounce from "@utils/javascript/debounce";
-import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import MovieCard from "./MovieCard";
@@ -34,7 +33,6 @@ const HorizontalList = ({
   const [mediaIndex, setMediaIndex] = useState(null);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  // const [isLoadingInitialQuery, setIsLoadingInitialQuery] = useState(false);
   const [startFetching, setStartFetching] = useState(false);
   const [selectTime, setSelectTime] = useState(DAY);
 
