@@ -18,6 +18,10 @@ const handler = NextAuth({
     maxAge: environment.JWT_EXPIRES_IN / 1000, // in Seconds
     strategy: "jwt",
   },
+  pages: {
+    error: "/error",
+  },
+
   callbacks: {
     async signIn({ user, account, profile }) {
       const { id, name, email, image } = user;
