@@ -3,7 +3,7 @@ import userSignUp from "@api/query/auth/userSignUp";
 import CustomImages from "@assets/images";
 import Loading from "@containers/Loading";
 import Toastify from "@lib/Toastify";
-import { signIn } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -17,8 +17,16 @@ const SignUp = () => {
     password: false,
     confirmPassword: false,
   });
-
   const { ToastContainer, showErrorMessage } = Toastify();
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      console.log(res);
+      setProviders(res);
+    })();
+  }, []);
 
   const {
     register,
@@ -201,22 +209,23 @@ const SignUp = () => {
             </div>
           </form>
           {/* MARK: GO TO OAUTH LOGIN PAGE*/}
-
-          <div
-            className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
-            onClick={() => googleOAuth("google")}
-          >
-            <div className="w-6">
-              <Image
-                src={CustomImages.googleIcon}
-                alt="Google Icon"
-                className="w-full object-cover bg-transparent"
-              />
+          {providers && (
+            <div
+              className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
+              onClick={() => googleOAuth(providers?.google.id)}
+            >
+              <div className="w-6">
+                <Image
+                  src={CustomImages.googleIcon}
+                  alt="Google Icon"
+                  className="w-full object-cover bg-transparent"
+                />
+              </div>
+              <p>
+                Sign Up with <span>{providers?.google.name}</span>
+              </p>
             </div>
-            <p>
-              Sign Up with <span>Google</span>
-            </p>
-          </div>
+          )}
         </div>
       </div>
       <ToastContainer />

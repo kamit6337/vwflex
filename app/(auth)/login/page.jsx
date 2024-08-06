@@ -7,7 +7,7 @@ import Loading from "@containers/Loading";
 import Link from "next/link";
 import userLogin from "@api/query/auth/userLogin";
 import Toastify from "@lib/Toastify";
-import { signIn } from "next-auth/react";
+import { getProviders, signIn } from "next-auth/react";
 import CustomImages from "@assets/images";
 import Image from "next/image";
 
@@ -16,6 +16,15 @@ const Login = () => {
   const [togglePassword, setTogglePassword] = useState(false);
   const msg = useSearchParams().get("msg");
   const { ToastContainer, showErrorMessage } = Toastify();
+  const [providers, setProviders] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const res = await getProviders();
+      console.log(res);
+      setProviders(res);
+    })();
+  }, []);
 
   const {
     register,
@@ -143,21 +152,23 @@ const Login = () => {
           </form>
 
           {/* MARK: GO TO OAUTH LOGIN PAGE*/}
-          <div
-            className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
-            onClick={() => googleOAuth("google")}
-          >
-            <div className="w-6">
-              <Image
-                src={CustomImages.googleIcon}
-                alt="Google Icon"
-                className="w-full object-cover bg-transparent"
-              />
+          {providers && (
+            <div
+              className="border rounded-lg p-3 w-full cursor-pointer font-semibold  tracking-wide flex justify-center items-center gap-4"
+              onClick={() => googleOAuth(providers?.google.id)}
+            >
+              <div className="w-6">
+                <Image
+                  src={CustomImages.googleIcon}
+                  alt="Google Icon"
+                  className="w-full object-cover bg-transparent"
+                />
+              </div>
+              <p>
+                Login with <span>{providers?.google.name}</span>
+              </p>
             </div>
-            <p>
-              Login with <span>Google</span>
-            </p>
-          </div>
+          )}
         </div>
         <ToastContainer />
       </div>
