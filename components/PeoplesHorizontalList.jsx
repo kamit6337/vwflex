@@ -38,8 +38,6 @@ const PeoplesHorizontalList = ({
   const [selectTime, setSelectTime] = useState(DAY);
   const { imageDetail } = useSelector(fixedState);
 
-  console.log("numberOfProfile", numberOfProfile);
-
   const { ref, inView } = useInView({
     triggerOnce: true,
     rootMargin: "100px 0px 0px 0px",

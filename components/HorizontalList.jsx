@@ -27,7 +27,7 @@ const HorizontalList = ({
   const [mediaData, setMediaData] = useState(() => {
     return data?.data.filter((media) => media.backdrop_path);
   });
-  const [numImagePerScrren, setNumImagePerScreen] = useState(4);
+  const [numImagePerScreen, setNumImagePerScreen] = useState(0);
   const [leftArrowInLarge, setLeftArrowInLarge] = useState(false);
   const [rightArrowInLarge, setRightArrowInLarge] = useState(false);
   const [mediaIndex, setMediaIndex] = useState(null);
@@ -66,7 +66,6 @@ const HorizontalList = ({
       }
     };
 
-    // Initial call to handleResize
     handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
@@ -115,15 +114,15 @@ const HorizontalList = ({
     if (!mediaData) return null;
 
     let maxIndexGoesTo;
-    if (mediaData.length % numImagePerScrren === 0) {
-      maxIndexGoesTo = -(mediaData.length / numImagePerScrren - 1);
+    if (mediaData.length % numImagePerScreen === 0) {
+      maxIndexGoesTo = -(mediaData.length / numImagePerScreen - 1);
     } else {
-      const divide = mediaData.length / numImagePerScrren;
+      const divide = mediaData.length / numImagePerScreen;
       maxIndexGoesTo = -Math.floor(divide);
     }
 
     return maxIndexGoesTo;
-  }, [mediaData, numImagePerScrren]);
+  }, [mediaData, numImagePerScreen]);
 
   useEffect(() => {
     if (index >= 0) {
@@ -218,7 +217,7 @@ const HorizontalList = ({
                       mediaIndex={mediaIndex}
                       resetMediaIndex={resetMediaIndex}
                       handleMouseEnter={handleMouseEnter}
-                      perScreen={numImagePerScrren}
+                      perScreen={numImagePerScreen}
                     />
                   );
                 }
@@ -232,7 +231,7 @@ const HorizontalList = ({
                       mediaIndex={mediaIndex}
                       resetMediaIndex={resetMediaIndex}
                       handleMouseEnter={handleMouseEnter}
-                      perScreen={numImagePerScrren}
+                      perScreen={numImagePerScreen}
                     />
                   );
                 }
