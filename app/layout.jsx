@@ -1,9 +1,8 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
-import ReactReduxProvider from "@providers/ReactReduxProvider";
 import ScrollToTop from "@lib/ScrollToTop";
-import ReactQueryProvider from "@providers/ReactQueryProvider";
 import OfflineDetector from "@lib/OfflineDetector";
+import ApolloClientProvider from "@providers/ApolloClientProvider";
 
 // If loading a variable font, you don't need to specify the font weight
 const poppins = Poppins({
@@ -23,12 +22,10 @@ export default async function RootLayout({ children }) {
       <link rel="icon" href="/vwflex_favicon1.png" sizes="any" />
       <body className="w-full h-screen">
         <OfflineDetector />
-        <ReactQueryProvider>
-          <ReactReduxProvider>
-            <main>{children}</main>
-            <ScrollToTop />
-          </ReactReduxProvider>
-        </ReactQueryProvider>
+        <ApolloClientProvider>
+          <main>{children}</main>
+          <ScrollToTop />
+        </ApolloClientProvider>
       </body>
     </html>
   );

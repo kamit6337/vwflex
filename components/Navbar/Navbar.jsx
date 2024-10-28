@@ -5,13 +5,12 @@ import MyStuff from "./MyStuff";
 import Search from "./Search";
 import Profile from "./Profile";
 import Store from "./Store";
-import checkUserLogin from "@api/query/auth/checkUserLogin";
 import LoginButton from "@components/LoginButton";
 import Image from "next/image";
 import CustomImages from "@assets/images";
 
 const Navbar = async () => {
-  const user = await checkUserLogin();
+  const user = null;
 
   return (
     <nav className="w-full h-full flex justify-center items-center ">

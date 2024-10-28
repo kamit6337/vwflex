@@ -5,6 +5,12 @@ const zIndex = 499;
 
 export default async function Home() {
   return (
+    <div>
+      <p>Hello World</p>
+    </div>
+  );
+
+  return (
     <>
       {queryList.map((query, i) => {
         const { id, promise, type, instant, title, trending } = query;
