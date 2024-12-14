@@ -1,63 +1,27 @@
-import { useApolloClient, useMutation } from "@apollo/client";
-import { getMovieInWatchlistDataQuery } from "@graphql/watchlist/checkMovieSchema";
+import { useMutation } from "@apollo/client";
+import checkMovieSchema, {
+  getMovieInWatchlistDataQuery,
+} from "@graphql/watchlist/checkMovieSchema";
 import { getWatchlistMoviesDataQuery } from "@graphql/watchlist/getWatchlistMovieSchema";
 import removeMovieWatchlistSchema, {
   removeMovieWatchlistDataQuery,
 } from "@graphql/watchlist/removeMovieWatchlistSchema";
-import { useEffect } from "react";
 
 const useRemoveMovieWatchlist = (movieId) => {
-  const client = useApolloClient();
-
-  // useEffect(() => {
-  //   client.cache.modify({
-  //     fields: {
-  //       [getMovieInWatchlistDataQuery](prev) {
-  //         console.log("existing data remove", movieId, prev);
-  //       },
-  //     },
-  //   });
-  // }, [movieId, client]);
-
   const [mutation, { loading, error, data }] = useMutation(
     removeMovieWatchlistSchema,
     {
-      // optimistic update from mutation data
-      optimisticResponse: {
-        [removeMovieWatchlistDataQuery]: false, // Optimistically assume movie was added
-      },
       update(cache, { data: mutationData }) {
-        // mutation data return
         const movieAdded = mutationData?.[removeMovieWatchlistDataQuery];
 
-        if (movieAdded === null) return;
+        if (!movieAdded) return;
 
-        // Update the cache for `checkMovieSchema` if movieAdded is true
-        cache.modify({
-          fields: {
-            [getMovieInWatchlistDataQuery](prev) {
-              console.log("existing data create", movieId, prev);
-
-              return false;
-            },
-          },
-        });
-
-        cache.modify({
-          fields: {
-            [getWatchlistMoviesDataQuery](existingData = []) {
-              if (existingData.length === 0) {
-                return [];
-              }
-
-              console.log("existing movies from watchlist", existingData);
-
-              return existingData.filter(
-                (ref) =>
-                  ref.__ref !== `MovieDetail:${movieId}` ||
-                  ref.id?.toString() !== movieId?.toString()
-              );
-            },
+        // Write the new response for the specific movie
+        cache.writeQuery({
+          query: checkMovieSchema, // The query for checking movie watchlist status
+          variables: { id: movieAdded.id }, // Target specific movie ID
+          data: {
+            [getMovieInWatchlistDataQuery]: movieAdded, // Update the data for this movie
           },
         });
       },

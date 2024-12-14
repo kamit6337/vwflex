@@ -4,7 +4,10 @@ export const removeMovieWatchlistDataQuery = "deleteWatchlistMovie";
 
 const removeMovieWatchlistSchema = gql`
   mutation RemoveMovieFromWatchlist($id: Int!) {
-    deleteWatchlistMovie(id: $id)
+    deleteWatchlistMovie(id: $id) {
+      id
+      bool
+    }
   }
 `;
 

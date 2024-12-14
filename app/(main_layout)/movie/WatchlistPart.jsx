@@ -9,21 +9,20 @@ import checkMovieSchema, {
 } from "@graphql/watchlist/checkMovieSchema";
 import useCreateMovieWatchlist from "@hooks/mutation/watchlistMovie/useCreateMovieWatchlist";
 import useRemoveMovieWatchlist from "@hooks/mutation/watchlistMovie/useRemoveMovieWatchlist";
+import LogCacheData from "@lib/LogCachedData";
 import { useEffect } from "react";
 
 const WatchlistPart = ({ details, id }) => {
+  LogCacheData();
+
   const {
     loading: loginCheckLoading,
     error: loginCheckError,
     data: userData,
   } = useQuery(loginCheckSchema);
 
-  const [queryMovieInWatchlist, { loading, data, error }] = useLazyQuery(
-    checkMovieSchema,
-    {
-      variables: { id: Number(id) },
-    }
-  );
+  const [queryMovieInWatchlist, { loading, data, error }] =
+    useLazyQuery(checkMovieSchema);
 
   const { mutation: createWatchlist, loading: createLoading } =
     useCreateMovieWatchlist(details);
@@ -33,9 +32,9 @@ const WatchlistPart = ({ details, id }) => {
 
   useEffect(() => {
     if (userData && userData[getLoginCheckDataQuery]) {
-      queryMovieInWatchlist();
+      queryMovieInWatchlist({ variables: { id: Number(id) } });
     }
-  }, [userData, queryMovieInWatchlist]);
+  }, [userData, queryMovieInWatchlist, id]);
 
   if (loginCheckLoading) return;
 
@@ -50,9 +49,9 @@ const WatchlistPart = ({ details, id }) => {
 
   if (loading || error) return;
 
-  console.log("data", data);
+  console.log("data", id, data);
 
-  const bool = data?.[getMovieInWatchlistDataQuery];
+  const bool = data?.[getMovieInWatchlistDataQuery]?.bool;
   return (
     <>
       {bool ? (

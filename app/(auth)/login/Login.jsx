@@ -49,8 +49,10 @@ const Login = ({ msg }) => {
   }, [data, router, reset]);
 
   useEffect(() => {
-    showErrorMessage({ message: msg });
-  }, []);
+    if (msg) {
+      showErrorMessage({ message: msg });
+    }
+  }, [msg, showErrorMessage]);
 
   const onSubmit = async (data) => {
     mutate({

@@ -4,7 +4,10 @@ export const getMovieInWatchlistDataQuery = "checkMovieInWatchlist";
 
 const checkMovieSchema = gql`
   query GetMovieInWatchlist($id: Int!) {
-    checkMovieInWatchlist(id: $id)
+    checkMovieInWatchlist(id: $id) {
+      id
+      bool
+    }
   }
 `;
 
