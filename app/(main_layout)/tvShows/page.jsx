@@ -1,37 +1,31 @@
-import queryList from "@api/query/queryList";
 import HorizontalSection from "@components/HorizontalSection";
+import queryList from "@graphql/query/queryList";
+import React from "react";
 
 const zIndex = 499;
 const TV = "tv";
 
-export const metadata = () => {
-  return {
-    title: "TV Shows",
-    description: "Show all tv shows related category",
-  };
-};
-
 const TvShowsPage = () => {
   return (
     <>
-      {queryList.map((query, i) => {
-        const { id, promise, type, instant, title, trending } = query;
+      {queryList
+        .filter((query) => query.media === TV)
+        .map((query, i) => {
+          const { id, schema, dataQuery, media, name } = query;
 
-        if (type !== TV) return;
-
-        return (
-          <HorizontalSection
-            key={id}
-            id={id}
-            title={title}
-            type={type}
-            trending={trending}
-            promise={promise}
-            instant={instant}
-            zIndex={zIndex - i * 2}
-          />
-        );
-      })}
+          return (
+            <HorizontalSection
+              key={id}
+              id={id}
+              schema={schema}
+              dataQuery={dataQuery}
+              name={name}
+              media={media}
+              instant={true}
+              zIndex={zIndex - i * 2}
+            />
+          );
+        })}
     </>
   );
 };

@@ -1,57 +1,42 @@
-/* eslint-disable @next/next/no-img-element */
-import { fixedState } from "@redux/slice/fixedSlice";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useState } from "react";
 
-const TvCard = ({
-  i,
-  tv,
-  mediaIndex,
-  resetMediaIndex,
-  handleMouseEnter,
-  perScreen,
-}) => {
-  const { imageDetail } = useSelector(fixedState);
+const TvCard = ({ tv, fixed }) => {
+  const { imageDetail } = fixed;
+  const [toggle, setToggle] = useState(false);
 
   const { backdrop_path, id, first_air_date, name, overview, vote_average } =
     tv;
 
   if (!backdrop_path) return;
-  const size = imageDetail.backdrop_sizes[0];
-  const createBaseUrl = `${imageDetail.secure_base_url}${size}`;
-  const createPhoto = `${createBaseUrl}${backdrop_path}`;
+
+  const createPhoto = `${imageDetail.secure_base_url}w300${backdrop_path}`;
 
   return (
     <div
-      key={i}
       className={`${
-        mediaIndex === i &&
-        "scale-125 tablet:scale-110 transition-all duration-300"
-      } relative grow-0 shrink-0 px-2`}
-      style={{
-        zIndex: mediaIndex === i ? 999 : -1,
-        flexBasis: `${100 / perScreen}%`,
-      }}
+        toggle && "scale-125 tablet:scale-110 z-50 transition-all duration-300"
+      } relative grow-0 sm:w-1/3 lg:w-1/4 w-1/2 shrink-0 px-2`}
     >
-      <div className="relative rounded-xl" onMouseLeave={resetMediaIndex}>
-        <Link href={`/tv?id=${id}`}>
-          <div
-            onMouseEnter={() => handleMouseEnter(i, id)}
-            className="cursor-pointer"
-          >
+      <div
+        className="relative rounded-xl"
+        onMouseLeave={() => setToggle(false)}
+      >
+        <Link href={`/tv?id=${id}&season=1`}>
+          <div onMouseEnter={() => setToggle(true)} className="cursor-pointer">
             <img
               src={createPhoto}
               alt={name}
               className={`${
-                mediaIndex === i ? "rounded-t-xl" : "rounded-xl"
+                toggle ? "rounded-t-xl" : "rounded-xl"
               } w-full object-cover `}
             />
           </div>
         </Link>
 
-        {mediaIndex === i && (
+        {toggle && (
           <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_hover rounded-b-xl flex flex-col gap-2">
             <div className="flex justify-between items-center gap-2">
               <p className="">{name}</p>

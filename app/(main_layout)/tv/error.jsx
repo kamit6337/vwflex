@@ -1,9 +1,9 @@
 "use client";
 
-import GeneralError from "@components/GeneralError";
+import React from "react";
 
-const error = () => {
-  return <GeneralError />;
+const TvShowDetailError = ({ error }) => {
+  return <div>TvShowDetailError {error.message}</div>;
 };
 
-export default error;
+export default TvShowDetailError;

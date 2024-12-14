@@ -1,11 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
-import { fixedState } from "@redux/slice/fixedSlice";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
 
-const Episodes = ({ data }) => {
-  const { imageDetail } = useSelector(fixedState);
+const Episodes = ({ episodes, fixed }) => {
+  const { imageDetail } = fixed;
   const ref = useRef(null);
   const [height, setHeight] = useState(null);
 
@@ -28,7 +25,7 @@ const Episodes = ({ data }) => {
 
   return (
     <>
-      {data.map((episode, i) => {
+      {episodes.map((episode, i) => {
         const {
           air_date,
           name,
@@ -44,21 +41,17 @@ const Episodes = ({ data }) => {
         const createPhoto = `${createBaseUrl}${still_path}`;
 
         return (
-          <section key={i} className="w-full flex gap-5 tablet:gap-3">
-            <div
-              className="w-1/4 sm_lap:w-1/3 tablet:w-2/5"
-              ref={ref}
-              style={{ height: `${height}px` }}
-            >
+          <section key={i} className="w-full flex gap-5">
+            <div className="w-1/2 sm:w-1/3 lg:w-1/4">
               {still_path ? (
                 <img
                   src={createPhoto}
                   alt={name}
-                  className="w-full h-full rounded-xl"
+                  className="w-full object-cover rounded-xl"
                   loading="lazy"
                 />
               ) : (
-                <div className="w-full h-full flex justify-center items-start">
+                <div className="w-full h-32 flex justify-center items-start">
                   <p className="border border-slate-500 p-3 mobile:text-xs ">
                     No Image Available
                   </p>

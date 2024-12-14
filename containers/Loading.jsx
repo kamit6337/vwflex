@@ -1,5 +1,3 @@
-"use client";
-
 const Loading = ({ hScreen = false, small = false }) => {
   return (
     <div

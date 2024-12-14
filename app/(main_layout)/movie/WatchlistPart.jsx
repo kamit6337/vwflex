@@ -1,69 +1,77 @@
 "use client";
-
-import addMovieToWatchlist from "@api/mutation/watchlist/movie/addMovieToWatchlist";
-import removeMovieFromWatchlist from "@api/mutation/watchlist/movie/removeMovieFromWatchlist";
-import isMovieInWatchlist from "@api/query/watchlist/isMovieInWatchlist";
-import Toastify from "@lib/Toastify";
-import { useEffect, useState } from "react";
+import { useLazyQuery, useQuery } from "@apollo/client";
+import LoginButton from "@components/LoginButton";
+import loginCheckSchema, {
+  getLoginCheckDataQuery,
+} from "@graphql/auth/loginCheckSchema";
+import checkMovieSchema, {
+  getMovieInWatchlistDataQuery,
+} from "@graphql/watchlist/checkMovieSchema";
+import useCreateMovieWatchlist from "@hooks/mutation/watchlistMovie/useCreateMovieWatchlist";
+import useRemoveMovieWatchlist from "@hooks/mutation/watchlistMovie/useRemoveMovieWatchlist";
+import { useEffect } from "react";
 
 const WatchlistPart = ({ details, id }) => {
-  const [toggleWatchlist, setToggleWatchlist] = useState(false);
-  const { ToastContainer, showErrorMessage } = Toastify();
-  const [isDisabledButton, setIsDisabledButton] = useState(false);
+  const {
+    loading: loginCheckLoading,
+    error: loginCheckError,
+    data: userData,
+  } = useQuery(loginCheckSchema);
+
+  const [queryMovieInWatchlist, { loading, data, error }] = useLazyQuery(
+    checkMovieSchema,
+    {
+      variables: { id: Number(id) },
+    }
+  );
+
+  const { mutation: createWatchlist, loading: createLoading } =
+    useCreateMovieWatchlist(details);
+
+  const { mutation: removeWatchlist, loading: removeLoading } =
+    useRemoveMovieWatchlist(id);
 
   useEffect(() => {
-    if (id) {
-      (async () => {
-        const movieWatchlist = await isMovieInWatchlist(id);
-        setToggleWatchlist(movieWatchlist);
-      })();
+    if (userData && userData[getLoginCheckDataQuery]) {
+      queryMovieInWatchlist();
     }
-  }, [id]);
+  }, [userData, queryMovieInWatchlist]);
 
-  const handleRemoveWatchlist = async () => {
-    try {
-      setIsDisabledButton(true);
-      await removeMovieFromWatchlist(details);
-      setToggleWatchlist(false);
-    } catch (error) {
-      showErrorMessage({ message: "Something went wrong. Please try later" });
-    } finally {
-      setIsDisabledButton(false);
-    }
-  };
+  if (loginCheckLoading) return;
 
-  const handleAddToWatchlist = async () => {
-    try {
-      setIsDisabledButton(true);
-      await addMovieToWatchlist(details);
-      setToggleWatchlist(true);
-    } catch (error) {
-      showErrorMessage({ message: "Something went wrong. Please try later" });
-    } finally {
-      setIsDisabledButton(false);
-    }
-  };
+  if (loginCheckError) {
+    console.error("Error in profile", loginCheckError.message);
+    return <LoginButton />;
+  }
 
+  if (error) {
+    console.log("error in getting watchlist", error);
+  }
+
+  if (loading || error) return;
+
+  console.log("data", data);
+
+  const bool = data?.[getMovieInWatchlistDataQuery];
   return (
     <>
-      {toggleWatchlist ? (
+      {bool ? (
         <button
-          disabled={isDisabledButton}
           className={`rounded-3xl p-3 px-5 cursor-pointer bg-gray-400`}
-          onClick={handleRemoveWatchlist}
+          disabled={removeLoading}
+          onClick={() => removeWatchlist({ variables: { id: Number(id) } })}
         >
           Remove from Watchlist
         </button>
       ) : (
         <button
-          disabled={isDisabledButton}
-          className={`border-2 border-white rounded-3xl p-3 px-5 cursor-pointer`}
-          onClick={handleAddToWatchlist}
+          disabled={createLoading}
+          className={`border-2 border-white rounded-3xl p-3 px-5 cursor-pointer hover:text-gray-300`}
+          onClick={() => createWatchlist({ variables: { id: Number(id) } })}
         >
           Add to Watchlist
         </button>
       )}
-      <ToastContainer />
     </>
   );
 };

@@ -1,21 +1,17 @@
-import fetchTvShowAdditional from "@api/query/tv/fetchTvShowAdditional";
+import { useQuery } from "@apollo/client";
 import HorizontalList from "@components/HorizontalList";
+import { TV } from "@constants/mediaType";
 import Loading from "@containers/Loading";
-import { useQuery } from "@tanstack/react-query";
+import tvShowSimilarSchema, {
+  getTvShowSimilarDataQuery,
+} from "@graphql/tv/tvShowSimilarSchema";
 
-const TV = "tv";
-
-const Similar = ({ id }) => {
-  const { isLoading, data, error } = useQuery({
-    queryKey: ["tv additional", "similar", id],
-    queryFn: () =>
-      fetchTvShowAdditional(id, {
-        similar: true,
-      }),
-    staleTime: Infinity,
+const Similar = ({ id, fixed }) => {
+  const { loading, data, error } = useQuery(tvShowSimilarSchema, {
+    variables: { id: Number(id), page: 1 },
   });
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="w-full h-96 ">
         <Loading />
@@ -23,17 +19,27 @@ const Similar = ({ id }) => {
     );
   }
 
-  if (error || !data || data?.data.length === 0) {
+  if (error || !data || data[getTvShowSimilarDataQuery]?.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
-        <p>Sorry, we do not have Similar TV Shows data</p>
+        <p>{error.message}</p>
+        <p>Sorry, we do not have Recommended TV Shows data</p>
       </div>
     );
   }
 
+  const initialData = data[getTvShowSimilarDataQuery];
+
   return (
     <>
-      <HorizontalList data={data} type={TV} />
+      <HorizontalList
+        id={id}
+        schema={tvShowSimilarSchema}
+        dataQuery={getTvShowSimilarDataQuery}
+        fixed={fixed}
+        initialData={initialData}
+        media={TV}
+      />
     </>
   );
 };

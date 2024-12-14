@@ -1,18 +1,17 @@
 import Footer from "@components/Footer/Footer";
-import GlobalShow from "@components/GlobalShow";
 import Navbar from "@components/Navbar/Navbar";
 
 const MainLayout = async ({ children }) => {
   return (
     <>
       <section
-        className="w-full h-14 bg-my_bg flex justify-center sticky top-0"
-        style={{ zIndex: 999 }}
+        className="w-full h-14 bg-background flex justify-center sticky top-0"
+        style={{ zIndex: 26 }}
       >
         <Navbar />
       </section>
       <section className="w-full">{children}</section>
-      <section className="w-full h-[500px] text-white">
+      <section className="w-full h-[500px]">
         <Footer />
       </section>
     </>

@@ -1,36 +1,36 @@
 "use client";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@components/ui/select";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const ChangeSeason = ({ season, showId, totalSeasons }) => {
   const router = useRouter();
 
-  useEffect(() => {
-    const createRoute = `/tv?id=${showId}&season=${season}`;
-    router.push(createRoute);
-  }, [showId, router, season]);
-
-  const handleSeasonSelect = (e) => {
-    const selectedSeason = e.target.value;
-    const createRoute = `/tv?id=${showId}&season=${selectedSeason}`;
+  const handleSeasonSelect = (value) => {
+    const createRoute = `/tv?id=${showId}&season=${value}`;
     router.push(createRoute);
   };
 
   return (
-    <select
-      value={season}
-      className="text-black font-medium tracking-wide p-3 tablet:p-2 rounded-2xl"
-      onChange={handleSeasonSelect}
-    >
-      {Array.from({ length: totalSeasons }).map((num, i) => {
-        return (
-          <option key={i} value={i + 1} className=" bg-black text-white">
-            Season {i + 1}
-          </option>
-        );
-      })}
-    </select>
+    <Select onValueChange={(value) => handleSeasonSelect(value)} className="">
+      <SelectTrigger className="w-64 text-foreground">
+        <SelectValue placeholder={`Season ${season}`} className="w-full" />
+      </SelectTrigger>
+      <SelectContent className="max-h-64">
+        {Array.from({ length: totalSeasons }).map((_, i) => {
+          return (
+            <SelectItem key={i} value={i + 1}>
+              Season {i + 1}
+            </SelectItem>
+          );
+        })}
+      </SelectContent>
+    </Select>
   );
 };
 

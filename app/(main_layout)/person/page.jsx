@@ -1,35 +1,55 @@
-/* eslint-disable @next/next/no-img-element */
-import fetchPersonDetails from "@api/query/peoples/fetchPersonDetails";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
+import cachedQuery from "@graphql/query/cachedQuery";
+import personDetailSchema, {
+  getPersonDetailDataQuery,
+} from "@graphql/peoples/personDetailSchema";
+import getFixedData from "@graphql/fixed/query";
+import ExpandableText from "@lib/ExpandableText";
+import personCreditSchema, {
+  getPersonCreditsDataQuery,
+} from "@graphql/peoples/personCreditSchema";
 import Additional from "./Additional";
-import { QueryClient } from "@tanstack/react-query";
-import ImageOfPerson from "./ImageOfPerson";
-
-const queryClient = new QueryClient();
 
 export const generateMetadata = async ({ searchParams: { id } }) => {
-  const query = await queryClient.fetchQuery({
-    queryKey: ["Person Detail", id],
-    queryFn: () => fetchPersonDetails(Number(id)),
+  const getQuery = cachedQuery(personDetailSchema, getPersonDetailDataQuery, {
+    id,
   });
 
+  const { data } = await getQuery();
+
   return {
-    title: query?.details.name,
-    description: query?.details.biography,
+    title: data?.name,
+    description: data?.biography,
   };
 };
 
 const PersonDetailPage = async ({ searchParams: { id } }) => {
-  const query = await queryClient.fetchQuery({
-    queryKey: ["Person Detail", id],
-    queryFn: async () => {
-      return await fetchPersonDetails(Number(id));
-    },
-  });
+  const { data: fixed } = await getFixedData();
 
-  if (!query) return;
+  const personDetailsQuery = cachedQuery(
+    personDetailSchema,
+    getPersonDetailDataQuery,
+    {
+      id,
+    }
+  );
 
-  const { details, images, credits } = query;
+  const personCreditsQuery = cachedQuery(
+    personCreditSchema,
+    getPersonCreditsDataQuery,
+    {
+      id,
+    }
+  );
+
+  const { data: personDetails, error: personDetailError } =
+    await personDetailsQuery();
+  const { data: personCredits, error: personCreditsError } =
+    await personCreditsQuery();
+
+  if (personDetailError || personCreditsError) {
+    throw new Error(personDetailError?.message || personCreditsError?.message);
+  }
 
   const {
     biography,
@@ -39,13 +59,21 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
     name,
     place_of_birth,
     profile_path,
-  } = details;
+  } = personDetails;
+
+  const { imageDetail } = fixed;
+
+  const createPhoto = `${imageDetail.secure_base_url}original${profile_path}`;
 
   return (
     <section>
       <div className="flex gap-5 w-full p-16 sm_lap:px-8 tablet:px-2">
         <div className="w-1/4">
-          <ImageOfPerson data={profile_path} alt={name} />
+          <img
+            src={createPhoto}
+            alt={name}
+            className="w-full-full rounded-xl object-cover"
+          />
         </div>
         <div className="flex-1 flex flex-col gap-2">
           <p className="text-3xl tracking-wide font-semibold">{name}</p>
@@ -54,12 +82,12 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
             <p>Birth : {IndianTypeDate(birthday)}</p>
             {deathday && <p>Death : {IndianTypeDate(deathday)}</p>}
           </div>
-          <p className="tracking-wide sm_lap:text-sm tablet:text-xs tablet:tracking-wider tablet:leading-normal">
-            {biography}
-          </p>
+          <div className="tracking-wide">
+            <ExpandableText text={biography} maxWords={200} />
+          </div>
         </div>
       </div>
-      <Additional images={images} credits={credits} />
+      <Additional fixed={fixed} credits={personCredits} id={id} />
     </section>
   );
 };

@@ -1,82 +1,93 @@
-import { QueryClient } from "@tanstack/react-query";
 import HorizontalList from "@components/HorizontalList";
+import getFixedData from "@graphql/fixed/query";
+import cachedQuery from "@graphql/query/cachedQuery";
 import PeoplesHorizontalList from "./PeoplesHorizontalList";
-
-const MOVIE = "movie";
-const TV = "tv";
-const PERSON = "person";
-
-const queryClient = new QueryClient();
+import { MOVIE, PERSON, TV } from "@constants/mediaType";
+import { cookies } from "next/headers";
 
 const HorizontalSection = async ({
   id,
-  title,
-  promise,
+  schema,
+  dataQuery,
+  name,
+  media,
   zIndex,
-  trending,
-  type,
+  trending = false,
   instant = false,
 }) => {
-  let query;
+  // const token = cookies().get("_use")?.value;
+
+  const { data: fixed, error } = await getFixedData();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  let query = null;
+
   if (instant) {
-    query = await queryClient.fetchQuery({
-      queryKey: [title, id],
-      queryFn: () => promise(),
-    });
+    // const getQuery = cachedQuery(schema, dataQuery, { page: 1 });
+    query = await cachedQuery(schema, dataQuery, { page: 1 });
   }
 
-  if (trending && (type === MOVIE || type === TV)) {
-    return (
-      <HorizontalList
-        id={id}
-        type={type}
-        title={title}
-        data={query}
-        trending={true}
-        instant={instant}
-        promise={promise}
-        zIndex={zIndex}
-      />
-    );
-  }
+  // if (trending && (media === MOVIE || media === TV)) {
+  //   return (
+  //     <HorizontalList
+  //       id={id}
+  //       schema={schema}
+  //       dataQuery={dataQuery}
+  //       name={name}
+  //       initialData={query}
+  //       media={media}
+  //       trending={trending}
+  //       zIndex={zIndex}
+  //     />
+  //   );
+  // }
 
-  if (trending && type === PERSON) {
+  // if (trending && media === PERSON) {
+  //   return (
+  //     <PeoplesHorizontalList
+  //       id={id}
+  //       schema={schema}
+  //       dataQuery={dataQuery}
+  //       name={name}
+  //       initialData={query}
+  //       media={media}
+  //       trending={trending}
+  //       zIndex={zIndex}
+  //     />
+  //   );
+  // }
+
+  if (media === PERSON) {
     return (
       <PeoplesHorizontalList
         id={id}
-        title={title}
-        data={query}
-        instant={instant}
-        promise={promise}
+        schema={schema}
+        dataQuery={dataQuery}
+        name={name}
+        initialData={query.data}
+        media={media}
+        trending={trending}
         zIndex={zIndex}
-        trending={true}
+        fixed={fixed}
       />
     );
   }
 
-  if (type === PERSON) {
-    return (
-      <PeoplesHorizontalList
-        id={id}
-        title={title}
-        data={query}
-        instant={instant}
-        promise={promise}
-        zIndex={zIndex}
-      />
-    );
-  }
-
-  if (type === MOVIE || type === TV) {
+  if (media === MOVIE || media === TV) {
     return (
       <HorizontalList
         id={id}
-        type={type}
-        title={title}
-        data={query}
-        instant={instant}
-        promise={promise}
+        schema={schema}
+        dataQuery={dataQuery}
+        name={name}
+        initialData={query.data}
+        media={media}
+        trending={trending}
         zIndex={zIndex}
+        fixed={fixed}
       />
     );
   }

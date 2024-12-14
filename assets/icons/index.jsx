@@ -40,8 +40,11 @@ import {
 } from "react-icons/md";
 import { TiArrowSortedUp } from "react-icons/ti";
 import { CgProfile } from "react-icons/cg";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 export const Icons = {
+  eyeOff: IoMdEyeOff,
+  eyeOn: IoMdEye,
   profile: CgProfile,
   upArrowSolid: TiArrowSortedUp,
   downArrow: IoIosArrowDown,

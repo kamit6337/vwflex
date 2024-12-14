@@ -1,37 +1,31 @@
-import queryList from "@api/query/queryList";
 import HorizontalSection from "@components/HorizontalSection";
+import queryList from "@graphql/query/queryList";
+import React from "react";
+import { MOVIE } from "@constants/mediaType";
 
 const zIndex = 499;
-const MOVIE = "movie";
-
-export const metadata = () => {
-  return {
-    title: "Movies",
-    description: "Show all movies related category",
-  };
-};
 
 const MoviesPage = () => {
   return (
     <>
-      {queryList.map((query, i) => {
-        const { id, promise, type, instant, title, trending } = query;
+      {queryList
+        .filter((query) => query.media === MOVIE)
+        .map((query, i) => {
+          const { id, schema, dataQuery, media, name } = query;
 
-        if (type !== MOVIE) return;
-
-        return (
-          <HorizontalSection
-            key={id}
-            id={id}
-            title={title}
-            type={type}
-            trending={trending}
-            promise={promise}
-            instant={instant}
-            zIndex={zIndex - i * 2}
-          />
-        );
-      })}
+          return (
+            <HorizontalSection
+              key={id}
+              id={id}
+              schema={schema}
+              dataQuery={dataQuery}
+              name={name}
+              media={media}
+              instant={true}
+              zIndex={zIndex - i * 2}
+            />
+          );
+        })}
     </>
   );
 };

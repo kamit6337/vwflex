@@ -1,11 +1,7 @@
 import Loading from "@containers/Loading";
 
 const loading = () => {
-  return (
-    <div className="w-full h-96">
-      <Loading />
-    </div>
-  );
+  return <Loading hScreen={true} />;
 };
 
 export default loading;

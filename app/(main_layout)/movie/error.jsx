@@ -1,9 +1,9 @@
 "use client";
 
-import GeneralError from "@components/GeneralError";
+import React from "react";
 
-const error = () => {
-  return <GeneralError />;
+const MovieDetailError = ({ error }) => {
+  return <div>MovieDetailError {error.message}</div>;
 };
 
-export default error;
+export default MovieDetailError;

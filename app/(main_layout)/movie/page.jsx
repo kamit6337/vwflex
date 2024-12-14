@@ -1,39 +1,54 @@
-import fetchMovieDetail from "@api/query/movie/fetchMovieDetail";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
 import inHourAndMin from "@utils/javascript/inHourAndMin";
-import Additional from "./Additional";
-import WatchlistPart from "./WatchlistPart";
-import ImageOfDetail from "@components/ImageOfDetail";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
-import { QueryClient } from "@tanstack/react-query";
-import checkUserLogin from "@api/query/auth/checkUserLogin";
-import LoginButton from "@components/LoginButton";
-
-const queryClient = new QueryClient();
+import movieDetailSchema, {
+  getMovieDetailDataQuery,
+} from "@graphql/movie/movieDetailSchema";
+import recommendationSchema, {
+  getMovieRecommendationsDataQuery,
+} from "@graphql/movie/recommendationSchema";
+import Additional from "./Additional";
+import cachedQuery from "@graphql/query/cachedQuery";
+import getFixedData from "@graphql/fixed/query";
+import WatchlistPart from "./WatchlistPart";
 
 export const generateMetadata = async ({ searchParams: { id } }) => {
-  const query = await queryClient.fetchQuery({
-    queryKey: ["Movie Detail", id],
-    queryFn: () => fetchMovieDetail(Number(id)),
-  });
+  const { data } = await cachedQuery(
+    movieDetailSchema,
+    getMovieDetailDataQuery,
+    {
+      id,
+    }
+  );
 
   return {
-    title: query?.details.title,
-    description: query?.details.overview,
+    title: data?.title,
+    description: data?.overview,
   };
 };
 
 const MovieDetailPage = async ({ searchParams: { id } }) => {
-  const query = queryClient.fetchQuery({
-    queryKey: ["Movie Detail", id],
-    queryFn: async () => {
-      return await fetchMovieDetail(Number(id));
-    },
-  });
+  const { data: fixed } = await getFixedData();
 
-  const [movieData, user] = await Promise.all([query, checkUserLogin()]);
+  const { data: movieDetails, error: movieDetailsError } = await cachedQuery(
+    movieDetailSchema,
+    getMovieDetailDataQuery,
+    { id }
+  );
 
-  const { details, recommendations } = movieData;
+  const { data: recommendations, error: movieRecommendationsError } =
+    await cachedQuery(recommendationSchema, getMovieRecommendationsDataQuery, {
+      id,
+      page: 1,
+    });
+
+  if (movieDetailsError || movieRecommendationsError) {
+    throw new Error(
+      movieDetailsError?.message || movieRecommendationsError?.message
+    );
+  }
+
+  const details = movieDetails;
 
   const {
     adult,
@@ -45,6 +60,10 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
     genres,
   } = details;
 
+  const { imageDetail } = fixed;
+
+  const createPhoto = `${imageDetail.secure_base_url}original${backdrop_path}`;
+
   return (
     <section className="flex flex-col w-full ">
       {/* UPPER 100vh DIV */}
@@ -53,8 +72,12 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
         style={{ height: `calc(100vh - 56px)` }}
       >
         {/* IMAGE DIV */}
-        <div className="h-full image_shadow tablet:image_shadow_tablet self-end">
-          <ImageOfDetail backdrop_path={backdrop_path} title={title} />
+        <div className="h-full image_shadow self-end">
+          <img
+            src={createPhoto}
+            alt={title}
+            className="h-full rounded-xl object-cover"
+          />
         </div>
 
         {/* MOVIE BRIEF DETAIL */}
@@ -77,16 +100,17 @@ const MovieDetailPage = async ({ searchParams: { id } }) => {
             ))}
           </div>
           <div className="mt-2">
-            {user ? (
-              <WatchlistPart details={details} id={id} />
-            ) : (
-              <LoginButton />
-            )}
+            <WatchlistPart key={id} details={details} id={id} />
           </div>
         </div>
       </div>
 
-      <Additional id={id} details={details} recommendations={recommendations} />
+      <Additional
+        id={id}
+        details={details}
+        recommendations={recommendations}
+        fixed={fixed}
+      />
     </section>
   );
 };

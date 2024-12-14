@@ -1,43 +1,31 @@
 "use client";
-
 import HorizontalList from "@components/HorizontalList";
-import priceInMillions from "@utils/javascript/priceInMillions";
-import { useEffect, useState } from "react";
-import MovieImages from "./MovieImages";
+import { useEffect, useMemo, useState } from "react";
+import recommendationSchema, {
+  getMovieRecommendationsDataQuery,
+} from "@graphql/movie/recommendationSchema";
+import {
+  detailSection,
+  imageSection,
+  movieDetailOptions,
+  recommendationSection,
+  reviews,
+  similarSection,
+} from "@constants/detailOptions";
 import SimilarMovies from "./SimilarMovies";
+import MovieImages from "./MovieImages";
 import Reviews from "./Reviews";
+import { MOVIE } from "@constants/mediaType";
+import MediaDetailInfo from "@components/MediaDetailInfo";
 
-const detailSection = "detail";
-const recommendationSection = "recommendation";
-const similarSection = "similar";
-const MOVIE = "movie";
-const imageSection = "images";
-const reviews = "reviews";
-
-const Additional = ({ recommendations, details, id }) => {
+const Additional = ({ recommendations, details, id, fixed }) => {
   const [optionSelected, setOptionSelected] = useState(null);
-
-  const {
-    production_companies,
-    production_countries,
-    spoken_languages,
-    revenue,
-    budget,
-    description,
-    overview,
-  } = details;
 
   useEffect(() => {
     if (id) {
       setOptionSelected(recommendationSection);
     }
   }, [id]);
-
-  useEffect(() => {
-    if (!recommendations || recommendations.data.length === 0) {
-      setOptionSelected(similarSection);
-    }
-  }, [recommendations]);
 
   const scrollOptionsToTop = (value) => {
     setOptionSelected(value);
@@ -52,138 +40,47 @@ const Additional = ({ recommendations, details, id }) => {
 
   return (
     <>
-      <div className="sticky top-14 bottom-0 z-20 w-full font-medium tracking-wider flex justify-center pb-2 h-[60px] tablet:text-sm">
+      <div className="sticky top-14 bottom-0 z-20 w-full font-medium tracking-wider flex justify-center pb-2 h-[60px]">
         <div className="w-max flex items-center gap-6 tablet:gap-3   rounded-2xl  px-10 tablet:px-5 h-full  border-2 border-slate-600 bg-black mobile:text-xs">
-          {recommendations && recommendations.data.length > 0 && (
-            <p
-              className={`${
-                optionSelected === recommendationSection &&
-                "border-b-2 border-white"
-              } hover:border-b-2 hover:border-white cursor-pointer `}
-              onClick={() => scrollOptionsToTop(recommendationSection)}
-            >
-              Recommendations
-            </p>
-          )}
-          <p
-            className={`${
-              optionSelected === similarSection && "border-b-2 border-white"
-            } hover:border-b-2 hover:border-white cursor-pointer `}
-            onClick={() => scrollOptionsToTop(similarSection)}
-          >
-            Similar
-          </p>
-          <p
-            className={`${
-              optionSelected === detailSection && "border-b-2 border-white"
-            } hover:border-b-2 hover:border-white cursor-pointer`}
-            onClick={() => scrollOptionsToTop(detailSection)}
-          >
-            Details
-          </p>
-          <p
-            className={`${
-              optionSelected === imageSection && "border-b-2 border-white"
-            } hover:border-b-2 hover:border-white cursor-pointer`}
-            onClick={() => scrollOptionsToTop(imageSection)}
-          >
-            Images
-          </p>
-          <p
-            className={`${
-              optionSelected === reviews && "border-b-2 border-white"
-            } hover:border-b-2 hover:border-white cursor-pointer`}
-            onClick={() => scrollOptionsToTop(reviews)}
-          >
-            Reviews
-          </p>
+          {movieDetailOptions.map((option, i) => {
+            return (
+              <p
+                key={i}
+                className={`${
+                  option === optionSelected && "border-b-2 border-white"
+                } hover:border-b-2 hover:border-white cursor-pointer capitalize`}
+                onClick={() => scrollOptionsToTop(option)}
+              >
+                {option}
+              </p>
+            );
+          })}
         </div>
       </div>
 
       {/* optionSelected */}
       {optionSelected === detailSection && (
-        <div className="p-16 tablet:px-5 flex flex-col items-start justify-between gap-12 relative z-10 w-full ">
-          {overview && (
-            <div>
-              <p className="details_title">overview</p>
-              <p className="tracking-wider leading-6 tablet:text-sm">
-                {overview}
-              </p>
-            </div>
-          )}
-          {description && (
-            <div>
-              <p className="details_title">DESCRIPTION</p>
-              <p className="tracking-wider leading-6 sm:text-sm">
-                {description}
-              </p>
-            </div>
-          )}
-
-          {budget > 0 && (
-            <div>
-              <p className="details_title">BUDGET</p>
-              <p className="sm:text-sm">{priceInMillions(budget)}</p>
-            </div>
-          )}
-
-          {revenue > 0 && (
-            <div>
-              <p className="details_title">REVENUE</p>
-              <p className="sm:text-sm">{priceInMillions(revenue)}</p>
-            </div>
-          )}
-
-          <div>
-            <p className="details_title">PRODUCTION COMPANIES</p>
-            <div className="flex justify-start gap-8 sm:gap-4 sm:flex-wrap">
-              {production_companies.map((company, i) => {
-                return (
-                  <p key={i} className="sm:text-sm">
-                    {company.name}
-                  </p>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <p className="details_title">PRODUCTION COUNTRIES</p>
-            <div className="flex justify-start gap-8">
-              {production_countries.map((country, i) => {
-                return (
-                  <p key={i} className="sm:text-sm ">
-                    {country.name}
-                  </p>
-                );
-              })}
-            </div>
-          </div>
-
-          <div>
-            <p className="details_title">AUDIO LANGUAGE</p>
-            <div className="flex justify-start gap-6">
-              {spoken_languages.map((language, i) => {
-                return (
-                  <p key={i} className="sm:text-sm">
-                    {language.english_name}
-                  </p>
-                );
-              })}
-            </div>
-          </div>
-        </div>
+        <MediaDetailInfo details={details} />
       )}
 
       {optionSelected === recommendationSection && (
-        <HorizontalList id={id} data={recommendations} type={MOVIE} />
+        <HorizontalList
+          id={id}
+          schema={recommendationSchema}
+          dataQuery={getMovieRecommendationsDataQuery}
+          fixed={fixed}
+          initialData={recommendations}
+          media={MOVIE}
+        />
       )}
 
-      {optionSelected === similarSection && <SimilarMovies id={id} />}
+      {optionSelected === similarSection && (
+        <SimilarMovies id={id} fixed={fixed} />
+      )}
 
-      {optionSelected === imageSection && <MovieImages id={id} />}
+      {optionSelected === imageSection && <MovieImages id={id} fixed={fixed} />}
 
-      {optionSelected === reviews && <Reviews id={id} />}
+      {optionSelected === reviews && <Reviews id={id} fixed={fixed} />}
     </>
   );
 };

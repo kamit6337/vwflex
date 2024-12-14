@@ -1,22 +1,18 @@
-/* eslint-disable @next/next/no-img-element */
-import fetchMovieAdditional from "@api/query/movie/fetchMovieAdditional";
+import { useQuery } from "@apollo/client";
+import ImageCollections from "@components/ImageCollections";
 import Loading from "@containers/Loading";
-import { fixedState } from "@redux/slice/fixedSlice";
-import { toggleInLargeImage } from "@redux/slice/toggleSlice";
-import { useQuery } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
+import movieImagesSchema, {
+  getMovieImagesDataQuery,
+} from "@graphql/movie/movieImagesSchema";
 
-const MovieImages = ({ id }) => {
-  const dispatch = useDispatch();
-  const { imageDetail } = useSelector(fixedState);
-
-  const { isLoading, data, error } = useQuery({
-    queryKey: ["Movie additional", "images", id],
-    queryFn: () => fetchMovieAdditional(id, { images: true }),
-    staleTime: Infinity,
+const MovieImages = ({ id, fixed }) => {
+  const { loading, data, error } = useQuery(movieImagesSchema, {
+    variables: {
+      id: Number(id),
+    },
   });
 
-  if (isLoading) {
+  if (loading) {
     return (
       <div className="w-full h-96 ">
         <Loading />
@@ -24,7 +20,7 @@ const MovieImages = ({ id }) => {
     );
   }
 
-  if (error || !data || data.length === 0) {
+  if (error || !data || data[getMovieImagesDataQuery]?.length === 0) {
     return (
       <div className="w-full h-96 flex justify-center items-center">
         <p>Sorry, we do not have images</p>
@@ -32,38 +28,9 @@ const MovieImages = ({ id }) => {
     );
   }
 
-  return (
-    <>
-      <div className="grid grid-cols-4 sm_lap:grid-cols-3 tablet:grid-cols-2  gap-4 px-5 pb-20 pt-10">
-        {data.map((obj, i) => {
-          const { path } = obj;
+  const imageList = data[getMovieImagesDataQuery];
 
-          const size = imageDetail.backdrop_sizes[0];
-          const orginalSize = imageDetail.backdrop_sizes.at(-1);
-          const createPhoto = `${imageDetail.secure_base_url}${size}${path}`;
-          const originalPhoto = `${imageDetail.secure_base_url}${orginalSize}${path}`;
-
-          return (
-            <div
-              key={i}
-              className="w-full cursor-pointer"
-              onClick={() =>
-                dispatch(
-                  toggleInLargeImage({ bool: true, data: originalPhoto })
-                )
-              }
-            >
-              <img
-                src={createPhoto}
-                alt={`Photo ${i}`}
-                className="w-full object-cover rounded-md"
-              />
-            </div>
-          );
-        })}
-      </div>
-    </>
-  );
+  return <ImageCollections fixed={fixed} list={imageList} />;
 };
 
 export default MovieImages;

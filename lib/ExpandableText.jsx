@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 
 const ExpandableText = ({ text, maxWords = 100 }) => {
@@ -21,7 +23,7 @@ const ExpandableText = ({ text, maxWords = 100 }) => {
           {text.length > maxWords && (
             <button
               onClick={handleToggle}
-              className="text-sm ml-4"
+              className="text-sm ml-2 hover:brightness-90"
               style={{ color: "#4FD1C5" }}
             >
               Show less
@@ -34,7 +36,7 @@ const ExpandableText = ({ text, maxWords = 100 }) => {
           {words.length > maxWords && (
             <button
               onClick={handleToggle}
-              className="text-sm ml-4"
+              className="text-sm ml-2 hover:brightness-90"
               style={{ color: "#4FD1C5" }}
             >
               ...Show more

@@ -2,12 +2,14 @@
 
 import { useRouter } from "next/navigation";
 
-const LoginError = ({ error }) => {
-  const router = useRouter();
+const MainLayoutLayoutError = ({ error }) => {
+  // const router = useRouter();
 
-  router.push(`/login?msg=${"Please login"}`);
+  // router.push(`/login?msg=${"Please login"}`);
 
-  return null;
+  // return null;
+
+  return <p>{error.message}</p>;
 };
 
-export default LoginError;
+export default MainLayoutLayoutError;

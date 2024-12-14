@@ -1,44 +1,61 @@
-import fetchTvShowDetails from "@api/query/tv/fetchTvShowDetails";
-import ChangeSeason from "./ChangeSeason";
 import IndianTypeDate from "@utils/javascript/IndianTypeDate";
-import Additional from "./Additional";
-import ImageOfDetail from "@components/ImageOfDetail";
-import WatchlistPart from "./WatchlistPart";
 import OneNumberAfterDecimal from "@utils/javascript/OneNumberAfterDecimal";
-import { QueryClient } from "@tanstack/react-query";
-import checkUserLogin from "@api/query/auth/checkUserLogin";
-import LoginButton from "@components/LoginButton";
+import tvDetailSchema, {
+  getTvShowDetailDataQuery,
+} from "@graphql/tv/tvDetailSchema";
+import tvSeasonSchema, {
+  getTvShowSeasonDetailDataQuery,
+} from "@graphql/tv/tvSeasonSchema";
+import ChangeSeason from "./ChangeSeason";
+import Additional from "./Additional";
+import cachedQuery from "@graphql/query/cachedQuery";
+import getFixedData from "@graphql/fixed/query";
 
-const queryClient = new QueryClient();
-
-export const generateMetadata = async ({
-  searchParams: { id, season = null },
-}) => {
-  const query = await queryClient.fetchQuery({
-    queryKey: ["TV Show Detail", id, season],
-    queryFn: () => fetchTvShowDetails(id, season),
+export const generateMetadata = async ({ searchParams: { id } }) => {
+  const getQuery = cachedQuery(tvDetailSchema, getTvShowDetailDataQuery, {
+    id,
   });
 
+  const { data } = await getQuery();
+
   return {
-    title: query?.details.original_name,
-    description: query?.details.overview,
+    title: data?.name,
+    description: data?.overview,
   };
 };
 
 const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
-  const query = queryClient.fetchQuery({
-    queryKey: ["TV Show Detail", id, season],
-    queryFn: async () => {
-      return await fetchTvShowDetails(id, season);
-    },
-  });
+  const { data: fixed } = await getFixedData();
 
-  const [tvDetails, user] = await Promise.all([query, checkUserLogin()]);
+  const tvShowDetailPromise = cachedQuery(
+    tvDetailSchema,
+    getTvShowDetailDataQuery,
+    {
+      id,
+    }
+  );
 
-  const { details } = tvDetails;
+  const tvShowSeasonDetailPromise = cachedQuery(
+    tvSeasonSchema,
+    getTvShowSeasonDetailDataQuery,
+    { id, season }
+  );
+
+  const { data: tvShowDetail, error: tvShowDetailError } =
+    await tvShowDetailPromise();
+  const { data: tvShowSeasonDetail, error: tvShowSeasonDetailError } =
+    await tvShowSeasonDetailPromise();
+
+  if (tvShowDetailError || tvShowSeasonDetailError) {
+    throw new Error(
+      tvShowDetailError?.message || tvShowSeasonDetailError?.message
+    );
+  }
+
+  const details = tvShowDetail;
+  const episodes = tvShowSeasonDetail.episodes;
 
   const {
-    season_number,
     adult,
     genres,
     name,
@@ -46,9 +63,13 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     number_of_seasons,
     vote_average,
     backdrop_path,
-    episodes,
-    air_date,
+    number_of_episodes,
+    first_air_date,
   } = details;
+
+  const { imageDetail } = fixed;
+
+  const createPhoto = `${imageDetail.secure_base_url}original${backdrop_path}`;
 
   return (
     <section className="flex flex-col w-full">
@@ -58,31 +79,36 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
         style={{ height: `calc(100vh - 56px)` }}
       >
         {/* IMAGE DIV */}
-        <div className="h-full  image_shadow self-end">
-          <ImageOfDetail backdrop_path={backdrop_path} title={name} />
+        <div className="h-full image_shadow self-end">
+          <img
+            src={createPhoto}
+            alt={name}
+            className="h-full rounded-xl object-cover"
+          />
         </div>
 
         {/* TV BRIEF DETAIL */}
         <div className="absolute left-0 ml-16 sm_lap:ml-10 tablet:ml-4 mt-10 flex flex-col items-start justify-end">
           <div className="flex flex-col items-start mb-4">
             <p className="text-5xl font-extrabold tracking-wide leading-snug sm_lap:text-4xl  tablet:text-3xl">
-              {original_name}
+              {name}
             </p>
             <div className="w-full h-[2px] mt-1 bg-white/70" />
           </div>
 
-          <div className="rounded-2xl mb-4">
+          <div className="mb-4">
             <ChangeSeason
+              key={id}
               totalSeasons={number_of_seasons}
               showId={id}
-              season={season_number}
+              season={season}
             />
           </div>
 
           <div className="flex justify-start items-center gap-4 tablet:text-sm">
             <p>IMDb {OneNumberAfterDecimal(vote_average)}</p>
             <p>{adult ? "Adult" : "Universal"}</p>
-            <p>{episodes.length} episodes</p>
+            <p>{number_of_episodes} episodes</p>
           </div>
           <div className="flex items-center gap-2 my-1 tablet:text-sm">
             {genres.map((genre, i) => (
@@ -92,21 +118,27 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
           <div className="flex flex-col justify-between items-start ">
             <div className="flex items-center gap-2 text-sm">
               <p className="font-medium ">Air Date :</p>
-              <p>{IndianTypeDate(air_date)}</p>
+              <p>{IndianTypeDate(first_air_date)}</p>
             </div>
           </div>
-
+          {/* 
           <div className="mt-2">
             {user ? (
               <WatchlistPart id={id} season={season} details={details} />
             ) : (
               <LoginButton />
             )}
-          </div>
+          </div> */}
         </div>
       </div>
 
-      <Additional id={id} season={season} details={details} />
+      <Additional
+        id={id}
+        season={season}
+        details={details}
+        fixed={fixed}
+        episodes={episodes}
+      />
     </section>
   );
 };

@@ -1,30 +1,24 @@
-import queryList from "@api/query/queryList";
 import HorizontalSection from "@components/HorizontalSection";
+import queryList from "@graphql/query/queryList";
 
-const zIndex = 499;
+const zIndex = 25;
 
 export default async function Home() {
   return (
-    <div>
-      <p>Hello World</p>
-    </div>
-  );
-
-  return (
     <>
       {queryList.map((query, i) => {
-        const { id, promise, type, instant, title, trending } = query;
+        const { id, schema, dataQuery, media, name, instant } = query;
 
         return (
           <HorizontalSection
             key={id}
             id={id}
-            title={title}
-            type={type}
-            trending={trending}
-            promise={promise}
-            instant={instant}
-            zIndex={zIndex - i * 2}
+            schema={schema}
+            dataQuery={dataQuery}
+            name={name}
+            media={media}
+            instant={true}
+            zIndex={zIndex - i}
           />
         );
       })}

@@ -1,45 +1,47 @@
 "use client";
-import logout from "@api/query/auth/logout";
+import { useQuery } from "@apollo/client";
 import { Icons } from "@assets/icons";
-import Toastify from "@lib/Toastify";
-import { useState } from "react";
+import LoginButton from "@components/LoginButton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@components/ui/dropdown-menu";
+import loginCheckSchema, {
+  getLoginCheckDataQuery,
+} from "@graphql/auth/loginCheckSchema";
 
-const Profile = ({ name, email }) => {
-  const [openProfile, setOpenProfile] = useState(false);
-  const { ToastContainer, showErrorMessage } = Toastify();
+const Profile = () => {
+  const { loading, error, data } = useQuery(loginCheckSchema);
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-    } catch (error) {
-      showErrorMessage({ message: "Issue in logout. Please try later" });
-    }
-  };
+  if (loading) return;
+
+  if (error) {
+    console.error("Error in profile", error.message);
+    return <LoginButton sm_width={true} />;
+  }
+
+  const user = data?.[getLoginCheckDataQuery];
+
+  const { name, email } = user;
+
+  const handleLogout = async () => {};
 
   return (
     <>
-      <p
-        className="h-full text-2xl cursor-pointer"
-        onClick={() => setOpenProfile((prev) => !prev)}
-      >
-        <Icons.profile />
-      </p>
-
-      {openProfile && (
-        <div
-          className="absolute z-20 top-full mt-2 right-0 bg-slate-800 border border-white 
-        flex flex-col gap-4 py-4 rounded-xl"
-        >
-          <p className="capitalize px-4">Hello, {name}</p>
-          <p
-            className="hover:bg-slate-600 cursor-pointer px-4 py-2"
-            onClick={handleLogout}
-          >
-            Sign Out ({email})
-          </p>
-        </div>
-      )}
-      <ToastContainer />
+      <DropdownMenu>
+        <DropdownMenuTrigger className="text-2xl cursor-pointer border-none">
+          <Icons.profile />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Hello, {name}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Sign Out ({email})</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 };

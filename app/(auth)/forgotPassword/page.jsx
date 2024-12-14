@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import Toastify from "@lib/Toastify";
 import Loading from "@containers/Loading";
 import Link from "next/link";
-import sendNewPasswordLink from "@api/mutation/sendNewPasswordLink";
 
 const ForgotPasswordPage = () => {
   const router = useRouter();
@@ -25,7 +24,7 @@ const ForgotPasswordPage = () => {
   const onSubmit = async (data) => {
     const { email } = data;
     try {
-      await sendNewPasswordLink(email);
+      // await sendNewPasswordLink(email);
       showSuccessMessage({
         message: "Successfully Sent Reset password link to your Email ID",
       });

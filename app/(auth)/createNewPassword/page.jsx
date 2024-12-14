@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Toastify from "@lib/Toastify";
 import Loading from "@containers/Loading";
-import newPassword from "@api/mutation/newPassword";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const CreateNewPassword = () => {
@@ -32,7 +31,7 @@ const CreateNewPassword = () => {
     const { password } = data;
 
     try {
-      await newPassword(email, token, password);
+      // await newPassword(email, token, password);
       showSuccessMessage({ message: "Password has changed. Login Again.." });
       setTimeout(() => {
         router.push("/login");
