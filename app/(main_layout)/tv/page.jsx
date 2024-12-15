@@ -10,13 +10,12 @@ import ChangeSeason from "./ChangeSeason";
 import Additional from "./Additional";
 import cachedQuery from "@graphql/query/cachedQuery";
 import getFixedData from "@graphql/fixed/query";
+import WatchlistPart from "./WatchlistPart";
 
 export const generateMetadata = async ({ searchParams: { id } }) => {
-  const getQuery = cachedQuery(tvDetailSchema, getTvShowDetailDataQuery, {
+  const { data } = await cachedQuery(tvDetailSchema, getTvShowDetailDataQuery, {
     id,
   });
-
-  const { data } = await getQuery();
 
   return {
     title: data?.name,
@@ -24,10 +23,10 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
   };
 };
 
-const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
+const TvDetailPage = async ({ searchParams: { id, season } }) => {
   const { data: fixed } = await getFixedData();
 
-  const tvShowDetailPromise = cachedQuery(
+  const { data: tvShowDetail, error: tvShowDetailError } = await cachedQuery(
     tvDetailSchema,
     getTvShowDetailDataQuery,
     {
@@ -35,16 +34,11 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     }
   );
 
-  const tvShowSeasonDetailPromise = cachedQuery(
-    tvSeasonSchema,
-    getTvShowSeasonDetailDataQuery,
-    { id, season }
-  );
-
-  const { data: tvShowDetail, error: tvShowDetailError } =
-    await tvShowDetailPromise();
   const { data: tvShowSeasonDetail, error: tvShowSeasonDetailError } =
-    await tvShowSeasonDetailPromise();
+    await cachedQuery(tvSeasonSchema, getTvShowSeasonDetailDataQuery, {
+      id,
+      season,
+    });
 
   if (tvShowDetailError || tvShowSeasonDetailError) {
     throw new Error(
@@ -52,8 +46,10 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
     );
   }
 
+  console.log("tvShowSeasonDetail", id, season, tvShowSeasonDetail);
+
   const details = tvShowDetail;
-  const episodes = tvShowSeasonDetail.episodes;
+  const episodes = tvShowSeasonDetail?.episodes;
 
   const {
     adult,
@@ -121,14 +117,12 @@ const TvDetailPage = async ({ searchParams: { id, season = null } }) => {
               <p>{IndianTypeDate(first_air_date)}</p>
             </div>
           </div>
-          {/* 
-          <div className="mt-2">
-            {user ? (
-              <WatchlistPart id={id} season={season} details={details} />
-            ) : (
-              <LoginButton />
-            )}
-          </div> */}
+          <WatchlistPart
+            key={`${id}-${season}`}
+            id={id}
+            season={season}
+            details={tvShowSeasonDetail}
+          />
         </div>
       </div>
 

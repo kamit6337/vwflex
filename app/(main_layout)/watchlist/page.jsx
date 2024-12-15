@@ -12,20 +12,6 @@ export const metadata = () => {
 const WatchlistPage = async () => {
   const { data: fixed } = await getFixedData(getAuthToken());
 
-  // const user = await checkUserLogin();
-
-  // if (!user) {
-  //   return (
-  //     <div className="h-96 w-full flex justify-center items-center">
-  //       <Link href={`/login`}>
-  //         <p className="py-4 px-20 border rounded hover:bg-slate-700">
-  //           Login to see your watchlist
-  //         </p>
-  //       </Link>
-  //     </div>
-  //   );
-  // }
-
   return <Watchlist fixed={fixed} />;
 };
 

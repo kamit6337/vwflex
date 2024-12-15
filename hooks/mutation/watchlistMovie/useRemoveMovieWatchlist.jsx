@@ -24,6 +24,18 @@ const useRemoveMovieWatchlist = (movieId) => {
             [getMovieInWatchlistDataQuery]: movieAdded, // Update the data for this movie
           },
         });
+
+        // Remove the movie from the `getWatchlistMoviesDataQuery` watchlist
+        cache.modify({
+          fields: {
+            [getWatchlistMoviesDataQuery](existingData = []) {
+              return existingData.filter(
+                (movieRef) =>
+                  cache.identify(movieRef) !== `MovieDetail:${movieId}`
+              );
+            },
+          },
+        });
       },
     }
   );

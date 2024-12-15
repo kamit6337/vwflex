@@ -8,7 +8,7 @@ const OAuthPage = ({ token }) => {
   useEffect(() => {
     localStorage.setItem("_use", token);
     router.push("/");
-  }, []);
+  }, [token, router]);
 
   return null;
 };

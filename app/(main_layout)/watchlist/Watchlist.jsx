@@ -1,38 +1,38 @@
 "use client";
 import { useQuery } from "@apollo/client";
-import HorizontalList from "@components/HorizontalList";
-import { MOVIE } from "@constants/mediaType";
 import Loading from "@containers/Loading";
-import getWatchlistMovieSchema, {
-  getWatchlistMoviesDataQuery,
-} from "@graphql/watchlist/getWatchlistMovieSchema";
+import loginCheckSchema, {
+  getLoginCheckDataQuery,
+} from "@graphql/auth/loginCheckSchema";
+import WatchlistMovies from "./WatchlistMovies";
+import WatchlistTvShows from "./WatchlistTvShows";
+import LogCacheData from "@lib/LogCachedData";
 
 const Watchlist = ({ fixed }) => {
-  const { loading, error, data } = useQuery(getWatchlistMovieSchema);
 
-  if (loading) {
+  const {
+    loading: loginCheckLoading,
+    error: loginCheckError,
+    data: userData,
+  } = useQuery(loginCheckSchema);
+
+  if (loginCheckLoading) {
     return <Loading hScreen={true} />;
   }
 
-  if (error) {
-    return <p>{error.message}</p>;
+  if (loginCheckError) {
+    console.error("Error in profile", loginCheckError?.message);
+    return;
   }
 
-  const movieList = data?.[getWatchlistMoviesDataQuery];
-
-  console.log("movieList", movieList);
+  if (!userData) {
+    return <p>Please login to see watchlist</p>;
+  }
 
   return (
     <>
-      <HorizontalList
-        schema={getWatchlistMovieSchema}
-        dataQuery={getWatchlistMoviesDataQuery}
-        name={"Watchlist Movies"}
-        initialData={movieList}
-        media={MOVIE}
-        zIndex={20}
-        fixed={fixed}
-      />
+      <WatchlistMovies fixed={fixed} />
+      <WatchlistTvShows fixed={fixed} />
     </>
   );
 };

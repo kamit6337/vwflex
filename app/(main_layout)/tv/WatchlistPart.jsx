@@ -1,18 +1,18 @@
 "use client";
+import { useEffect } from "react";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import LoginButton from "@components/LoginButton";
 import loginCheckSchema, {
   getLoginCheckDataQuery,
 } from "@graphql/auth/loginCheckSchema";
-import checkMovieSchema, {
-  getMovieInWatchlistDataQuery,
-} from "@graphql/watchlist/checkMovieSchema";
-import useCreateMovieWatchlist from "@hooks/mutation/watchlistMovie/useCreateMovieWatchlist";
-import useRemoveMovieWatchlist from "@hooks/mutation/watchlistMovie/useRemoveMovieWatchlist";
+import checkTvInWatchlist, {
+  checkTvShowInWatchlistDataQuery,
+} from "@graphql/watchlist/checkTvInWatchlist";
+import useCreateTvShowInWatchlist from "@hooks/mutation/watchlistTvShows/useCreateTvShowInWatchlist";
 import LogCacheData from "@lib/LogCachedData";
-import { useEffect } from "react";
+import useRemoveTvShowWatchlist from "@hooks/mutation/watchlistTvShows/useRemoveTvShowWatchlist";
 
-const WatchlistPart = ({ details, id }) => {
+const WatchlistPart = ({ details, id, season }) => {
   LogCacheData();
 
   const {
@@ -21,20 +21,22 @@ const WatchlistPart = ({ details, id }) => {
     data: userData,
   } = useQuery(loginCheckSchema);
 
-  const [queryMovieInWatchlist, { loading, data, error }] =
-    useLazyQuery(checkMovieSchema);
+  const [queryTvInWatchlist, { loading, data, error }] =
+    useLazyQuery(checkTvInWatchlist);
 
   const { mutation: createWatchlist, loading: createLoading } =
-    useCreateMovieWatchlist(details);
+    useCreateTvShowInWatchlist(details, id, season);
 
   const { mutation: removeWatchlist, loading: removeLoading } =
-    useRemoveMovieWatchlist(id);
+    useRemoveTvShowWatchlist(id, season);
 
   useEffect(() => {
     if (userData && userData[getLoginCheckDataQuery]) {
-      queryMovieInWatchlist({ variables: { id: Number(id) } });
+      queryTvInWatchlist({
+        variables: { id: Number(id), season: Number(season) },
+      });
     }
-  }, [userData, queryMovieInWatchlist, id]);
+  }, [userData, queryTvInWatchlist, id, season]);
 
   if (loginCheckLoading) return;
 
@@ -49,14 +51,19 @@ const WatchlistPart = ({ details, id }) => {
 
   if (loading || error) return;
 
-  const bool = data?.[getMovieInWatchlistDataQuery]?.bool;
+  const bool = data?.[checkTvShowInWatchlistDataQuery]?.bool;
+
   return (
     <>
       {bool ? (
         <button
           className={`rounded-3xl p-3 px-5 cursor-pointer bg-gray-400`}
           disabled={removeLoading}
-          onClick={() => removeWatchlist({ variables: { id: Number(id) } })}
+          onClick={() =>
+            removeWatchlist({
+              variables: { id: Number(id), season: Number(season) },
+            })
+          }
         >
           Remove from Watchlist
         </button>
@@ -64,7 +71,11 @@ const WatchlistPart = ({ details, id }) => {
         <button
           disabled={createLoading}
           className={`border-2 border-white rounded-3xl p-3 px-5 cursor-pointer hover:text-gray-300`}
-          onClick={() => createWatchlist({ variables: { id: Number(id) } })}
+          onClick={() =>
+            createWatchlist({
+              variables: { id: Number(id), season: Number(season) },
+            })
+          }
         >
           Add to Watchlist
         </button>

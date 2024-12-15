@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import checkMovieSchema, {
   getMovieInWatchlistDataQuery,
 } from "@graphql/watchlist/checkMovieSchema";
@@ -24,28 +24,28 @@ const useCreateMovieWatchlist = (details) => {
           },
         });
 
-        // const movieRef = cache.writeFragment({
-        //   data: { ...details, __typename: "MovieDetail" },
-        //   fragment: gql`
-        //     fragment NewMovie on MovieDetail {
-        //       id
-        //       backdrop_path
-        //       overview
-        //       release_date
-        //       title
-        //       vote_average
-        //       __typename
-        //     }
-        //   `,
-        // });
+        const movieRef = cache.writeFragment({
+          data: { ...details, __typename: "MovieDetail" },
+          fragment: gql`
+            fragment NewMovie on MovieDetail {
+              id
+              backdrop_path
+              overview
+              release_date
+              title
+              vote_average
+              __typename
+            }
+          `,
+        });
 
-        // cache.modify({
-        //   fields: {
-        //     [getWatchlistMoviesDataQuery](existingData = []) {
-        //       return [movieRef, ...existingData];
-        //     },
-        //   },
-        // });
+        cache.modify({
+          fields: {
+            [getWatchlistMoviesDataQuery](existingData = []) {
+              return [movieRef, ...existingData];
+            },
+          },
+        });
       },
     }
   );

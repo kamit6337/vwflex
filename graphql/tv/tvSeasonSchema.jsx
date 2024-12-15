@@ -5,7 +5,12 @@ export const getTvShowSeasonDetailDataQuery = "getTvShowSeason";
 const tvSeasonSchema = gql`
   query GetTvShowSeasonDetail($id: Int!, $season: Int!) {
     getTvShowSeason(id: $id, season: $season) {
+      id
+      poster_path
       overview
+      air_date
+      name
+      season_number
       vote_average
       episodes {
         air_date
