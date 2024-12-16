@@ -65,7 +65,6 @@ const SignUp = () => {
   };
 
   const googleOAuth = () => {
-    console.log("Google OAuth Login");
     const url = `${environment.SERVER_URL}/auth/google`;
     const openWindow = window.open(url, "_self");
 

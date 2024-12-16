@@ -14,8 +14,6 @@ const HorizontalSection = async ({
   trending = false,
   instant = false,
 }) => {
-  // const token = cookies().get("_use")?.value;
-
   const { data: fixed, error } = await getFixedData();
 
   if (error) {
@@ -25,7 +23,6 @@ const HorizontalSection = async ({
   let query = null;
 
   if (instant) {
-    // const getQuery = cachedQuery(schema, dataQuery, { page: 1 });
     query = await cachedQuery(schema, dataQuery, { page: 1 });
   }
 

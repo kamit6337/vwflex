@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const getTvShowSimilarDataQuery = "getTvShowSimilar";
 
 const tvShowSimilarSchema = gql`
-  query GetTvShowSimilar($page: Int!, $id: Int!) {
+  query GetTvShowSimilar($page: Int!, $id: ID!) {
     getTvShowSimilar(page: $page, id: $id) {
       backdrop_path
       id

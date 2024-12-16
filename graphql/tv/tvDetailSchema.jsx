@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const getTvShowDetailDataQuery = "getTvShowDetails";
 
 const tvDetailSchema = gql`
-  query GetTvShowDetail($id: Int!) {
+  query GetTvShowDetail($id: ID!) {
     getTvShowDetails(id: $id) {
       adult
       backdrop_path

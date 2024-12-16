@@ -46,8 +46,6 @@ const TvDetailPage = async ({ searchParams: { id, season } }) => {
     );
   }
 
-  console.log("tvShowSeasonDetail", id, season, tvShowSeasonDetail);
-
   const details = tvShowDetail;
   const episodes = tvShowSeasonDetail?.episodes;
 
@@ -117,12 +115,14 @@ const TvDetailPage = async ({ searchParams: { id, season } }) => {
               <p>{IndianTypeDate(first_air_date)}</p>
             </div>
           </div>
-          <WatchlistPart
-            key={`${id}-${season}`}
-            id={id}
-            season={season}
-            details={tvShowSeasonDetail}
-          />
+          <div className="mt-2">
+            <WatchlistPart
+              key={`${id}-${season}`}
+              id={id}
+              season={season}
+              details={tvShowSeasonDetail}
+            />
+          </div>
         </div>
       </div>
 

@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const getMovieReviewsDataQuery = "getMovieReviews";
 
 const movieReviewsSchema = gql`
-  query GetMovieReviews($id: Int!) {
+  query GetMovieReviews($id: ID!) {
     getMovieReviews(id: $id) {
       author
       author_details {

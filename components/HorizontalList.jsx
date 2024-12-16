@@ -1,10 +1,10 @@
 "use client";
 import { Icons } from "@assets/icons";
 import debounce from "@utils/javascript/debounce";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import MovieCard from "./MovieCard";
-import { useLazyQuery } from "@apollo/client";
+import { useApolloClient, useLazyQuery, useQuery } from "@apollo/client";
 import TvCard from "./TvCard";
 import { DAY, MOVIE, TV, WEEK } from "@constants/mediaType";
 
@@ -21,29 +21,63 @@ const HorizontalList = ({
   pagination = false,
 }) => {
   const [index, setIndex] = useState(0);
-  const [mediaData, setMediaData] = useState(() => {
-    if (!initialData) {
-      return [];
-    }
-    return initialData.filter((media) => media.backdrop_path);
-  });
+  // const [mediaData, setMediaData] = useState(() => {
+  //   if (!initialData) {
+  //     return [];
+  //   }
+  //   return initialData.filter((media) => media.backdrop_path);
+  // });
   const [leftArrowInLarge, setLeftArrowInLarge] = useState(false);
   const [rightArrowInLarge, setRightArrowInLarge] = useState(false);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [selectTime, setSelectTime] = useState(DAY);
+  const client = useApolloClient();
+  const [mediaList, setMediaList] = useState([]);
 
-  // const [fetchNext, { loading, error, data }] = useLazyQuery(schema);
+  const [fetchData, { loading, error, data }] = useLazyQuery(schema);
+
+  useEffect(() => {
+    if (initialData) {
+      client.cache.writeQuery({
+        query: schema,
+        variables: { page: 1 },
+        data: {
+          [dataQuery]: initialData,
+        },
+      });
+    }
+
+    fetchData({ variables: { page: 1 } });
+  }, [client, schema, initialData, fetchData, page, dataQuery]);
+
+  useEffect(() => {
+    if (data && data[dataQuery]) {
+      setMediaList((prev) => [...prev, ...data[dataQuery]]);
+      setPage((prev) => prev + 1);
+      const cacheData = client.cache.extract();
+      console.log("Updated Apollo Cache Data:", cacheData);
+    }
+  }, [data, client, dataQuery]);
 
   const { ref: findalDivRef, inView: finalDivInView } = useInView({
     rootMargin: "0px 0px 0px 200px",
   });
 
-  useEffect(() => {
-    if (initialData?.length > 0) {
-      setMediaData(initialData.filter((media) => media.backdrop_path));
+  useLayoutEffect(() => {
+    if (!loading && finalDivInView) {
+      console.log("page", page);
+      fetchData({ variables: { page } });
     }
-  }, [id, initialData]);
+  }, [finalDivInView, fetchData, page, loading]);
+
+  // if (loading) {
+  //   return <p>Loading......</p>;
+  // }
+
+  if (error) {
+    return <p>Error in List... {error.message}</p>;
+  }
 
   // useEffect(() => {
   //   if (data && data[dataQuery]?.length > 0) {
@@ -122,9 +156,9 @@ const HorizontalList = ({
     // setMediaData(fetchTrendingMovie);
   };
 
-  if (!mediaData || mediaData?.length === 0) {
-    return <div className="">No data Present</div>;
-  }
+  // if (!mediaList.length) {
+  //   return <div className="">No data Present</div>;
+  // }
 
   return (
     <section
@@ -160,22 +194,23 @@ const HorizontalList = ({
             className="flex transition-all duration-500"
             style={{ translate: `${100 * index}%` }}
           >
-            {mediaData.map((data, i) => {
-              if (media === MOVIE) {
-                return <MovieCard key={i} movie={data} fixed={fixed} />;
-              }
+            {mediaList.length > 0 &&
+              mediaList.map((data, i) => {
+                if (media === MOVIE) {
+                  return <MovieCard key={i} movie={data} fixed={fixed} />;
+                }
 
-              if (media === TV) {
-                return <TvCard key={i} tv={data} fixed={fixed} />;
-              }
+                if (media === TV) {
+                  return <TvCard key={i} tv={data} fixed={fixed} />;
+                }
 
-              return null;
-            })}
-            {/* {loading && (
+                return null;
+              })}
+            {loading && (
               <div className="grow-0 shrink-0 basis-96 flex justify-center items-center">
                 <div className="loading" />
               </div>
-            )} */}
+            )}
             <div ref={findalDivRef} />
           </div>
         </div>

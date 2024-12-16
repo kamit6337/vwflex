@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const postWatchlistTvShowDataQuery = "postWatchlistTvShow";
 
 const createTvWatchlistSchema = gql`
-  mutation CreateTvWatchlistSchema($id: Int!, $season: Int!) {
+  mutation CreateTvWatchlistSchema($id: ID!, $season: ID!) {
     postWatchlistTvShow(id: $id, season: $season) {
       id
       bool

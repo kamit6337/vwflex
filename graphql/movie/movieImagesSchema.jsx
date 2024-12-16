@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const getMovieImagesDataQuery = "getMovieImages";
 
 const movieImagesSchema = gql`
-  query GetMovieImages($id: Int!) {
+  query GetMovieImages($id: ID!) {
     getMovieImages(id: $id) {
       ratio
       path

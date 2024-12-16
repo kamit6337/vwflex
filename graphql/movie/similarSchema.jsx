@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const getSimilarMovieDataQuery = "getSimilarMovies";
 
 const similarSchema = gql`
-  query GetSimilarMovies($page: Int!, $id: Int!) {
+  query GetSimilarMovies($page: Int!, $id: ID!) {
     getSimilarMovies(page: $page, id: $id) {
       backdrop_path
       id

@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 export const getTvShowSeasonDetailDataQuery = "getTvShowSeason";
 
 const tvSeasonSchema = gql`
-  query GetTvShowSeasonDetail($id: Int!, $season: Int!) {
+  query GetTvShowSeasonDetail($id: ID!, $season: ID!) {
     getTvShowSeason(id: $id, season: $season) {
       id
       poster_path
