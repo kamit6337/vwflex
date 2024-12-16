@@ -3,7 +3,6 @@ import getFixedData from "@graphql/fixed/query";
 import cachedQuery from "@graphql/query/cachedQuery";
 import PeoplesHorizontalList from "./PeoplesHorizontalList";
 import { MOVIE, PERSON, TV } from "@constants/mediaType";
-import { cookies } from "next/headers";
 
 const HorizontalSection = async ({
   id,
