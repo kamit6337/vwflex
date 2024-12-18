@@ -1,8 +1,7 @@
 import HorizontalList from "@components/HorizontalList";
 import getFixedData from "@graphql/fixed/query";
 import cachedQuery from "@graphql/query/cachedQuery";
-import PeoplesHorizontalList from "./PeoplesHorizontalList";
-import { MOVIE, PERSON, TV } from "@constants/mediaType";
+import { DAY, MOVIE, PERSON, TV } from "@constants/mediaType";
 
 const HorizontalSection = async ({
   id,
@@ -23,21 +22,25 @@ const HorizontalSection = async ({
 
   let query = null;
 
-  if (instant) {
+  if (instant && !trending) {
     query = await cachedQuery(schema, dataQuery, { page: 1 });
   }
 
   // if (trending && (media === MOVIE || media === TV)) {
+  //   query = await cachedQuery(schema, dataQuery, { time: DAY });
+
   //   return (
   //     <HorizontalList
   //       id={id}
   //       schema={schema}
   //       dataQuery={dataQuery}
   //       name={name}
-  //       initialData={query}
+  //       initialData={query.data}
   //       media={media}
   //       trending={trending}
   //       zIndex={zIndex}
+  //       fixed={fixed}
+  //       pagination={pagination}
   //     />
   //   );
   // }
@@ -71,6 +74,7 @@ const HorizontalSection = async ({
         fixed={fixed}
         pagination={pagination}
         people={true}
+        variables={{ id, page: 1 }}
       />
     );
   }
@@ -88,6 +92,7 @@ const HorizontalSection = async ({
         zIndex={zIndex}
         fixed={fixed}
         pagination={pagination}
+        variables={{ id, page: 1 }}
       />
     );
   }

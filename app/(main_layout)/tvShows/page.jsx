@@ -1,9 +1,9 @@
 import HorizontalSection from "@components/HorizontalSection";
 import queryList from "@graphql/query/queryList";
 import React from "react";
+import { TV } from "@constants/mediaType";
 
-const zIndex = 499;
-const TV = "tv";
+const zIndex = 25;
 
 const TvShowsPage = () => {
   return (
@@ -11,7 +11,16 @@ const TvShowsPage = () => {
       {queryList
         .filter((query) => query.media === TV)
         .map((query, i) => {
-          const { id, schema, dataQuery, media, name } = query;
+          const {
+            id,
+            schema,
+            dataQuery,
+            media,
+            name,
+            instant,
+            pagination,
+            trending,
+          } = query;
 
           return (
             <HorizontalSection
@@ -21,8 +30,10 @@ const TvShowsPage = () => {
               dataQuery={dataQuery}
               name={name}
               media={media}
-              instant={true}
-              zIndex={zIndex - i * 2}
+              instant={instant}
+              zIndex={zIndex - i}
+              pagination={pagination}
+              trending={trending}
             />
           );
         })}

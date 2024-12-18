@@ -8,7 +8,7 @@ import tvShowRecommendationSchema, {
 
 const Recommendations = ({ id, fixed }) => {
   const { loading, data, error } = useQuery(tvShowRecommendationSchema, {
-    variables: { id: Number(id), page: 1 },
+    variables: { id, page: 1 },
   });
 
   if (loading) {
@@ -28,9 +28,7 @@ const Recommendations = ({ id, fixed }) => {
     );
   }
 
-
-const initialData = data[getTvShowRecommendationsDataQuery]
-
+  const initialData = data[getTvShowRecommendationsDataQuery];
 
   return (
     <>
@@ -41,6 +39,7 @@ const initialData = data[getTvShowRecommendationsDataQuery]
         fixed={fixed}
         initialData={initialData}
         media={TV}
+        variables={{ id, page: 1 }}
       />
     </>
   );

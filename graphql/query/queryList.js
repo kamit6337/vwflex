@@ -11,8 +11,21 @@ import popularPeoplesSchema, {
   getPopularPeoplesDataQuery,
 } from "@graphql/peoples/popularPeoplesSchema";
 import { MOVIE, PERSON, TV } from "@constants/mediaType";
+import trendingMovieSchema, {
+  getTrendingMoviesDataQuery,
+} from "@graphql/movies/trendingMovieSchema";
 
 const queryList = [
+  // {
+  //   id: generateRandomDigitNumber(),
+  //   schema: trendingMovieSchema,
+  //   dataQuery: getTrendingMoviesDataQuery,
+  //   name: "Trending Movies",
+  //   media: MOVIE,
+  //   instant: true,
+  //   pagination: false,
+  //   trending: true,
+  // },
   {
     id: generateRandomDigitNumber(),
     schema: popularPeoplesSchema,

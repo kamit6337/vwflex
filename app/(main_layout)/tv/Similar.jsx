@@ -8,7 +8,7 @@ import tvShowSimilarSchema, {
 
 const Similar = ({ id, fixed }) => {
   const { loading, data, error } = useQuery(tvShowSimilarSchema, {
-    variables: { id: Number(id), page: 1 },
+    variables: { id, page: 1 },
   });
 
   if (loading) {
@@ -39,6 +39,7 @@ const Similar = ({ id, fixed }) => {
         fixed={fixed}
         initialData={initialData}
         media={TV}
+        variables={{ id, page: 1 }}
       />
     </>
   );

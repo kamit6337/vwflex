@@ -3,7 +3,7 @@ import queryList from "@graphql/query/queryList";
 import React from "react";
 import { MOVIE } from "@constants/mediaType";
 
-const zIndex = 499;
+const zIndex = 25;
 
 const MoviesPage = () => {
   return (
@@ -11,7 +11,16 @@ const MoviesPage = () => {
       {queryList
         .filter((query) => query.media === MOVIE)
         .map((query, i) => {
-          const { id, schema, dataQuery, media, name } = query;
+          const {
+            id,
+            schema,
+            dataQuery,
+            media,
+            name,
+            instant,
+            pagination,
+            trending,
+          } = query;
 
           return (
             <HorizontalSection
@@ -21,8 +30,10 @@ const MoviesPage = () => {
               dataQuery={dataQuery}
               name={name}
               media={media}
-              instant={true}
-              zIndex={zIndex - i * 2}
+              instant={instant}
+              zIndex={zIndex - i}
+              pagination={pagination}
+              trending={trending}
             />
           );
         })}

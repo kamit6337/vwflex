@@ -2,7 +2,7 @@ import HorizontalSection from "@components/HorizontalSection";
 import queryList from "@graphql/query/queryList";
 import { PERSON } from "@constants/mediaType";
 
-const zIndex = 499;
+const zIndex = 25;
 
 export const metadata = () => {
   return {
@@ -17,7 +17,16 @@ const PeoplesPage = () => {
       {queryList
         .filter((query) => query.media === PERSON)
         .map((query, i) => {
-          const { id, schema, dataQuery, media, name, instant } = query;
+          const {
+            id,
+            schema,
+            dataQuery,
+            media,
+            name,
+            instant,
+            pagination,
+            trending,
+          } = query;
 
           return (
             <HorizontalSection
@@ -28,7 +37,9 @@ const PeoplesPage = () => {
               name={name}
               media={media}
               instant={instant}
-              zIndex={zIndex - i * 2}
+              zIndex={zIndex - i}
+              pagination={pagination}
+              trending={trending}
             />
           );
         })}

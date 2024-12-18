@@ -7,8 +7,16 @@ export default async function Home() {
   return (
     <>
       {queryList.map((query, i) => {
-        const { id, schema, dataQuery, media, name, instant, pagination } =
-          query;
+        const {
+          id,
+          schema,
+          dataQuery,
+          media,
+          name,
+          instant,
+          pagination,
+          trending,
+        } = query;
 
         return (
           <HorizontalSection
@@ -18,9 +26,10 @@ export default async function Home() {
             dataQuery={dataQuery}
             name={name}
             media={media}
-            instant={true}
+            instant={instant}
             zIndex={zIndex - i}
             pagination={pagination}
+            trending={trending}
           />
         );
       })}

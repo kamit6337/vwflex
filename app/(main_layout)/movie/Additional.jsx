@@ -71,6 +71,7 @@ const Additional = ({ recommendations, details, id, fixed }) => {
           fixed={fixed}
           initialData={recommendations}
           media={MOVIE}
+          variables={{ id, page: 1 }}
         />
       )}
 

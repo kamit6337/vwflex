@@ -14,6 +14,7 @@ const HorizontalList = ({
   id,
   schema,
   dataQuery,
+  variables,
   name = null,
   initialData = null,
   media,
@@ -45,7 +46,7 @@ const HorizontalList = ({
 
       client.cache.writeQuery({
         query: schema,
-        variables: { id, page: 1 },
+        variables: variables,
         data: {
           [dataQuery]: initialData,
         },
@@ -55,9 +56,9 @@ const HorizontalList = ({
     if (id) {
       setMediaList([]); // Clear the previous list
       setPage(1); // Reset pagination
-      fetchData({ variables: { id, page: 1 } });
+      fetchData({ variables: variables });
     }
-  }, [client, schema, initialData, id, fetchData, dataQuery]);
+  }, [client, schema, initialData, id, fetchData, dataQuery, variables]);
 
   useEffect(() => {
     if (data && data[dataQuery]) {

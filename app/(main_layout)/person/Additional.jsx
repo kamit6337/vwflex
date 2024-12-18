@@ -68,6 +68,7 @@ const Additional = ({ movies, tv, fixed, id }) => {
               zIndex={3}
               name={"Movies"}
               pagination={false}
+              variables={{ id }}
             />
           )}
 
@@ -82,6 +83,7 @@ const Additional = ({ movies, tv, fixed, id }) => {
               zIndex={2}
               name={"TV Shows"}
               pagination={false}
+              variables={{ id }}
             />
           )}
         </div>

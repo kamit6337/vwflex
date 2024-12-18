@@ -1,12 +1,6 @@
 "use client";
-import { useApolloClient, useQuery } from "@apollo/client";
-import Loading from "@containers/Loading";
-import loginCheckSchema, {
-  getLoginCheckDataQuery,
-} from "@graphql/auth/loginCheckSchema";
-import WatchlistMovies from "./WatchlistMovies";
-import WatchlistTvShows from "./WatchlistTvShows";
-import LogCacheData from "@lib/LogCachedData";
+import { useApolloClient } from "@apollo/client";
+import loginCheckSchema from "@graphql/auth/loginCheckSchema";
 import { useEffect } from "react";
 import HorizontalList from "@components/HorizontalList";
 import { MOVIE, TV } from "@constants/mediaType";
@@ -61,6 +55,7 @@ const Watchlist = ({ fixed, user, movies, tvShows }) => {
           zIndex={20}
           fixed={fixed}
           pagination={true}
+          variables={{ page: 1 }}
         />
       )}
       {tvShows?.length > 0 && (
@@ -75,6 +70,7 @@ const Watchlist = ({ fixed, user, movies, tvShows }) => {
           zIndex={19}
           fixed={fixed}
           pagination={true}
+          variables={{ page: 1 }}
         />
       )}
     </>
