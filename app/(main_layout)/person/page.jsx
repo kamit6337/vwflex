@@ -5,17 +5,21 @@ import personDetailSchema, {
 } from "@graphql/peoples/personDetailSchema";
 import getFixedData from "@graphql/fixed/query";
 import ExpandableText from "@lib/ExpandableText";
-import personCreditSchema, {
-  getPersonCreditsDataQuery,
-} from "@graphql/peoples/personCreditSchema";
+import { getPersonTvCreditsDataQuery } from "@graphql/peoples/personTvSchema";
 import Additional from "./Additional";
+import personMovieSchema, {
+  getPersonMovieCreditsDataQuery,
+} from "@graphql/peoples/personMovieSchema";
+import personTvSchema from "@graphql/peoples/personTvSchema";
 
 export const generateMetadata = async ({ searchParams: { id } }) => {
-  const getQuery = cachedQuery(personDetailSchema, getPersonDetailDataQuery, {
-    id,
-  });
-
-  const { data } = await getQuery();
+  const { data } = await cachedQuery(
+    personDetailSchema,
+    getPersonDetailDataQuery,
+    {
+      id,
+    }
+  );
 
   return {
     title: data?.name,
@@ -26,7 +30,7 @@ export const generateMetadata = async ({ searchParams: { id } }) => {
 const PersonDetailPage = async ({ searchParams: { id } }) => {
   const { data: fixed } = await getFixedData();
 
-  const personDetailsQuery = cachedQuery(
+  const { data: personDetails, error: personDetailError } = await cachedQuery(
     personDetailSchema,
     getPersonDetailDataQuery,
     {
@@ -34,21 +38,22 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
     }
   );
 
-  const personCreditsQuery = cachedQuery(
-    personCreditSchema,
-    getPersonCreditsDataQuery,
-    {
+  const { data: personMovieCredits, error: personMovieCreditsError } =
+    await cachedQuery(personMovieSchema, getPersonMovieCreditsDataQuery, {
       id,
-    }
-  );
+    });
 
-  const { data: personDetails, error: personDetailError } =
-    await personDetailsQuery();
-  const { data: personCredits, error: personCreditsError } =
-    await personCreditsQuery();
+  const { data: personTvCredits, error: personTvCreditsError } =
+    await cachedQuery(personTvSchema, getPersonTvCreditsDataQuery, {
+      id,
+    });
 
-  if (personDetailError || personCreditsError) {
-    throw new Error(personDetailError?.message || personCreditsError?.message);
+  if (personDetailError || personMovieCreditsError || personTvCreditsError) {
+    throw new Error(
+      personDetailError?.message ||
+        personMovieCreditsError?.message ||
+        personTvCreditsError?.message
+    );
   }
 
   const {
@@ -87,7 +92,12 @@ const PersonDetailPage = async ({ searchParams: { id } }) => {
           </div>
         </div>
       </div>
-      <Additional fixed={fixed} credits={personCredits} id={id} />
+      <Additional
+        fixed={fixed}
+        movies={personMovieCredits}
+        tv={personTvCredits}
+        id={id}
+      />
     </section>
   );
 };

@@ -19,7 +19,7 @@ const WatchlistTvCard = ({ tv, fixed }) => {
   return (
     <div
       className={`${
-        toggle && "scale-125 tablet:scale-110 z-50 transition-all duration-300"
+        toggle && "scale-110 z-50 transition-all duration-300"
       } relative grow-0 sm:w-1/4 lg:w-1/6 w-1/3 shrink-0 px-2`}
     >
       <div
@@ -39,7 +39,7 @@ const WatchlistTvCard = ({ tv, fixed }) => {
         </Link>
 
         {toggle && (
-          <div className="absolute top-full  w-full p-4 transition-all duration-300 bg-my_hover rounded-b-xl flex flex-col gap-2">
+          <div className="absolute top-full  w-full p-2 transition-all duration-300 bg-my_hover rounded-b-xl flex flex-col gap-2">
             <div className="flex justify-between items-center gap-2">
               <p className="">{name}</p>
               {vote_average ? (

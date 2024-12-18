@@ -9,7 +9,9 @@ import getWatchlistTvSchema, {
 import LogCacheData from "@lib/LogCachedData";
 
 const WatchlistTvShows = ({ fixed }) => {
-  const { loading, error, data } = useQuery(getWatchlistTvSchema);
+  const { loading, error, data } = useQuery(getWatchlistTvSchema, {
+    variables: { page: 1 },
+  });
 
   LogCacheData();
 
@@ -27,7 +29,9 @@ const WatchlistTvShows = ({ fixed }) => {
 
   return (
     <>
-      <TvHorizontalList
+      <HorizontalList
+        id={"watchlsitvtvId"}
+        watchlistTv={true}
         schema={getWatchlistTvSchema}
         dataQuery={getWatchlistTvShowsDataQuery}
         name={"Watchlist TV Shows"}

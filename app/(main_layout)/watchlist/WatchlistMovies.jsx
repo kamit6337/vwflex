@@ -7,7 +7,9 @@ import getWatchlistMovieSchema, {
 } from "@graphql/watchlist/getWatchlistMovieSchema";
 
 const WatchlistMovies = ({ fixed }) => {
-  const { loading, error, data } = useQuery(getWatchlistMovieSchema);
+  const { loading, error, data } = useQuery(getWatchlistMovieSchema, {
+    variables: { page: 1 },
+  });
 
   if (loading) {
     return <Loading />;
@@ -24,6 +26,7 @@ const WatchlistMovies = ({ fixed }) => {
   return (
     <>
       <HorizontalList
+        id={"1245678900-"}
         schema={getWatchlistMovieSchema}
         dataQuery={getWatchlistMoviesDataQuery}
         name={"Watchlist Movies"}
@@ -31,6 +34,7 @@ const WatchlistMovies = ({ fixed }) => {
         media={MOVIE}
         zIndex={20}
         fixed={fixed}
+        pagination={true}
       />
     </>
   );

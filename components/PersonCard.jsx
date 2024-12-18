@@ -8,6 +8,8 @@ const PersonCard = ({ person, fixed }) => {
 
   const { id, profile_path, name, known_for, known_for_department } = person;
 
+  if (!profile_path) return;
+
   const size = imageDetail.profile_sizes.at(-1);
   const createBaseUrl = `${imageDetail.secure_base_url}${size}`;
   const createPhoto = `${createBaseUrl}${profile_path}`;

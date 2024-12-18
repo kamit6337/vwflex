@@ -1,12 +1,14 @@
 "use client";
 import { Icons } from "@assets/icons";
 import debounce from "@utils/javascript/debounce";
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import MovieCard from "./MovieCard";
-import { useApolloClient, useLazyQuery, useQuery } from "@apollo/client";
+import { useApolloClient, useLazyQuery } from "@apollo/client";
 import TvCard from "./TvCard";
 import { DAY, MOVIE, TV, WEEK } from "@constants/mediaType";
+import WatchlistTvCard from "./WatchlistTvCard";
+import PersonCard from "./PersonCard";
 
 const HorizontalList = ({
   id,
@@ -19,121 +21,71 @@ const HorizontalList = ({
   zIndex = 10,
   fixed,
   pagination = false,
+  watchlistTv = false,
+  people = false,
 }) => {
   const [index, setIndex] = useState(0);
-  // const [mediaData, setMediaData] = useState(() => {
-  //   if (!initialData) {
-  //     return [];
-  //   }
-  //   return initialData.filter((media) => media.backdrop_path);
-  // });
+  const client = useApolloClient();
   const [leftArrowInLarge, setLeftArrowInLarge] = useState(false);
   const [rightArrowInLarge, setRightArrowInLarge] = useState(false);
   const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
   const [selectTime, setSelectTime] = useState(DAY);
-  const client = useApolloClient();
   const [mediaList, setMediaList] = useState([]);
-
   const [fetchData, { loading, error, data }] = useLazyQuery(schema);
+  const [noPagination, setNoPagination] = useState(false);
+
+  const { ref: findalDivRef, inView: finalDivInView } = useInView({
+    rootMargin: "0px 0px 0px 200px",
+    triggerOnce: false,
+  });
 
   useEffect(() => {
     if (initialData) {
+      console.log("initialData ", dataQuery, initialData);
+
       client.cache.writeQuery({
         query: schema,
-        variables: { page: 1 },
+        variables: { id, page: 1 },
         data: {
           [dataQuery]: initialData,
         },
       });
     }
 
-    fetchData({ variables: { page: 1 } });
-  }, [client, schema, initialData, fetchData, page, dataQuery]);
+    if (id) {
+      setMediaList([]); // Clear the previous list
+      setPage(1); // Reset pagination
+      fetchData({ variables: { id, page: 1 } });
+    }
+  }, [client, schema, initialData, id, fetchData, dataQuery]);
 
   useEffect(() => {
     if (data && data[dataQuery]) {
+      console.log("data[query]", data[dataQuery]);
+
+      if (data[dataQuery].length === 0) {
+        setNoPagination(true);
+        return;
+      }
+
       setMediaList((prev) => [...prev, ...data[dataQuery]]);
-      setPage((prev) => prev + 1);
+      // setPage((prev) => prev + 1);
       const cacheData = client.cache.extract();
       console.log("Updated Apollo Cache Data:", cacheData);
     }
   }, [data, client, dataQuery]);
 
-  const { ref: findalDivRef, inView: finalDivInView } = useInView({
-    rootMargin: "0px 0px 0px 200px",
-  });
+  useEffect(() => {
+    if (noPagination || !pagination || loading || !finalDivInView) return;
 
-  useLayoutEffect(() => {
-    if (!loading && finalDivInView) {
-      console.log("page", page);
-      fetchData({ variables: { page } });
-    }
-  }, [finalDivInView, fetchData, page, loading]);
+    console.log("page", page);
 
-  // if (loading) {
-  //   return <p>Loading......</p>;
-  // }
+    fetchData({ variables: { page: page + 1 } }).then(() => setPage(page + 1));
+  }, [finalDivInView, fetchData, loading, page, noPagination, pagination]);
 
   if (error) {
     return <p>Error in List... {error.message}</p>;
   }
-
-  // useEffect(() => {
-  //   if (data && data[dataQuery]?.length > 0) {
-  //     const filter = data[dataQuery].filter((media) => !!media.backdrop_path);
-  //     setMediaData((prev) => [...prev, ...filter]);
-  //     setPage(page + 1);
-  //   }
-  // }, [data, dataQuery]);
-
-  // useEffect(() => {
-  //   if (!loading)
-  //     fetchNext({
-  //       variables: { page: page + 1 },
-  //     });
-  // }, [finalDivInView, loading, fetchNext]);
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     if (window.innerWidth < 680) {
-  //       setNumImagePerScreen(2);
-  //     } else if (window.innerWidth < 900) {
-  //       setNumImagePerScreen(3);
-  //     } else {
-  //       setNumImagePerScreen(4);
-  //     }
-  //   };
-
-  //   handleResize();
-  //   window.addEventListener("resize", handleResize);
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
-
-  // const maxIndex = useMemo(() => {
-  //   if (!mediaData) return null;
-
-  //   let maxIndexGoesTo;
-  //   if (mediaData.length % numImagePerScreen === 0) {
-  //     maxIndexGoesTo = -(mediaData.length / numImagePerScreen - 1);
-  //   } else {
-  //     const divide = mediaData.length / numImagePerScreen;
-  //     maxIndexGoesTo = -Math.floor(divide);
-  //   }
-
-  //   return maxIndexGoesTo;
-  // }, [mediaData, numImagePerScreen]);
-
-  // useEffect(() => {
-  //   if (index >= 0) {
-  //     setLeftArrowInLarge(false);
-  //   }
-  //   if (index === maxIndex) {
-  //     setRightArrowInLarge(false);
-  //   }
-  // }, [index, maxIndex]);
 
   const scrollLeft = () => {
     setIndex((prev) => prev + 1);
@@ -156,9 +108,9 @@ const HorizontalList = ({
     // setMediaData(fetchTrendingMovie);
   };
 
-  // if (!mediaList.length) {
-  //   return <div className="">No data Present</div>;
-  // }
+  if (!mediaList?.length) {
+    return <p>No Data present</p>;
+  }
 
   return (
     <section
@@ -194,24 +146,33 @@ const HorizontalList = ({
             className="flex transition-all duration-500"
             style={{ translate: `${100 * index}%` }}
           >
-            {mediaList.length > 0 &&
-              mediaList.map((data, i) => {
-                if (media === MOVIE) {
-                  return <MovieCard key={i} movie={data} fixed={fixed} />;
-                }
+            {mediaList.map((data, i) => {
+              if (people) {
+                return <PersonCard key={data.id} fixed={fixed} person={data} />;
+              }
 
-                if (media === TV) {
-                  return <TvCard key={i} tv={data} fixed={fixed} />;
-                }
+              if (watchlistTv) {
+                return (
+                  <WatchlistTvCard key={data.id} tv={data} fixed={fixed} />
+                );
+              }
 
-                return null;
-              })}
+              if (media === MOVIE) {
+                return <MovieCard key={data.id} movie={data} fixed={fixed} />;
+              }
+
+              if (media === TV) {
+                return <TvCard key={data.id} tv={data} fixed={fixed} />;
+              }
+
+              return null;
+            })}
             {loading && (
               <div className="grow-0 shrink-0 basis-96 flex justify-center items-center">
                 <div className="loading" />
               </div>
             )}
-            <div ref={findalDivRef} />
+            <div ref={mediaList?.length > 0 ? findalDivRef : null} />
           </div>
         </div>
 

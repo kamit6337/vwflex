@@ -1,5 +1,5 @@
 "use client";
-import { useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
 import Loading from "@containers/Loading";
 import loginCheckSchema, {
   getLoginCheckDataQuery,
@@ -7,32 +7,76 @@ import loginCheckSchema, {
 import WatchlistMovies from "./WatchlistMovies";
 import WatchlistTvShows from "./WatchlistTvShows";
 import LogCacheData from "@lib/LogCachedData";
+import { useEffect } from "react";
+import HorizontalList from "@components/HorizontalList";
+import { MOVIE, TV } from "@constants/mediaType";
+import getWatchlistMovieSchema, {
+  getWatchlistMoviesDataQuery,
+} from "@graphql/watchlist/getWatchlistMovieSchema";
+import getWatchlistTvSchema, {
+  getWatchlistTvShowsDataQuery,
+} from "@graphql/watchlist/getWatchlistTvSchema";
 
-const Watchlist = ({ fixed }) => {
+const Watchlist = ({ fixed, user, movies, tvShows }) => {
+  const client = useApolloClient();
 
-  const {
-    loading: loginCheckLoading,
-    error: loginCheckError,
-    data: userData,
-  } = useQuery(loginCheckSchema);
+  useEffect(() => {
+    if (user) {
+      client.cache.writeQuery({
+        query: loginCheckSchema,
+        data: user,
+      });
+    }
+  }, [user, client]);
 
-  if (loginCheckLoading) {
-    return <Loading hScreen={true} />;
-  }
+  // const {
+  //   loading: loginCheckLoading,
+  //   error: loginCheckError,
+  //   data: userData,
+  // } = useQuery(loginCheckSchema);
 
-  if (loginCheckError) {
-    console.error("Error in profile", loginCheckError?.message);
-    return;
-  }
+  // if (loginCheckLoading) {
+  //   return <Loading hScreen={true} />;
+  // }
 
-  if (!userData) {
-    return <p>Please login to see watchlist</p>;
-  }
+  // if (loginCheckError) {
+  //   console.error("Error in profile", loginCheckError?.message);
+  //   return;
+  // }
+
+  // if (!userData) {
+  //   return <p>Please login to see watchlist</p>;
+  // }
 
   return (
     <>
-      <WatchlistMovies fixed={fixed} />
-      <WatchlistTvShows fixed={fixed} />
+      {movies?.length > 0 && (
+        <HorizontalList
+          id={"1245678900-"}
+          schema={getWatchlistMovieSchema}
+          dataQuery={getWatchlistMoviesDataQuery}
+          name={"Watchlist Movies"}
+          initialData={movies}
+          media={MOVIE}
+          zIndex={20}
+          fixed={fixed}
+          pagination={true}
+        />
+      )}
+      {tvShows?.length > 0 && (
+        <HorizontalList
+          id={"watchlsitvtvId"}
+          watchlistTv={true}
+          schema={getWatchlistTvSchema}
+          dataQuery={getWatchlistTvShowsDataQuery}
+          name={"Watchlist TV Shows"}
+          initialData={tvShows}
+          media={TV}
+          zIndex={19}
+          fixed={fixed}
+          pagination={true}
+        />
+      )}
     </>
   );
 };

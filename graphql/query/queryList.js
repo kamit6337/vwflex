@@ -20,6 +20,7 @@ const queryList = [
     name: "Popular Peoples",
     media: PERSON,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -28,6 +29,7 @@ const queryList = [
     name: "Now Playing",
     media: MOVIE,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -36,6 +38,7 @@ const queryList = [
     name: "Popular Movies",
     media: MOVIE,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -44,6 +47,7 @@ const queryList = [
     name: "Top Rated Movies",
     media: MOVIE,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -52,6 +56,7 @@ const queryList = [
     name: "Upcoming Movies",
     media: MOVIE,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -60,6 +65,7 @@ const queryList = [
     name: "Airing Today Tv Shows",
     media: TV,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -68,6 +74,7 @@ const queryList = [
     name: "On The Air TV Shows",
     media: TV,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -76,6 +83,7 @@ const queryList = [
     name: "Popular TV Shows",
     media: TV,
     instant: true,
+    pagination: true,
   },
   {
     id: generateRandomDigitNumber(),
@@ -84,6 +92,7 @@ const queryList = [
     name: "Top Rated TV Shows",
     media: TV,
     instant: true,
+    pagination: true,
   },
 ];
 

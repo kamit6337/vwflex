@@ -1,18 +1,25 @@
 "use client";
-
 import HorizontalList from "@components/HorizontalList";
 import {
   creditsSection,
   imageSection,
   personDetailOptions,
 } from "@constants/detailOptions";
-import { MOVIE } from "@constants/mediaType";
+import { MOVIE, TV } from "@constants/mediaType";
 import { useRef, useState } from "react";
 import PersonImages from "./PersonImages";
+import { getPersonTvCreditsDataQuery } from "@graphql/peoples/personTvSchema";
+import personMovieSchema, {
+  getPersonMovieCreditsDataQuery,
+} from "@graphql/peoples/personMovieSchema";
+import personTvSchema from "@graphql/peoples/personTvSchema";
 
-const Additional = ({ credits, fixed, id }) => {
+const Additional = ({ movies, tv, fixed, id }) => {
   const [optionSelected, setOptionSelected] = useState(creditsSection);
   const ref = useRef(null);
+
+  console.log("movies", movies);
+  console.log("tv", tv);
 
   const scrollOptionsToTop = (value) => {
     setOptionSelected(value);
@@ -50,25 +57,31 @@ const Additional = ({ credits, fixed, id }) => {
 
       {optionSelected === creditsSection && (
         <div>
-          {credits?.movies?.length > 0 && (
+          {movies?.length > 0 && (
             <HorizontalList
               id={id}
+              schema={personMovieSchema}
+              dataQuery={getPersonMovieCreditsDataQuery}
               fixed={fixed}
-              initialData={credits.movies}
+              initialData={movies}
               media={MOVIE}
-              zIndex={50}
+              zIndex={3}
               name={"Movies"}
+              pagination={false}
             />
           )}
 
-          {credits?.tv?.length > 0 && (
+          {tv?.length > 0 && (
             <HorizontalList
               id={id}
+              schema={personTvSchema}
+              dataQuery={getPersonTvCreditsDataQuery}
               fixed={fixed}
-              initialData={credits.tv}
-              media={MOVIE}
-              zIndex={48}
+              initialData={tv}
+              media={TV}
+              zIndex={2}
               name={"TV Shows"}
+              pagination={false}
             />
           )}
         </div>

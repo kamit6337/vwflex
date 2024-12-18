@@ -41,8 +41,17 @@ const useCreateMovieWatchlist = (details) => {
 
         cache.modify({
           fields: {
-            [getWatchlistMoviesDataQuery](existingData = []) {
-              return [movieRef, ...existingData];
+            [getWatchlistMoviesDataQuery](existingData = [], { readField }) {
+              const page = readField("page", existingData);
+
+              // Only modify page 1
+              if (page === 1) {
+                return [movieRef, ...existingData];
+              }
+
+              return existingData; // Keep other pages unchanged
+
+              // return [movieRef, ...existingData];
             },
           },
         });

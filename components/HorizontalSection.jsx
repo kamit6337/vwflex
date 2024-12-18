@@ -10,9 +10,10 @@ const HorizontalSection = async ({
   dataQuery,
   name,
   media,
+  instant = false,
   zIndex,
   trending = false,
-  instant = false,
+  pagination,
 }) => {
   const { data: fixed, error } = await getFixedData();
 
@@ -58,7 +59,7 @@ const HorizontalSection = async ({
 
   if (media === PERSON) {
     return (
-      <PeoplesHorizontalList
+      <HorizontalList
         id={id}
         schema={schema}
         dataQuery={dataQuery}
@@ -68,6 +69,8 @@ const HorizontalSection = async ({
         trending={trending}
         zIndex={zIndex}
         fixed={fixed}
+        pagination={pagination}
+        people={true}
       />
     );
   }
@@ -84,6 +87,7 @@ const HorizontalSection = async ({
         trending={trending}
         zIndex={zIndex}
         fixed={fixed}
+        pagination={pagination}
       />
     );
   }

@@ -3,8 +3,8 @@ import { gql } from "@apollo/client";
 export const getWatchlistTvShowsDataQuery = "getWatchlistTvShows";
 
 const getWatchlistTvSchema = gql`
-  query GetWatchlistTv {
-    getWatchlistTvShows {
+  query GetWatchlistTv($page: Int) {
+    getWatchlistTvShows(page: $page) {
       id
       poster_path
       overview
